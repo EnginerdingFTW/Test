@@ -1,6 +1,6 @@
 # UnityGames
 
-Archer Dude:
+Archer Dude (Work in Progress):
   Summary of Game:
     How to Play:
       The version that is uploaded to GitHub is playable on PC. 
@@ -40,7 +40,7 @@ Archer Dude:
     experience drawing). 
     
     
-Roguelike 2D:
+Roguelike 2D (Complete):
   Summary of Game:
     How to Play:
       Playable on PC - if it doesn't load when you press play make sure the scene is selected.
@@ -61,7 +61,7 @@ Roguelike 2D:
           goal is to make it to the highest level you can. Each level gets harder and harder, adding more zombies and obstacles.
   
   
-SpaceShooter
+SpaceShooter (Complete):
   Summary of Game:
     How To Play:
       Playable on Pc.

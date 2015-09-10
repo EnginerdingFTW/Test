@@ -61,24 +61,24 @@ Roguelike 2D:
           goal is to make it to the highest level you can. Each level gets harder and harder, adding more zombies and obstacles.
   
   
-  SpaceShooter
-    Summary of Game:
-      How To Play:
-        Playable on Pc.
-        
-        Moving: Use WASD to move up, left down, right.
-        
-        Shooting: Left mouse click will fire a laser forward destroying anything in its path.
-        
-        Astroids: If they hit you, you will die, shoot them!
-        
-      About the Game:
-        This game is a Unity Tutorial, there are videos instructing you on how to do everything.
-        
-        Gameplay:
-          The game is Asteroids from the Atari. Attempt to get the high score by avoiding and shooting all of the incoming
-          asteroids.
-        
-          
+SpaceShooter
+  Summary of Game:
+    How To Play:
+      Playable on Pc.
       
+      Moving: Use WASD to move up, left down, right.
+      
+      Shooting: Left mouse click will fire a laser forward destroying anything in its path.
+      
+      Astroids: If they hit you, you will die, shoot them!
+      
+    About the Game:
+      This game is a Unity Tutorial, there are videos instructing you on how to do everything.
+      
+      Gameplay:
+        The game is Asteroids from the Atari. Attempt to get the high score by avoiding and shooting all of the incoming
+        asteroids.
+      
+        
     
+  

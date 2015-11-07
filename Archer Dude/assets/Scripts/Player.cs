@@ -1,54 +1,65 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
+
+/// <summary>
+/// The player controller script
+/// </summary>
 public class Player : MonoBehaviour {
 
-	public Animator animatorCape;
-	public Animator animatorPlayer;	
-	public Rigidbody2D rb2d;
-	public GameObject bow;
-	public GameObject stringMarker;
-	public GameObject rightArm;
-	public GameObject leftArm;
-	public GameObject body;
-	public GameObject head;
-	public GameObject oldArrow;
-	public GameObject arrowInsantiation;
-	public Sprite bodySprite;
-	public Sprite headSprite;
-	public bool shooting = false;
-	public float CHAOS_CONTROL = 1f;
-	public float speed;
-	public AudioClip bowFire;
-	public AudioClip bowDraw;
-	public AudioClip step;
-	public AudioClip jumpHut;
-	public AudioClip ow;
+	[HideInInspector]
+	public Rigidbody2D rb2d;							//rigidbody of the player
+	public Animator animatorCape;						//Cape animator component-separate from player
+	public Animator animatorPlayer;						//Player animator component
+	public GameObject bow;								//bow of player
+	public GameObject stringMarker;						//string of the bow
+	public GameObject rightArm;							//right arm of player
+	public GameObject leftArm;							//left arm of player
+	public GameObject body;								//torso of player
+	public GameObject head;								//head of player
+	public GameObject oldArrow;							//an arrow that was last shot from the bow
+	public GameObject arrowInsantiation;				//the arrow used for instantiation
+	public Sprite bodySprite;							//current body sprite of player
+	public Sprite headSprite;							//head spriate of the player
+	public bool shooting = false;						//is the shooting animation currently going?
+	public float CHAOS_CONTROL = 1f;					//time factor for when you are shooting (slows time)
+	public float speed;									//moving speed of player
+	public AudioClip bowFire;							//audio - firing bow
+	public AudioClip bowDraw;							//audio - drawing bow
+	public AudioClip step;								//audio - walking
+	public AudioClip jumpHut;							//audio - when jump
+	public AudioClip ow;								//audio - getting hit
+	public BoxCollider2D aimBox;						//collider that must be touched to fire the bow
+	public bool shootAnimationDone;						//true when shoot animation is done
 
-	private AudioSource source;
-	private BoxCollider2D boxCollider;
-	private Vector3[] arrowTransform = new Vector3[2];
-	private Sprite[] oldSprites = new Sprite[2];
-	public bool shootAnimationDone;	
-	private int oldBowLayer;
-	private bool mouse = false;
-	private bool swapped = false;
-	private bool shotAnimationDone = false;
-	private bool death = false;
+	private AudioSource source;							//main audio source in scene
+	private BoxCollider2D boxCollider;					//collider of the player
+	private Sprite[] oldSprites = new Sprite[2];		//temp variable for swapping body and head sprites when the player faces other direction
+	private int oldBowLayer;							//temp variable used for moving the bow's layer up during animation
+	private bool mouse = false;							//true when mouse click is still down
+	private bool swapped = false;						//true when the left and right arm's positions are swapped (during reverse)
+	private bool shotAnimationDone = false;				//true when shotAnimation done
+	private bool death = false;							//true when player is DEAD
 	
 	// Use this for initialization
 	void Start () 
 	{	
+			//saving old sprites to array for swapping
 		oldSprites[0] = bodySprite;
 		oldSprites[1] = headSprite;
 		shootAnimationDone = false;
 
+			//Getting components
 		source = GetComponent<AudioSource>();
 		animatorPlayer = GetComponent<Animator>();
 		rb2d = GetComponent<Rigidbody2D>();
 		boxCollider = GetComponent<BoxCollider2D>();
 	}
 	
+/// <summary>
+/// This function is called at the end of the shoot animation (drawing of the arrow). It slows
+/// time down and instantiates a new arrow (the 1 that will actually be show, the last 1 was just for the animation).
+/// </summary>
 	void SetState()
 	{
 		Time.timeScale = CHAOS_CONTROL;
@@ -58,33 +69,59 @@ public class Player : MonoBehaviour {
 		newArrow.transform.parent = bow.transform;
 	}
 
+/// <summary>
+/// YOU MUST DIE.
+/// </summary>
 	void Death()
 	{
 		death = true;
 	}
+
+/// <summary>
+/// Plays footsteps sound within the walking animation
+/// </summary>
 	void Footstep()
 	{
 		source.PlayOneShot(step, 0.2f);
 	}
+/// <summary>
+/// Called after the Shot animation is completed (arrow is fired)
+/// </summary>
 	void ShotDone()
 	{
 		shotAnimationDone = true;
 	}
+
+/// <summary>
+/// Called after jump animation finishes
+/// </summary>
 	void JumpDone()
 	{
 		animatorPlayer.SetBool("Jump", false);
 		animatorCape.SetBool ("Jump", false);
 	}
+
+/// <summary>
+/// Called after the slide animation is done
+/// </summary>
 	void SlideDone()
 	{
 		animatorPlayer.SetBool("Slide", false);
 		animatorCape.SetBool ("Slide", false);
 	}
+
+/// <summary>
+/// called during bow draw for sound effect.
+/// </summary>
 	void BowDraw()
 	{
 		source.PlayOneShot (bowDraw, 2f);
 	}
 
+/// <summary>
+/// Function to swap the current head and body spites of the player with other sprites.
+/// This is for when the player looks backwards.
+/// </summary>
 	void SwapSprites()
 	{
 		Sprite temp;
@@ -96,6 +133,9 @@ public class Player : MonoBehaviour {
 		oldSprites[1] = temp;
 	}
 
+/// <summary>
+/// Swaps the positions of the left and right arms. This is used when the player is shooting and looks backwards.
+/// </summary>
 	void SwapArmPositions()
 	{
 		Vector3 temp = leftArm.transform.localPosition;
@@ -103,16 +143,29 @@ public class Player : MonoBehaviour {
 		rightArm.transform.localPosition = temp;
 	}
 
+/// <summary>
+/// Sets the rate of time.
+/// </summary>
+/// <param name="timeScale"> new value for time </param>
 	void SetTimeScale(float timeScale)
 	{
 		Time.timeScale = timeScale;
 	}
 
+/// <summary>
+/// After the player dies, the menu is pulled up.
+/// </summary>
+	void Restart()
+	{
+		Application.LoadLevel("Menu");
+	}
 
-	// This is called after animations so it will override any changes to position/rotation by the animations will
-	// be overridden.
+/// <summary>
+/// Late update was used because we needed animations to be overwritten, so everything takes place after the animations.
+/// </summary>
 	void LateUpdate () 
 	{	
+			//if the player is doing the run animation and not dead, run at the set speed, otherwise stop moving.
 		if (animatorPlayer.GetBool("run"))
 		{
 			if (!death)
@@ -128,7 +181,33 @@ public class Player : MonoBehaviour {
 		{
 			rb2d.velocity = new Vector3(0, 0, 0);
 		}
-		
+
+
+			//Touch input for jump and slide
+//		if (Input.touchCount > 1 && Input.GetTouch(0).phase == TouchPhase.Moved && animatorPlayer.GetBool ("run")) 
+//		{
+//			// Get movement of the finger since last frame
+//			Vector2 touchDeltaPosition = Input.GetTouch(0).deltaPosition;
+//
+//				if(touchDeltaPosition.y > 0f)
+//				{
+//					if(animatorPlayer.GetBool ("Jump") == false)
+//					{
+//						source.PlayOneShot (jumpHut, 0.2f);
+//					}
+//					animatorPlayer.SetBool("Jump", true);
+//					animatorCape.SetBool ("Jump", true);
+//				}
+//
+//				if(touchDeltaPosition.y < 0f)
+//				{
+//					animatorPlayer.SetBool("Slide", true);
+//					animatorCape.SetBool ("Slide", true);
+//				}
+//		}
+
+
+			//Inputs for keyboard, used while creating game - W causes jump animation and S causes slide.
 		if (Input.GetKey(KeyCode.W) && animatorPlayer.GetBool("run"))
 		{
 			if(animatorPlayer.GetBool ("Jump") == false)
@@ -138,14 +217,14 @@ public class Player : MonoBehaviour {
 			animatorPlayer.SetBool("Jump", true);
 			animatorCape.SetBool ("Jump", true);
 		}
-
 		if (Input.GetKey(KeyCode.S) && animatorPlayer.GetBool("run"))
 		{
 			animatorPlayer.SetBool("Slide", true);
 			animatorCape.SetBool ("Slide", true);
 		}
 
-		
+			//after the shot animation is complete, the player returns to the running state. Parameters must be reset that keep
+			//track of animations that are happening and sprites
 		if (shotAnimationDone)
 		{
 			animatorPlayer.SetBool("shootArrow", false);
@@ -163,12 +242,14 @@ public class Player : MonoBehaviour {
 			}
 		}
 		
-		
+			//Shooting controls, if the user clicks withing the aimbox, start the shooting animation, when the user lets go
+			//fire in the direction opposite of the mouse position.
 		if (Input.GetMouseButtonDown(0) && !death)
 		{	
 			GameObject camera = GameObject.Find("Main Camera");
 			Vector3 mousePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -camera.transform.position.z));
-			if (boxCollider.bounds.Contains(mousePos))
+
+			if (aimBox.bounds.Contains(mousePos))
 			{
 				mouse = true;
 				animatorPlayer.SetBool("shootArrow", true);	
@@ -185,7 +266,9 @@ public class Player : MonoBehaviour {
 		}		
 
 
-		
+			// this entire section is when the player is doing the about to fire the arrow (arrow is already drawn) animation
+			// using the mouse/finger position, a prediction line for shooting must be drawn AND sprite components must be
+			// properly set if the user has the player shooting backwards.
 		if (((mouse && shootAnimationDone) || shooting) && !death)
 		{
 			bool flip = false;
@@ -246,6 +329,11 @@ public class Player : MonoBehaviour {
 		}
 	}
 
+
+/// <summary>
+/// Currently, if the player collides with an enemy or anything that we want to kill him, he dies.
+/// </summary>
+/// <param name="collision"> collision parameter of what hit the players collider </param>
 	void OnCollisionEnter2D (Collision2D collision)
 	{
 		if (collision.collider.tag == "Enemy" || collision.collider.tag == "Death")

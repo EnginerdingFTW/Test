@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// this entire class has the object the script is attached to ignore collisions with specific tags.
+/// </summary>
 public class IgnoreCollisionOfTag : MonoBehaviour {
 	
 	string[] tags = {"Player", "Floor", "Enemy"};

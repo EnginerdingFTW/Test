@@ -3,59 +3,64 @@ using System.Collections;
 
 public class SkeletonScript : MonoBehaviour {
 
-	private Animator animatorSkeleton;
-	private GameObject player;
-	private float timer = 0;	
-	private Vector3 constantVelocity;
-	private bool isHit = false;
-	private float deathCounter = 0;
-	private int attackChoice = 0;
-	private bool AIComplete = false;
-	private AudioSource source;
+	private Animator animatorSkeleton;			//animator of skeleton
+	private GameObject player;					//player object
+	private Vector3 constantVelocity;			//velocity of which the skeletons(s) are initially instantiated with
+	private float deathCounter = 0;				//amount of time before the skeleton dies after being hit
+	private float timer = 0;					//timer to keep track of how long the skeleton has been away from the player
+	private int attackChoice = 0;				//AI setting, which attack will it choose?
+	private bool AIComplete = false;			//did the skeleton perform it's attack last attack?
+	private bool isHit = false;					//true when skeleton gets hit.
+	private AudioSource source;					//audio source for sound effect playing
 
-	public AudioClip skellyDeath;
-	public float despawnTimer;
-	public float despawnDistance;
-	public float deathTimer;
-	public float jumpAttackPercent = 0.2f;
-	public float flipAttackPercent = 0.2f;
+	public AudioClip skellyDeath;				//skeleton death sound effect
+	public float despawnTimer;					//amount of time the skeleton must be out of the despawn distance to be destroyed
+	public float despawnDistance;				//distance away from player before despawn timer starts
+	public float deathTimer;					//amount of time between the skeleton being shot and dying occurs
+	public float jumpAttackPercent = 0.2f;		//AI setting - percent of which will be the jump attack
+	public float flipAttackPercent = 0.2f;		//AI setting - percent of which will be the flip attack
 
 	void Start()
 	{
+			//getting components and choosing AI attack
 		player = GameObject.Find("Player");
 		animatorSkeleton = GetComponent<Animator>();
 		Rigidbody2D rb2d = GetComponent<Rigidbody2D>();
 		constantVelocity = rb2d.velocity;
+		source = GetComponent<AudioSource>();
 		rb2d.velocity = new Vector3(0, 0, 0);
 		ChooseAttack();
-		source = GetComponent<AudioSource>();
 	}
 
 	void Update()
 	{
+			//after the skeleton completes it's first AI attack, determine the next attack to perform. performs AI once within range
 		if (!AIComplete)
 		{
 			SkeletonAISet();	
 		}	
 	}
 
+	/// <summary>
+	/// all timer are within fixed update to keep track of death counters, spawn timers. Also updates position
+	/// </summary>
 	void FixedUpdate () 
 	{
 		timer += Time.deltaTime;
-		if (timer > despawnTimer)
+		if (timer > despawnTimer)		//despawn timer
 		{
 			Destroy(this.gameObject);
 		}	
-		if (Vector3.Distance(player.transform.position, this.transform.position) < despawnDistance)
+		if (Vector3.Distance(player.transform.position, this.transform.position) < despawnDistance)	//despawn distance check
 		{
 			timer = 0;
 		}
 		
-		if (!isHit)
+		if (!isHit)		//position update
 		{
 			this.transform.position += constantVelocity * Time.deltaTime;
 		}
-		if (isHit)
+		if (isHit)		//death counter
 		{
 			deathCounter += Time.deltaTime;
 			if (deathCounter > deathTimer)
@@ -65,6 +70,7 @@ public class SkeletonScript : MonoBehaviour {
 		}	
 	}
 	
+		//when hit by an arrow, perform all death functions, sound, etc. calls skeleton death.
 	void OnCollisionEnter2D(Collision2D other)
 	{
 		if (other.collider.tag == "Arrow")
@@ -79,6 +85,13 @@ public class SkeletonScript : MonoBehaviour {
 		}
 	}
 
+
+/// <summary>
+/// Recursive function that goes through every element of the skeleton, turn's it rigidibody to not kinematic, enables the 
+/// the colliders of all the children, and set the children to no longer have a parent.
+/// this gives the effect of all of the bones of the skeleton flying apart.
+/// </summary>
+/// <param name="parent"> treating the heirarchy as a k-th tree where the parent is the root </param>
 	void SkeletonDeath(Transform parent)
 	{
 		Transform[] children = new Transform[parent.childCount];
@@ -99,6 +112,7 @@ public class SkeletonScript : MonoBehaviour {
 		}
 	}
 
+		//trigger the correct AI if the time before collision is less than the time of the animation.
 	void SkeletonAISet()
 	{
 		float t = TimeBeforeCollision(player, this.gameObject);
@@ -120,6 +134,7 @@ public class SkeletonScript : MonoBehaviour {
 		}
 	}
 
+		//determine the amount of time before the skeleton collides with the player
 	float TimeBeforeCollision(GameObject a, GameObject b)
 	{
 		float aSpeed = a.GetComponent<Rigidbody2D>().velocity.magnitude;
@@ -131,6 +146,7 @@ public class SkeletonScript : MonoBehaviour {
 		return (Vector2.Distance(aPos, bPos) / Mathf.Abs(aSpeed - bSpeed));
 	}
 
+		// determine which AI attack to use.
 	void ChooseAttack()
 	{
 		float dec = Random.Range(0f, 1f);
@@ -145,6 +161,7 @@ public class SkeletonScript : MonoBehaviour {
 		}
 	}
 
+		//called during the animations to make sure the skeleton does the animation and is not affected by physics.
 	void ChangeGravityScale(float g)
 	{
 		this.gameObject.GetComponent<Rigidbody2D>().gravityScale = g;

@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
+/// <summary>
+/// THIS WILL BE REVISED
+/// </summary>
 public class DuckKnight : MonoBehaviour {
 
 	public float speed;

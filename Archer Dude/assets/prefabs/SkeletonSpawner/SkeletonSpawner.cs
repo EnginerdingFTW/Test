@@ -1,23 +1,28 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// this class chooses from a list of prefabs and spawns 1 after a random time between the spawn time range. withing a spawn range with a spawn speed
+/// </summary>
 public class SkeletonSpawner : MonoBehaviour 
 {
-	public GameObject[] skeletonPrefabs;
-	public float[] spawnTime = new float[2];
-	public float[] spawnRange = new float[2]; 
-	public float[] spawnSpeed = new float[2];
-	public float spawnTimerIncrease;
+	public GameObject[] skeletonPrefabs;		//list of skeleton prefabs 
+	public float[] spawnTime = new float[2];	//lower bound and upper bound of time between spawn (increased over time)
+	public float[] spawnRange = new float[2]; 	//lower and upper bounds of distance from player the spawner can be to spawn
+	public float[] spawnSpeed = new float[2];	//lower and upper bounds on the speed the skeleton can spawn with
+	public float spawnTimerIncrease;			//incremenet by which the spawn timer is increased
 	
-	private float nextSpawnTime = 1;
-	private float timer = 0;
-	private GameObject player;
-	// Use this for initialization
+	private float nextSpawnTime = 1;			//timer the next skeleton spawn
+	private float timer = 0;					//timer
+	private GameObject player;					//player gameobject
+
 	void Start () 
 	{
+			//getting components
 		player = GameObject.Find("Player");
 	}
 	
+		//spawns skeletons after the spawn time has passed, gets the time before the next spawn, and increments the spawnTimers
 	void FixedUpdate () 
 	{
 		timer += Time.deltaTime;
@@ -40,6 +45,7 @@ public class SkeletonSpawner : MonoBehaviour
 		return Random.Range(range[0], range[1]);
 	}
 		
+		//Sets the velocity of the new skeleton
 	void SetVelocity(GameObject skeletonInstantiation)
 	{
 		Rigidbody2D rb2d = skeletonInstantiation.GetComponent<Rigidbody2D>();
@@ -51,7 +57,8 @@ public class SkeletonSpawner : MonoBehaviour
 
 		rb2d.velocity = new Vector2(factor * GetRandomValue(spawnSpeed), 0);
 	}
-
+		
+		//does everything that spawning a skeleton would require (velocity, position, rotation, which prefab)
 	void SpawnSkeleton()
 	{
 		int index = (int) Random.Range(0, Random.Range(0, skeletonPrefabs.Length));

@@ -3,11 +3,11 @@ using System.Collections;
 
 public class BackgroundMaker : MonoBehaviour {
 
-	public int length = 1;
-	public float distanceBetweenObjects = 6f;
-	public GameObject background;
+	public int length = 1;						//number of duplications of the background
+	public float distanceBetweenObjects = 6f;	//distance between each duplication
+	public GameObject background;				//the prefab of the background
 	
-	// Use this for initialization
+		//creates every instance of the background
 	void Start () 
 	{
 		for (int k = 0; k < length; k ++)

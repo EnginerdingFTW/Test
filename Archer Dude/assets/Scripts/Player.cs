@@ -182,30 +182,28 @@ public class Player : MonoBehaviour {
 			rb2d.velocity = new Vector3(0, 0, 0);
 		}
 
-
 			//Touch input for jump and slide
-//		if (Input.touchCount > 1 && Input.GetTouch(0).phase == TouchPhase.Moved && animatorPlayer.GetBool ("run")) 
-//		{
-//			// Get movement of the finger since last frame
-//			Vector2 touchDeltaPosition = Input.GetTouch(0).deltaPosition;
-//
-//				if(touchDeltaPosition.y > 0f)
-//				{
-//					if(animatorPlayer.GetBool ("Jump") == false)
-//					{
-//						source.PlayOneShot (jumpHut, 0.2f);
-//					}
-//					animatorPlayer.SetBool("Jump", true);
-//					animatorCape.SetBool ("Jump", true);
-//				}
-//
-//				if(touchDeltaPosition.y < 0f)
-//				{
-//					animatorPlayer.SetBool("Slide", true);
-//					animatorCape.SetBool ("Slide", true);
-//				}
-//		}
+		if (Input.touchCount > 1 && Input.GetTouch(0).phase == TouchPhase.Moved && animatorPlayer.GetBool ("run")) 
+		{
+			// Get movement of the finger since last frame
+			Vector2 touchDeltaPosition = Input.GetTouch(0).deltaPosition;
 
+				if(touchDeltaPosition.y > 0f)
+				{
+					if(animatorPlayer.GetBool ("Jump") == false)
+					{
+						source.PlayOneShot (jumpHut, 0.2f);
+					}
+					animatorPlayer.SetBool("Jump", true);
+					animatorCape.SetBool ("Jump", true);
+				}
+
+				if(touchDeltaPosition.y < 0f)
+				{
+					animatorPlayer.SetBool("Slide", true);
+					animatorCape.SetBool ("Slide", true);
+				}
+		}
 
 			//Inputs for keyboard, used while creating game - W causes jump animation and S causes slide.
 		if (Input.GetKey(KeyCode.W) && animatorPlayer.GetBool("run"))
@@ -255,6 +253,9 @@ public class Player : MonoBehaviour {
 				animatorPlayer.SetBool("shootArrow", true);	
 			}		
 		}
+
+
+		//Input.GetMouseButtonUp(0)
 		if (Input.GetMouseButtonUp(0) && shootAnimationDone)
 		{
 			Time.timeScale = 1;
@@ -263,7 +264,21 @@ public class Player : MonoBehaviour {
 			mouse = false;
 			shooting = true;
 			source.PlayOneShot(bowFire, 0.5f);
-		}		
+		}
+
+
+
+
+//		if (Input.touchCount < 1 && shootAnimationDone)
+//		{
+//			Time.timeScale = 1;
+//			animatorPlayer.SetBool("shot", true);	
+//			shootAnimationDone = false;
+//			mouse = false;
+//			shooting = true;
+//			source.PlayOneShot(bowFire, 0.5f);
+//		}		
+
 
 
 			// this entire section is when the player is doing the about to fire the arrow (arrow is already drawn) animation

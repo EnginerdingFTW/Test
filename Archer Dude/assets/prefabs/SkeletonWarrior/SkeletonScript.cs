@@ -19,6 +19,7 @@ public class SkeletonScript : MonoBehaviour {
 	public float deathTimer;					//amount of time between the skeleton being shot and dying occurs
 	public float jumpAttackPercent = 0.2f;		//AI setting - percent of which will be the jump attack
 	public float flipAttackPercent = 0.2f;		//AI setting - percent of which will be the flip attack
+	public float speed = 2;						//AI setting - how quickly the skeleton runs at the player
 
 	void Start()
 	{
@@ -26,9 +27,9 @@ public class SkeletonScript : MonoBehaviour {
 		player = GameObject.Find("Player");
 		animatorSkeleton = GetComponent<Animator>();
 		Rigidbody2D rb2d = GetComponent<Rigidbody2D>();
+		rb2d.velocity = new Vector2(-speed, 0);
 		constantVelocity = rb2d.velocity;
 		source = GetComponent<AudioSource>();
-		rb2d.velocity = new Vector3(0, 0, 0);
 		ChooseAttack();
 	}
 

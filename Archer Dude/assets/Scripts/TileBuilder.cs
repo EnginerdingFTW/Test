@@ -9,6 +9,7 @@ public class TileBuilder : MonoBehaviour {
 	public int xBorder;						//xBorder of tiles, how many in x direction will be made
 	public int yBorder;						//yBorder of tiles, how many in y direction will be made
 	public float destroyedPercent;			//percent of destroyed tiles that will be placed in the array.
+	public int wave = 0;					//the amount of times you've reached the end of instantiated tiles
 
 
 /// <summary>
@@ -18,7 +19,7 @@ public class TileBuilder : MonoBehaviour {
 /// <param name="tag"> tag is the tag that will be assigned to the instantiation. </param>
 	public void BoardSetup(string tag)
 	{
-		Transform tileHolder = this.transform;			//gets the transform of thie object as the starting a placement
+		Transform tileHolder = this.transform;			//gets the transform of this object as the starting a placement
 			
 		for (int x = 0; x < xBorder; x++)
 		{
@@ -35,18 +36,37 @@ public class TileBuilder : MonoBehaviour {
 				}
 				if (x % 4 == 0 && y == 2 && torch != null)
 				{
-					GameObject newObject = Instantiate(torch, new Vector3(x * 1.56f + tileHolder.position.x, y * 1.56f + tileHolder.position.y, 0f + tileHolder.position.z), Quaternion.identity) as GameObject;
+					GameObject newObject = Instantiate(torch, new Vector3(x * 1.56f + tileHolder.position.x + (1.56f * xBorder * wave), y * 1.56f + tileHolder.position.y, 0f + tileHolder.position.z), Quaternion.identity) as GameObject;
 					newObject.transform.parent = this.transform.FindChild("Torches").transform;
 				}
 				
-				GameObject instance = Instantiate(toInstantiate, new Vector3(x * 1.56f + tileHolder.position.x, y * 1.56f + tileHolder.position.y, 0f + tileHolder.position.z), Quaternion.identity) as GameObject;
+				GameObject instance = Instantiate(toInstantiate, new Vector3(x * 1.56f + tileHolder.position.x + (1.56f * xBorder * wave), y * 1.56f + tileHolder.position.y, 0f + tileHolder.position.z), Quaternion.identity) as GameObject;
 				instance.transform.parent = this.transform;
 				instance.tag = tag;
 			}
 		}
 	}
 
-	void Start () {
+	//once the player gets near the end of the instantiated walls/floor, instantiate some more
+	void OnTriggerEnter2D() {
+		wave += 1;
+		if (this.gameObject.transform.CompareTag ("Wall")) {
+			gameObject.GetComponent<BoxCollider2D> ().offset = new Vector2 ((wave + 1) * xBorder / 4, 1);
+		} else {
+			gameObject.GetComponent<BoxCollider2D> ().offset = new Vector2 ((wave + 1) * xBorder * 5 / 4, 10);
+		}
+		BoardSetup (this.gameObject.transform.tag);
+	}
+
+	//initialize the first series of walls and floors, set up the trigger zone for next instantiation
+	void Start () { 
+		if (this.gameObject.transform.CompareTag ("Wall")) {
+			gameObject.GetComponent<BoxCollider2D> ().offset = new Vector2 ((wave + 1) * xBorder / 4, 1);
+			gameObject.GetComponent<BoxCollider2D> ().size = new Vector2 (1, 5);
+		} else {
+			gameObject.GetComponent<BoxCollider2D> ().offset = new Vector2 ((wave + 1) * xBorder * 5 / 4, 10);
+			gameObject.GetComponent<BoxCollider2D> ().size = new Vector2 (5, 25);
+		}
 		BoardSetup(this.gameObject.transform.tag);
 	}
 }

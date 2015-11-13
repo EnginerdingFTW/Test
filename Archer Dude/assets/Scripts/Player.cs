@@ -266,9 +266,7 @@ public class Player : MonoBehaviour {
 			source.PlayOneShot(bowFire, 0.5f);
 		}
 
-
-
-
+		//Touch Input version of above codeblock used on phones instead of Unity Editor
 //		if (Input.touchCount < 1 && shootAnimationDone)
 //		{
 //			Time.timeScale = 1;

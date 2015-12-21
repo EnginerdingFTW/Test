@@ -36,7 +36,7 @@ public class SkeletonScript : MonoBehaviour {
 	void Update()
 	{
 			//after the skeleton completes it's first AI attack, determine the next attack to perform. performs AI once within range
-		if (!AIComplete)
+		if (!AIComplete && this.gameObject != null)
 		{
 			SkeletonAISet();	
 		}	

@@ -255,7 +255,7 @@ public class Player : MonoBehaviour {
 		}
 
 
-		//Input.GetMouseButtonUp(0)
+		//Unity Editor version of below codeblock, doesn't allow for quick release
 		if (Input.GetMouseButtonUp(0) && shootAnimationDone)
 		{
 			Time.timeScale = 1;

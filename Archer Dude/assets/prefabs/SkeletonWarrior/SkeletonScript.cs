@@ -21,6 +21,10 @@ public class SkeletonScript : MonoBehaviour {
 	public float flipAttackPercent = 0.2f;		//AI setting - percent of which will be the flip attack
 	public float speed = 2;						//AI setting - how quickly the skeleton runs at the player
 
+	public AnimationClip slash;
+	public AnimationClip flip;
+	public AnimationClip jump;
+
 	void Start()
 	{
 			//getting components and choosing AI attack
@@ -117,18 +121,17 @@ public class SkeletonScript : MonoBehaviour {
 	void SkeletonAISet()
 	{
 		float t = TimeBeforeCollision(player, this.gameObject);
-
-		if (t < 0.8f && attackChoice == 0)
+		if (t < slash.length * 42f / 89f && attackChoice == 0)
 		{
 			animatorSkeleton.SetTrigger("Slash");
 			AIComplete = true;
 		}
-		if (t < 1.1f && attackChoice == 1)
+		if (t < jump.length * 65f / 120f && attackChoice == 1)
 		{
 			animatorSkeleton.SetTrigger("Jump");
 			AIComplete = true;
 		}
-		if (t < 1.5f && attackChoice == 2)
+		if (t < flip.length * 105f / 231f && attackChoice == 2)
 		{
 			animatorSkeleton.SetTrigger("Flip");
 			AIComplete = true;
@@ -139,12 +142,12 @@ public class SkeletonScript : MonoBehaviour {
 	float TimeBeforeCollision(GameObject a, GameObject b)
 	{
 		float aSpeed = a.GetComponent<Rigidbody2D>().velocity.magnitude;
-		float bSpeed = b.GetComponent<Rigidbody2D>().velocity.magnitude;
+		float bSpeed = constantVelocity.magnitude;
 
 		Vector2 aPos = new Vector2(a.transform.position.x, a.transform.position.y);
 		Vector2 bPos = new Vector2(b.transform.position.x, b.transform.position.y);
-		
-		return (Vector2.Distance(aPos, bPos) / Mathf.Abs(aSpeed - bSpeed));
+		float t = Vector2.Distance(aPos, bPos) / Mathf.Abs(aSpeed + bSpeed);
+		return t;
 	}
 
 		// determine which AI attack to use.

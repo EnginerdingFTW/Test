@@ -68,6 +68,10 @@ public class GargoyleAI : MonoBehaviour {
 		animator.SetBool ("Swoop", true);
 	}
 
+	void FinishedSwoop () {
+		distanceFromPlayer = 20;
+	}
+
 	public void TailHit () {
 		health -= 1;
 		animator.SetBool ("Hurt", true);

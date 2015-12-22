@@ -119,6 +119,7 @@ public class ArrowScript : MonoBehaviour {
 			if (!other.gameObject.name.Contains("Skeleton"))
 			{
 				Destroy(this.rb2d);	
+				this.transform.parent = other.gameObject.transform;
 				source.PlayOneShot(concreteBounce);
 			}
 			else 

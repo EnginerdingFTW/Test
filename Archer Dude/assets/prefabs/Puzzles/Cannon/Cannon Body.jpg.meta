@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 6f4f761e7bbcd40b8a043092ca287f14
-timeCreated: 1450931033
+guid: 3d3124eeb18fc457486623aa3ce37e52
+timeCreated: 1450932750
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: DrawBridgeBackGround_0
+    21300000: Cannon Body_0
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -51,37 +51,21 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: DrawBridgeBackGround_0
+    - name: Cannon Body_0
       rect:
         serializedVersion: 2
-        x: 152
+        x: 0
         y: 0
-        width: 295
-        height: 400
+        width: 1000
+        height: 800
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -5.5, y: 200}
-        - {x: -147.5, y: 200}
-        - {x: -147.5, y: -49}
-        - {x: -141.5, y: -56}
-        - {x: -101.5, y: -96}
-        - {x: -101.5, y: -97}
-        - {x: -71.5, y: -127}
-        - {x: -71.5, y: -128}
-        - {x: -59.5, y: -140}
-        - {x: -58.5, y: -140}
-        - {x: -41.5, y: -157}
-        - {x: -41.5, y: -158}
-        - {x: -11.5, y: -188}
-        - {x: -11.5, y: -189}
-        - {x: -3.5, y: -197}
-        - {x: -7.5, y: -198}
-        - {x: -7.5, y: -200}
-        - {x: 147.5, y: -200}
-        - {x: 147.5, y: -197}
-        - {x: -5.5, y: -44}
+      - - {x: -500, y: 400}
+        - {x: -500, y: -400}
+        - {x: 500, y: -400}
+        - {x: 500, y: 400}
     outline: []
   spritePackingTag: 
   userData: 

@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: e2bc9faa19ba84f39bba33e42b6f94c2
-timeCreated: 1450927602
+guid: 391bbe69e75d347da99bd36c62db1b9d
+timeCreated: 1450931895
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -54,24 +54,26 @@ TextureImporter:
     - name: DrawBridgeBackGroundTop_0
       rect:
         serializedVersion: 2
-        x: 138
+        x: 152
         y: 0
-        width: 309
+        width: 295
         height: 400
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline:
-      - - {x: -0.5, y: -199}
-        - {x: -0.5, y: -200}
-        - {x: 154.5, y: -200}
-        - {x: 154.5, y: -197}
-        - {x: 1.5, y: -197}
-      - - {x: -1.5, y: -46}
-        - {x: 1.5, y: -45}
-        - {x: 1.5, y: 200}
-        - {x: -154.5, y: 200}
-        - {x: -154.5, y: 107}
+      - - {x: -7.5, y: -199}
+        - {x: -7.5, y: -200}
+        - {x: 147.5, y: -200}
+        - {x: 147.5, y: -197}
+        - {x: -5.5, y: -197}
+      - - {x: -105.5, y: 49}
+        - {x: -104.5, y: 49}
+        - {x: -8.5, y: -47}
+        - {x: -5.5, y: -46}
+        - {x: -5.5, y: 200}
+        - {x: -147.5, y: 200}
+        - {x: -147.5, y: 90}
     outline: []
   spritePackingTag: 
   userData: 

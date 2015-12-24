@@ -38,6 +38,7 @@ public class TileBuilder : MonoBehaviour {
 				{
 					GameObject newObject = Instantiate(torch, new Vector3(x * 1.56f + tileHolder.position.x + (1.56f * xBorder * wave), y * 1.56f + tileHolder.position.y, 0f + tileHolder.position.z), Quaternion.identity) as GameObject;
 					newObject.transform.parent = this.transform.FindChild("Torches").transform;
+					newObject.tag = "Wall";
 				}
 				
 				GameObject instance = Instantiate(toInstantiate, new Vector3(x * 1.56f + tileHolder.position.x + (1.56f * xBorder * wave), y * 1.56f + tileHolder.position.y, 0f + tileHolder.position.z), Quaternion.identity) as GameObject;

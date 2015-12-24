@@ -6,6 +6,7 @@ using System.Collections;
 /// </summary>
 public class EnemySpawner : MonoBehaviour {
 
+	private GameController gameController;						//The GameController, used to keep track of how many enemies have spawned
 	private Vector3 spawnerPosition;							//the position of the spawner
 	private Vector3 playerPosition;								//the position of the player
 	private GameObject player;									//the player
@@ -19,6 +20,7 @@ public class EnemySpawner : MonoBehaviour {
 	public float spawnDistance = 25;							//The distance between the enemy spawn point and the player
 	public bool spawnable = true;								//This bool allows enemies to spawn
 	public GameObject[] enemies;								//A list of all available enemies to spawn
+	public GameObject boss;										//The boss to be spawned
 	public int easy = 0;										//easy enemy int to be changed based on wave
 	public int normal = 1;										//normal enemy int to be changed based on wave
 	public int hard = 2;										//hard enemy int to be changed based on wave
@@ -31,6 +33,7 @@ public class EnemySpawner : MonoBehaviour {
 		//give the player time to get ready
 		StartCoroutine ("spawnTimer");
 		numEnemies = enemies.Length;
+		gameController = FindObjectOfType<GameController> ();
 	}
 	
 	// Update is called once per frame
@@ -64,7 +67,25 @@ public class EnemySpawner : MonoBehaviour {
 
 			//spawn the selected enemy
 			Instantiate(enemies[selectedEnemy], spawnerPosition, Quaternion.identity);
+
+			//update the game controller's count
+			gameController.Invoke("SpawnCount", 0.1f);
 		}
+	}
+
+	//Spawn the boss
+	void SpawnBoss () {
+		Instantiate(boss, spawnerPosition, Quaternion.identity);
+	}
+
+	//Used by game controller to stop spawning enemies
+	void StopSpawning () {
+		spawnable = false;
+	}
+
+	//Used by game controller to start spawning enemies
+	void ContinueSpawning () {
+		spawnable = true;
 	}
 
 	//A simple timer to reset a boolean

@@ -5,6 +5,8 @@ public class GargoyleAI : MonoBehaviour {
 
 	private Animator animator;				//Gargoyles animator
 	private GameObject player;				//The Player, used to get location
+	private Animator playerAnimator;		//The Player's animator, used to determine if player is avoiding fire attack
+	private Player playerScript;			//Used to call the player Death function if he's roasted
 	private int fireCount = 0;				//How much prep time needed before a fire attack
 	private bool inBreak = false;			//Used for logic, gives player some break time in between attacks
 	private float attackChoice;				//The rolled value for what attack it should be
@@ -12,6 +14,7 @@ public class GargoyleAI : MonoBehaviour {
 	private Rigidbody2D rb;					//Gargoyles rigidbody2d
 	private bool standby = false;			//Should the Gargoyle remain in the same spot on the screen?
 	private int distanceFromPlayer = 7;		//The distance the gargoyle is from the player (not constantly updated, only when needed)
+	private bool fireHitting = false;		//Is the fire attack in kill range of the player?
 	
 	public float startingYposition = 3.24f;	//The normal height of the Gargoyle
 	public int startingXposition = 7;		//The normal X distance from the player
@@ -22,16 +25,18 @@ public class GargoyleAI : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		this.animator = GetComponent<Animator> ();
+		animator = GetComponent<Animator> ();
 		rb = GetComponent<Rigidbody2D> ();
 		player = GameObject.Find ("Player");
+		playerAnimator = player.GetComponent<Animator> ();
+		playerScript = player.GetComponent<Player> ();
 	}
 
 	//All decisions are made here
 	void Update () {
 		//While on "Standby" The gargoyle remains in place on screen
 		if (standby) {
-			transform.position = new Vector3 (player.transform.position.x + startingXposition, transform.position.y, transform.position.z);
+			transform.position = new Vector3 (player.transform.position.x + startingXposition, startingYposition, transform.position.z);
 			//Otherwise it will move into that position
 		} else if (!attacking) {
 			distanceFromPlayer = (int) (transform.position.x - player.transform.position.x);
@@ -63,6 +68,19 @@ public class GargoyleAI : MonoBehaviour {
 		attacking = false;
 		yield return new WaitForSeconds (breakTime);
 		inBreak = false;
+	}
+
+	//Kill The player if he isn't trying to slide under the fire, costs 7 mana
+	IEnumerator FlameStrike () {
+		yield return new WaitForSeconds (0.2f);
+		if (fireHitting) {
+			if (playerAnimator.GetBool("Slide")) {
+				StartCoroutine("FlameStrike");
+			} else {
+				playerAnimator.SetTrigger("Death");
+				playerScript.Invoke("Death", 0.1f);
+			}
+		}
 	}
 
 	//Calculate the distance from the player, move on after sweeps through in a claw attack
@@ -100,6 +118,15 @@ public class GargoyleAI : MonoBehaviour {
 	void IncreaseFireCount () {
 		fireCount++;
 		animator.SetInteger ("Fire", fireCount);
+	}
+
+	void FlameHit () {
+		fireHitting = true;
+		StartCoroutine ("FlameStrike");
+	}
+
+	void FlameDone () {
+		fireHitting = false;
 	}
 
 	//Used in animator to begin the Claw Attack sequence

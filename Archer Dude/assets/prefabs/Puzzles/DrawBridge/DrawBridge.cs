@@ -6,10 +6,9 @@ using System.Collections;
 /// </summary>
 public class DrawBridge : MonoBehaviour {
 
-	private Animator animatorDrawBridge;			//animator of bridge
-	private Animator animatorPlayer;				//animator of player
 	private GameObject bridge;						//the wood part of the bridge that raises and lowers
-	private bool go = false;
+	private GameObject enemyStop;					//enemy stopper for this puzzle
+	private bool go = false;						//true when the bridge has lowered
 	
 
 	public GameObject target;						//the target gameobject that when
@@ -17,20 +16,10 @@ public class DrawBridge : MonoBehaviour {
 	void Start () 
 	{
 			//getting components
-		animatorDrawBridge = GetComponent<Animator>();
-		GameObject player = GameObject.Find ("Player");
-		animatorPlayer = player.GetComponent<Animator>();
 		bridge = this.transform.FindChild("DrawBridgeUpright_0").gameObject;
 		bridge.GetComponent<PolygonCollider2D>().enabled = false;
-	}
-	
-		// when the player hits the drawbridge, stop it's movement (this will be revised to stop any enemy/ally as well).
-	void OnTriggerEnter2D(Collider2D coll)
-	{
-		if (coll.gameObject.tag == "Player" && !go)
-		{
-			animatorPlayer.SetBool("run", false);
-		}
+		enemyStop = this.transform.FindChild("oncollisionidle").gameObject;
+		enemyStop.GetComponent<OnCollisionIdle>().stop = true;
 	}
 	
 		//when the target is hit, trigger the lower animation
@@ -44,8 +33,9 @@ public class DrawBridge : MonoBehaviour {
 			bridge.GetComponent<PolygonCollider2D>().enabled = true;
 			if (!go)
 			{
-				animatorPlayer.SetBool ("run", true);
 				go = true;
+				enemyStop.GetComponent<OnCollisionIdle>().stop = false;
+				this.GetComponent<EdgeCollider2D>().enabled = false;
 			}
 		}
 	}

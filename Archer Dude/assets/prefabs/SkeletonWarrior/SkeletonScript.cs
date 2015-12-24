@@ -61,7 +61,7 @@ public class SkeletonScript : MonoBehaviour {
 			timer = 0;
 		}
 		
-		if (!isHit)		//position update
+		if (!isHit && animatorSkeleton.GetBool("run") == true)		//position update
 		{
 			this.transform.position += constantVelocity * Time.deltaTime;
 		}
@@ -120,6 +120,10 @@ public class SkeletonScript : MonoBehaviour {
 		//trigger the correct AI if the time before collision is less than the time of the animation.
 	void SkeletonAISet()
 	{
+		if (animatorSkeleton == null)
+		{
+			return;
+		}
 		float t = TimeBeforeCollision(player, this.gameObject);
 		if (t < slash.length * 42f / 89f && attackChoice == 0)
 		{

@@ -1,9 +1,10 @@
 fileFormatVersion: 2
 guid: 80751b7eb2b3a4a06a039c98e2a367c3
-timeCreated: 1450932686
+timeCreated: 1450978082
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: Cannon Wheel_0
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -49,7 +50,22 @@ TextureImporter:
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: Cannon Wheel_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1000
+        height: 800
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -500, y: 400}
+        - {x: -500, y: -400}
+        - {x: 500, y: -400}
+        - {x: 500, y: 400}
     outline: []
   spritePackingTag: 
   userData: 

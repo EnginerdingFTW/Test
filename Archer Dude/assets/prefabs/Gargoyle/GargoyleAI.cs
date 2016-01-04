@@ -15,6 +15,7 @@ public class GargoyleAI : MonoBehaviour {
 	private bool standby = false;			//Should the Gargoyle remain in the same spot on the screen?
 	private int distanceFromPlayer = 7;		//The distance the gargoyle is from the player (not constantly updated, only when needed)
 	private bool fireHitting = false;		//Is the fire attack in kill range of the player?
+	private GameController gameController;	//The gameController
 	
 	public float startingYposition = 3.24f;	//The normal height of the Gargoyle
 	public int startingXposition = 7;		//The normal X distance from the player
@@ -25,6 +26,7 @@ public class GargoyleAI : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		gameController = GameObject.Find ("GameController").GetComponent<GameController> ();
 		animator = GetComponent<Animator> ();
 		rb = GetComponent<Rigidbody2D> ();
 		player = GameObject.Find ("Player");
@@ -100,6 +102,7 @@ public class GargoyleAI : MonoBehaviour {
 
 	//Used to destroy from Death animation
 	void DestroyThis () {
+		gameController.Invoke ("BossDefeated", 0.1f);
 		Destroy (this.gameObject);
 	}
 

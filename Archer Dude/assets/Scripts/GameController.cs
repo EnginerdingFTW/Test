@@ -5,7 +5,6 @@ public class GameController : MonoBehaviour {
 
 	private EnemySpawner enemySpawner;
 	private int spawnedEnemies;
-	private GameObject boss;
 
 	public int enemiesTillBoss = 10;
 
@@ -21,19 +20,11 @@ public class GameController : MonoBehaviour {
 		if (spawnedEnemies  == enemiesTillBoss) {
 			enemySpawner.Invoke("StopSpawning", 0.1f);
 			enemySpawner.Invoke("SpawnBoss", 3.0f);
-			boss = GameObject.FindGameObjectWithTag("Boss");
-			StartCoroutine("BossAlive");
 			spawnedEnemies = 0;
 		}
 	}
 
-	// New thread to keep track of boss being alive or not, checks every 4 seconds
-	IEnumerator BossAlive () {
-		yield return new WaitForSeconds (4f);
-		if (boss == null) {
-			enemySpawner.Invoke("StartSpawning", 0.1f);
-		} else {
-			StartCoroutine("BossAlive");
-		}
+	public void BossDefeated () {
+		enemySpawner.Invoke ("StartSpawning", 0.1f);
 	}
 }

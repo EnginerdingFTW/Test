@@ -84,7 +84,7 @@ public class EnemySpawner : MonoBehaviour {
 	}
 
 	//Used by game controller to start spawning enemies
-	void ContinueSpawning () {
+	void StartSpawning () {
 		spawnable = true;
 	}
 

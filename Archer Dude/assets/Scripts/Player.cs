@@ -275,9 +275,7 @@ public class Player : MonoBehaviour {
 //			mouse = false;
 //			shooting = true;
 //			source.PlayOneShot(bowFire, 0.5f);
-//		}		
-
-
+//		}	
 
 			// this entire section is when the player is doing the about to fire the arrow (arrow is already drawn) animation
 			// using the mouse/finger position, a prediction line for shooting must be drawn AND sprite components must be

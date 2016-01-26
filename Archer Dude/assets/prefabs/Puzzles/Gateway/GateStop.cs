@@ -5,7 +5,7 @@ public class GateStop : MonoBehaviour {
 
 	private Animator animatorGate;			//Gate animator
 	private Animator animatorPlayer;		//Player animator
-	private GameObject enemyStop;					//enemy stopper for this puzzle
+	private GameObject enemyStop;			//enemy stopper for this puzzle
 	public GameObject target;				//the target that triggers animation (will set this later to be it's own class for a list of targets)
 
 

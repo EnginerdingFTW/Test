@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 
 /// <summary>
@@ -33,7 +34,7 @@ public class Player : MonoBehaviour {
 	public bool shootAnimationDone;						//true when shoot animation is done
 
 	private AudioSource source;							//main audio source in scene
-	private BoxCollider2D boxCollider;					//collider of the player
+//	private BoxCollider2D boxCollider;					//collider of the player
 	private Sprite[] oldSprites = new Sprite[2];		//temp variable for swapping body and head sprites when the player faces other direction
 	private int oldBowLayer;							//temp variable used for moving the bow's layer up during animation
 	private bool mouse = false;							//true when mouse click is still down
@@ -53,7 +54,7 @@ public class Player : MonoBehaviour {
 		source = GetComponent<AudioSource>();
 		animatorPlayer = GetComponent<Animator>();
 		rb2d = GetComponent<Rigidbody2D>();
-		boxCollider = GetComponent<BoxCollider2D>();
+//		boxCollider = GetComponent<BoxCollider2D>();
 	}
 	
 /// <summary>
@@ -157,7 +158,7 @@ public class Player : MonoBehaviour {
 /// </summary>
 	void Restart()
 	{
-		Application.LoadLevel("Menu");
+		SceneManager.LoadScene ("Menu");
 	}
 
 /// <summary>
@@ -256,18 +257,7 @@ public class Player : MonoBehaviour {
 
 
 		//Unity Editor version of below codeblock, doesn't allow for quick release
-		if (Input.GetMouseButtonUp(0) && shootAnimationDone)
-		{
-			Time.timeScale = 1;
-			animatorPlayer.SetBool("shot", true);	
-			shootAnimationDone = false;
-			mouse = false;
-			shooting = true;
-			source.PlayOneShot(bowFire, 0.5f);
-		}
-
-		//Touch Input version of above codeblock used on phones instead of Unity Editor
-//		if (Input.touchCount < 1 && shootAnimationDone)
+//		if (Input.GetMouseButtonUp(0) && shootAnimationDone)
 //		{
 //			Time.timeScale = 1;
 //			animatorPlayer.SetBool("shot", true);	
@@ -275,7 +265,18 @@ public class Player : MonoBehaviour {
 //			mouse = false;
 //			shooting = true;
 //			source.PlayOneShot(bowFire, 0.5f);
-//		}	
+//		}
+
+		//Touch Input version of above codeblock used on phones instead of Unity Editor
+		if (Input.touchCount < 1 && shootAnimationDone)
+		{
+			Time.timeScale = 1;
+			animatorPlayer.SetBool("shot", true);	
+			shootAnimationDone = false;
+			mouse = false;
+			shooting = true;
+			source.PlayOneShot(bowFire, 0.5f);
+		}	
 
 			// this entire section is when the player is doing the about to fire the arrow (arrow is already drawn) animation
 			// using the mouse/finger position, a prediction line for shooting must be drawn AND sprite components must be

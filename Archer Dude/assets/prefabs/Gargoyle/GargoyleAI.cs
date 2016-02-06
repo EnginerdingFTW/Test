@@ -16,6 +16,7 @@ public class GargoyleAI : MonoBehaviour {
 	private int distanceFromPlayer = 7;		//The distance the gargoyle is from the player (not constantly updated, only when needed)
 	private bool fireHitting = false;		//Is the fire attack in kill range of the player?
 	private GameController gameController;	//The gameController
+	private bool death = false;				//Is the Gargoyle dead?
 	
 	public float startingYposition = 3.24f;	//The normal height of the Gargoyle
 	public int startingXposition = 7;		//The normal X distance from the player
@@ -75,7 +76,7 @@ public class GargoyleAI : MonoBehaviour {
 	//Kill The player if he isn't trying to slide under the fire, costs 7 mana
 	IEnumerator FlameStrike () {
 		yield return new WaitForSeconds (0.2f);
-		if (fireHitting) {
+		if (fireHitting && !death) {
 			if (playerAnimator.GetBool("Slide")) {
 				StartCoroutine("FlameStrike");
 			} else {
@@ -150,6 +151,7 @@ public class GargoyleAI : MonoBehaviour {
 		health -= 1;
 		animator.SetBool ("Hurt", true);
 		if (health < 1) {
+			death = true;
 			animator.SetBool ("Death", true);
 		}
 	}

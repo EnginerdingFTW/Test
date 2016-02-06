@@ -6,7 +6,7 @@ using System.Collections;
 /// </summary>
 public class IgnoreCollisionOfTag : MonoBehaviour {
 	
-	string[] tags = {"Player", "Floor", "Enemy"};
+	public string[] tags = {"Player", "Floor", "Enemy"};
 
 	void OnCollisionEnter2D(Collision2D collision)
 	{

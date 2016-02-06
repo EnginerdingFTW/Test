@@ -14,5 +14,9 @@ public class RopeDestroyer : MonoBehaviour {
 		{
 			Destroy (this.gameObject.GetComponent<HingeJoint2D>());
 		}
+		if (coll.collider.tag == "Player" || coll.collider.tag == "Enemy")
+		{
+			Physics2D.IgnoreCollision(coll.collider, GetComponent<BoxCollider2D>());
+		}
 	}
 }

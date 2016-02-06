@@ -16,7 +16,18 @@ public class RopeCreation : MonoBehaviour {
 	public GameObject ropeLinkOG;		//prefab of rope
 	public bool slack;					//do you want slack? TRUE || FALSE?!?!?!?
 	public int slackAmount = -1;		//slack to add/remove, negative removes slack
+	public bool ropeBroke = false;
 
+	void Update()
+	{
+		foreach (GameObject rope in ropeLink)
+		{
+			if (rope.GetComponent<HingeJoint2D>() == null)
+			{
+				ropeBroke = true;
+			}
+		}
+	}
 
 	void Start () 
 	{

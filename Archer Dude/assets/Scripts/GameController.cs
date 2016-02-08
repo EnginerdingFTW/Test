@@ -25,6 +25,7 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void BossDefeated () {
-		enemySpawner.Invoke ("StartSpawning", 0.1f);
+		if (enemySpawner != null)
+			enemySpawner.Invoke ("StartSpawning", 0.1f);
 	}
 }

@@ -5,12 +5,15 @@ public class UrgalAI : MonoBehaviour {
 
 	private float timer = 0;					//timer to keep track of how long the urgal has been away from the player
 	private GameObject player;					//player object
+	private Rigidbody2D rb;
 
+	public float speed = 1f;					//the speed of which the Urgal moves while stepping forward
 	public float despawnTimer;					//amount of time the skeleton must be out of the despawn distance to be destroyed
 	public float despawnDistance;				//distance away from player before despawn timer starts
 
 	void Start () {
 		player = GameObject.Find("Player");
+		rb = GetComponent<Rigidbody2D> ();
 	}
 
 	/// <summary>
@@ -27,7 +30,24 @@ public class UrgalAI : MonoBehaviour {
 		}
 	}
 
+	/**
+	 * Used by animation to set the Urgal's speed while walking forward (Trying to replace root motion)
+	 */
+	void Move () {
+		rb.velocity = new Vector2 (-speed, rb.velocity.y);
+	}
+
+	/**
+	 * Used by animation to set the Urgal's speed while walking forward (Trying to replace root motion)
+	 */
+	void Stop () {
+		rb.velocity = new Vector2 (0, rb.velocity.y);
+	}
+		
+	/**
+	 * Used in death animation to remove dead Urgal from the game
+	 */
 	void DestroyThis () {
-		Destroy (this.gameObject);					//Used in death animation to remove dead Urgal from the game
+		Destroy (this.gameObject);
 	}
 }

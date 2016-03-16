@@ -28,6 +28,11 @@ public class Weapon : Collectable {
 		}
 	}
 
+
+	/// <summary>
+	/// Keeps the track of time since picked up by Player.
+	/// </summary>
+	/// <returns>A second. </returns>
 	IEnumerator KeepTrackOfTime () {
 		while (true) {
 			yield return new WaitForSeconds (1.0f);

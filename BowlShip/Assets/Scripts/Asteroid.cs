@@ -12,7 +12,7 @@ public class Asteroid : MonoBehaviour {
 	public float damage = 30.0f;				//damage done to player if hit
 	public float smallAstDamageRatio = 0.33f;	//ratio of small asteroid damage to large
 	public float spawnSpeed = 5.0f;				//velocity of small asteroids spawned
-	public float tinyAsteroidDestroyTime = 1.0f;
+	public float tinyAsteroidDestroyTime = 1.0f; //how quickly the tiny asteroids are destroyed
 	public int numberOfSmallAsteroids = 3;		//number of small asteroids maximum spawned when big one destroyed
 
 	// Use this for initialization

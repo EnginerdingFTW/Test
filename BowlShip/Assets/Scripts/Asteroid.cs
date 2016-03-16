@@ -15,6 +15,8 @@ public class Asteroid : MonoBehaviour {
 	public float tinyAsteroidDestroyTime = 1.0f; //how quickly the tiny asteroids are destroyed
 	public int numberOfSmallAsteroids = 3;		//number of small asteroids maximum spawned when big one destroyed
 
+	private PointEffector2D pe;					//the point effector to push back objects that it collides with
+
 	// Use this for initialization
 	void Start () 
 	{
@@ -24,6 +26,7 @@ public class Asteroid : MonoBehaviour {
 		{
 			Destroy(this.gameObject, tinyAsteroidDestroyTime);
 		}
+		pe = GetComponent<PointEffector2D> ();
 	}
 	
 	// Update is called once per frame
@@ -49,8 +52,9 @@ public class Asteroid : MonoBehaviour {
 			else
 			{
 				coll.collider.gameObject.GetComponent<Player>().Hurt((int)(damage * smallAstDamageRatio));
-			}	
+			}
 		}
+		pe.enabled = true;
 	}
 
 	void OnTriggerEnter2D(Collider2D other)	

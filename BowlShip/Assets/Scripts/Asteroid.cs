@@ -14,6 +14,7 @@ public class Asteroid : MonoBehaviour {
 	public float spawnSpeed = 5.0f;				//velocity of small asteroids spawned
 	public float tinyAsteroidDestroyTime = 1.0f; //how quickly the tiny asteroids are destroyed
 	public int numberOfSmallAsteroids = 3;		//number of small asteroids maximum spawned when big one destroyed
+	public float forceTime = 0.3f;				//how long the point effector pushes back objects on collision
 
 	private PointEffector2D pe;					//the point effector to push back objects that it collides with
 
@@ -55,6 +56,7 @@ public class Asteroid : MonoBehaviour {
 			}
 		}
 		pe.enabled = true;
+		StartCoroutine ("RegulateForce");
 	}
 
 	void OnTriggerEnter2D(Collider2D other)	
@@ -93,5 +95,10 @@ public class Asteroid : MonoBehaviour {
 				Destroy(this.gameObject);
 			}
 		}
+	}
+
+	IEnumerator RegulateForce () {
+		yield return new WaitForSeconds (forceTime);
+		pe.enabled = false;
 	}
 }

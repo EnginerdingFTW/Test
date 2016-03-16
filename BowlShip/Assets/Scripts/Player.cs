@@ -9,24 +9,30 @@ public class Player : MonoBehaviour {
 	public int shield = 10;								//How much shields the ship has
 	public float speed = 4.0f;							//How fast the ship can accelerate
 	public float rotationSpeed = 5.0f;					//How fast the ship can rotate
-	public int man = 1;										//Maneuverability of the ship
+	public int man = 1;									//Maneuverability of the ship
 	public float fireRate = 2;							//How fast the ship can fire (1s / firerate between shots)
-	public List<Weapon> weapons;						//An array of collected weapons
+	public float defaultFireRate = 2;					//The basic weapon's fire rate
+	public float invTime = 0.5f;						//Shouldn't need this, invincibility after being hit
+	public List<Weapon> weapons;						//A list of collected weapons
 
+	private Weapon currentWeapon;						//The current Weapon the wielder has
 	private float horiz;								//The horizontal movement input
 	private float vert;									//The vertical movement input
+	private bool canFire = true;						//boolean to restrict fireRate of ship
 	private Vector2 movement;							//the total movement of the player
 	private Rigidbody2D rb;								//The ship's Rigidbody component
 
-	/** Use this for initialization
-	 * 
-	 * */
+	/// <summary>
+	/// Initialize
+	/// </summary>
 	void Start () {
 		playerNum = 1;
 		rb = GetComponent<Rigidbody2D> ();
 	}
 	
-	// Update is called once per frame
+	/// <summary>
+	/// Sets the Movement of the Player, allows it to fire.
+	/// </summary>
 	void Update () {
 
 		//Linear Movement
@@ -41,5 +47,49 @@ public class Player : MonoBehaviour {
 			float angle = Mathf.Atan2(vert, horiz) * Mathf.Rad2Deg + 90;
 			transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.AngleAxis (angle, Vector3.forward), Time.deltaTime * rotationSpeed);
 		} 
+
+		//Shooting
+		if (canFire && Input.GetButton("Fire" + playerNum.ToString())) {
+			canFire = false;
+
+			//default weapon
+			if (weapons.Count == 0) {
+				fireRate = defaultFireRate;
+				//instantiate default laser prefab
+				StartCoroutine ("RegulateWeaponFire");
+			} else {
+				//power up weapon
+			
+				currentWeapon = weapons [weapons.Count - 1];
+				fireRate = currentWeapon.fireRate;
+				//instantiate weapon's laser
+				StartCoroutine ("RegulateWeaponFire");
+				if (currentWeapon.timer <= 0.0f) {
+					weapons.Remove (currentWeapon);		//destroy weapon if it runs out of ammo
+				}
+			}
+		}
+	}
+
+	/// <summary>
+	/// Hurt the specified damage.
+	/// </summary>
+	/// <param name="damage">The amount of damge to be dealt to the player.</param>
+	public void Hurt (int damage) {
+		health -= damage;
+		if (health <= 0) {
+			//Player Destroyed
+		} else {
+			//Invincible for a bit, damage animation
+		}
+	}
+
+	/// <summary>
+	/// Regulates the weapon fire. Will change a boolean after the fireRate is finished
+	/// </summary>
+	/// <returns>The time between firing.</returns>
+	IEnumerator RegulateWeaponFire () {
+		yield return new WaitForSeconds (1.0f / fireRate);
+		canFire = true;
 	}
 }

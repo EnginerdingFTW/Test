@@ -3,7 +3,6 @@ using System.Collections;
 
 public class Utility : Collectable {
 
-	public float speedChange = 0;						//How much speed to add to the player that picks it up
 	public int shieldChange = 0;						//How much shields to recharge on the pickedUp Player
 	public int maneuverabilityChange = 0;				//How much to change the player's maneuverability
 
@@ -18,10 +17,12 @@ public class Utility : Collectable {
 	{
 		if (other.tag == "Player")
 		{
+			this.pickedUp = true;
 			player = other.gameObject.GetComponent<Player> ();
-			player.speed += speedChange;
 			player.shield += shieldChange;
 			player.man += maneuverabilityChange;
+			this.GetComponent<Collider2D>().enabled = false;
+			this.GetComponent<SpriteRenderer>().enabled = false;
 		}
 	}
 }

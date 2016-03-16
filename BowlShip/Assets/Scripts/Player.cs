@@ -5,8 +5,8 @@ using System.Collections.Generic;
 public class Player : MonoBehaviour {
 
 	public int playerNum;								//The player controlling this player
-	public int health = 100;							//How much health the ship has left
-	public int shield = 10;								//How much shields the ship has
+	public int health = 100;							//How much health the ship has left (permanent damage)
+	public int shield = 100;							//How much shields the ship has (possible to recharge with powerups)
 	public float speed = 4.0f;							//How fast the ship can accelerate
 	public float rotationSpeed = 5.0f;					//How fast the ship can rotate
 	public int man = 1;									//Maneuverability of the ship
@@ -53,17 +53,22 @@ public class Player : MonoBehaviour {
 			canFire = false;
 
 			//default weapon
+
 			if (weapons.Count == 0) {
 				fireRate = defaultFireRate;
 				//instantiate default laser prefab
 				StartCoroutine ("RegulateWeaponFire");
 			} else {
+				
 				//power up weapon
 			
 				currentWeapon = weapons [weapons.Count - 1];
 				fireRate = currentWeapon.fireRate;
 				//instantiate weapon's laser
 				StartCoroutine ("RegulateWeaponFire");
+				if (!currentWeapon.isTimer) {
+					currentWeapon.timer--;
+				}
 				if (currentWeapon.timer <= 0.0f) {
 					weapons.Remove (currentWeapon);		//destroy weapon if it runs out of ammo
 				}
@@ -72,16 +77,24 @@ public class Player : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Hurt the specified damage.
+	/// Hurt the specified damage. Affects shields first, then any remaining damage is done to health. Destroys the player if health drops below 1.
+	/// It will play either a shield damaged animation or a player damaged and/or destroyed animation.
 	/// </summary>
 	/// <param name="damage">The amount of damge to be dealt to the player.</param>
 	public void Hurt (int damage) {
-		health -= damage;
-		if (health <= 0) {
-			//Player Destroyed
-		} else {
-			//Invincible for a bit, damage animation
+		shield -= damage;
+		if (shield < 0) {
+			health += shield;
+			if (health < 1) {
+				//Player Destroyed, destroyed animation
+				return;
+			} else {
+				//Invincible for a bit?, damage animation
+			}
+			shield = 0;
+			return;
 		}
+		//shield damage animation.
 	}
 
 	/// <summary>

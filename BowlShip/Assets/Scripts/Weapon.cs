@@ -5,8 +5,13 @@ public class Weapon : Collectable {
 
 	public float timer = 5.0f;			//if isTimer is false, this is the quantity of bullets of the weapon, else it is a timer
 	public bool isTimer = false;		//^
+<<<<<<< HEAD
 	public float fireRate;				//how fast this weapon can fire (Set in each individual weapon)
 	
+=======
+	public float fireRate;				//how fast this weapon can fire (Set in each individual weapon)	
+
+>>>>>>> origin/master
 /// <summary>
 /// if the player collides with this object, the player picks up this object.
 /// picking up entails making this object no longer collidable or visible
@@ -20,6 +25,16 @@ public class Weapon : Collectable {
 			other.GetComponent<Player>().weapons.Add(this);
 			this.GetComponent<Collider2D>().enabled = false;
 			this.GetComponent<SpriteRenderer>().enabled = false;
+			if (isTimer) {
+				StartCoroutine ("KeepTrackOfTime");
+			}
+		}
+	}
+
+	IEnumerator KeepTrackOfTime () {
+		while (true) {
+			yield return new WaitForSeconds (1.0f);
+			timer -= 1.0f;
 		}
 	}
 }

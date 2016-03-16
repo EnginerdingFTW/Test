@@ -7,8 +7,9 @@ public class Player : MonoBehaviour {
 	public int playerNum;								//The player controlling this player
 	public int health = 100;							//How much health the ship has left
 	public int shield = 10;								//How much shields the ship has
-	public float speed = 1.0f;							//How fast the ship can accelerate
-	public int man;										//Maneuverability of the ship
+	public float speed = 4.0f;							//How fast the ship can accelerate
+	public float rotationSpeed = 5.0f;					//How fast the ship can rotate
+	public int man = 1;										//Maneuverability of the ship
 	public float fireRate = 2;							//How fast the ship can fire (1s / firerate between shots)
 	public List<Weapon> weapons;						//An array of collected weapons
 
@@ -37,8 +38,8 @@ public class Player : MonoBehaviour {
 		//Angular Movement
 		if(horiz != 0 || vert != 0)
 		{
-			float angle = Mathf.Atan2(vert, horiz) * Mathf.Rad2Deg;
-			transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+			float angle = Mathf.Atan2(vert, horiz) * Mathf.Rad2Deg + 90;
+			transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.AngleAxis (angle, Vector3.forward), Time.deltaTime * rotationSpeed);
 		} 
 	}
 }

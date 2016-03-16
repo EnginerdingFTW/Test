@@ -67,7 +67,6 @@ public class GameController : MonoBehaviour {
 		Vector2 dir = new Vector3(1.0f, 1.0f);
 		do 
 		{
-			Debug.Log("in2");
 			dir = new Vector2(innerBoundary.transform.position.x, innerBoundary.transform.position.y) + new Vector2(Random.Range(xboundlow, xboundhigh), Random.Range(yboundlow, yboundhigh));			
 			dir -= new Vector2(temp.transform.position.x, temp.transform.position.y);
 		} while (dir.magnitude == 0);

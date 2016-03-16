@@ -6,6 +6,7 @@ public class Asteroid : MonoBehaviour {
 	public float powerupChance = 0.5f;	
 	public float rotateSpeed = 1.0f;
 	public GameObject bigAsteroid;
+	public float damage = 30.0f;
 
 	// Use this for initialization
 	void Start () 
@@ -35,6 +36,18 @@ public class Asteroid : MonoBehaviour {
 			{
 				//play destroy animation and wait to destroy?
 			}
+		}
+
+		if (coll.collider.tag == "Player")
+		{
+			if (bigAsteroid == this.gameObject)
+			{
+				//coll.collider.gameObject.GetComponent<Player>().
+			}	
+			else
+			{
+
+			}	
 		}
 	}
 }

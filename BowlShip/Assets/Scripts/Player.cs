@@ -14,6 +14,7 @@ public class Player : MonoBehaviour {
 	public float defaultFireRate = 2;					//The basic weapon's fire rate
 	public float invTime = 0.5f;						//Shouldn't need this, invincibility after being hit
 	public List<Weapon> weapons;						//A list of collected weapons
+	public GameObject defaultLaser;						//The default laser weapon for the ship
 
 	private Weapon currentWeapon;						//The current Weapon the wielder has
 	private float horiz;								//The horizontal movement input
@@ -53,10 +54,10 @@ public class Player : MonoBehaviour {
 			canFire = false;
 
 			//default weapon
-
+			//Debug.Log ("weapons count = " + weapons.Count.ToString());
 			if (weapons.Count == 0) {
 				fireRate = defaultFireRate;
-				//instantiate default laser prefab
+				Instantiate (defaultLaser, transform.position, transform.rotation);
 				StartCoroutine ("RegulateWeaponFire");
 			} else {
 				

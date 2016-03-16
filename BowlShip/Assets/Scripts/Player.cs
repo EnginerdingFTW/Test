@@ -8,12 +8,13 @@ public class Player : MonoBehaviour {
 	public int health = 100;							//How much health the ship has left
 	public int shield = 10;								//How much shields the ship has
 	public float speed = 1.0f;							//How fast the ship can accelerate
+	public int man;										//Maneuverability of the ship
 	public float fireRate = 2;							//How fast the ship can fire (1s / firerate between shots)
+	public List<Weapon> weapons;						//An array of collected weapons
 
 	private float horiz;								//The horizontal movement input
 	private float vert;									//The vertical movement input
 	private Vector2 movement;							//the total movement of the player
-	private List<Weapon> weapons;						//An array of collected weapons
 	private Rigidbody2D rb;								//The ship's Rigidbody component
 
 	/** Use this for initialization
@@ -27,7 +28,7 @@ public class Player : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		//Movement
+		//Linear Movement
 		horiz = Input.GetAxis ("Horizontal" + playerNum.ToString()) * speed;
 		vert = Input.GetAxis ("Vertical" + playerNum.ToString()) * speed;
 		movement = new Vector2(horiz, vert);

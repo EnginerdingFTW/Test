@@ -5,6 +5,7 @@ public class Weapon : Collectible {
 
 	public float timer = 5.0f;
 	public bool isTimer = false;
+	
 
 	void OnTriggerEnter2D(Collider2D other)
 	{

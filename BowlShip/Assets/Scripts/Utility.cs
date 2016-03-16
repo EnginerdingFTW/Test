@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Utility : Collectable {
 
-	public int shieldChange = 0;						//How much shields to recharge on the pickedUp Player
+	public int shieldCharge = 0;						//How much shields to recharge on the pickedUp Player
 	public int maneuverabilityChange = 0;				//How much to change the player's maneuverability
 
 	private Player player;								//The player to be affected by powerUp
@@ -19,7 +19,7 @@ public class Utility : Collectable {
 		{
 			this.pickedUp = true;
 			player = other.gameObject.GetComponent<Player> ();
-			player.shield += shieldChange;
+			player.shield += shieldCharge;
 			player.man += maneuverabilityChange;
 			this.GetComponent<Collider2D>().enabled = false;
 			this.GetComponent<SpriteRenderer>().enabled = false;

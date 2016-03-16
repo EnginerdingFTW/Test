@@ -26,6 +26,8 @@ public class Player : MonoBehaviour {
 
 	public float fireRate = 2;							//How fast the ship can fire (1s / firerate between shots)
 	public float defaultFireRate = 2;					//The basic weapon's fire rate
+	public int playerCollisionDamage = 10;				//The amount of damage done to THIS ship after hitting another player
+	public float forceTime = 0.5f;						//How fast the player and collider is forced back after hitting an object
 	public float invTime = 0.5f;						//Shouldn't need this, invincibility after being hit
 	public List<Weapon> weapons;						//A list of collected weapons
 	public GameObject defaultLaser;						//The default laser weapon for the ship
@@ -39,13 +41,16 @@ public class Player : MonoBehaviour {
 	private bool canFire = true;						//boolean to restrict fireRate of ship
 	private Vector2 movement;							//the total movement of the player
 	private Rigidbody2D rb;								//The ship's Rigidbody component
+	private PointEffector2D pe;							//Used to know the ship and other objects back upon collision
+	private CircleCollider2D cc;						//This ship's Larger circleCollider trigger for use with pe
 
 	/// <summary>
 	/// Initialize
 	/// </summary>
 	void Start () {
-		playerNum = 1;
 		rb = GetComponent<Rigidbody2D> ();
+		pe = GetComponent<PointEffector2D> ();
+		cc = GetComponent<CircleCollider2D> ();
 	}
 	
 	/// <summary>
@@ -153,11 +158,35 @@ public class Player : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Check if the player collides with anything, hurt the player if the collision is another player, and bounce the player off of the collision.
+	/// </summary>
+	/// <param name="coll">The Collision against the player.</param>
+	void OnCollisionEnter2D (Collision2D coll) {
+		if (coll.gameObject.CompareTag ("Player")) {
+			Hurt (playerCollisionDamage);
+		}
+		//provide force between player and object
+		cc.enabled = true;
+		pe.enabled = true;
+		StartCoroutine ("RegulateCollisionForce");
+	}
+
+	/// <summary>
 	/// Regulates the weapon fire. Will change a boolean after the fireRate is finished
 	/// </summary>
 	/// <returns>The time between firing.</returns>
 	IEnumerator RegulateWeaponFire () {
 		yield return new WaitForSeconds (1.0f / fireRate);
 		canFire = true;
+	}
+
+	/// <summary>
+	/// Regulates the collision force.
+	/// </summary>
+	/// <returns>The time the point effector is active upon collision.</returns>
+	IEnumerator RegulateCollisionForce () {
+		yield return new WaitForSeconds (forceTime);
+		pe.enabled = false;
+		cc.enabled = false;
 	}
 }

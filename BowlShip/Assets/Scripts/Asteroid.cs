@@ -25,16 +25,37 @@ public class Asteroid : MonoBehaviour {
 		transform.Rotate(Vector3.forward, Time.deltaTime * rotateSpeed);
 	}
 
+	void Death()
+	{
+		Destroy(this.gameObject);
+	}
+
 	void OnCollisionEnter2D(Collision2D coll)
 	{
-		//if the asteroid is being destroyed....check if this is a big asteroid, if so spawn small ones and possibly a powerup
-		if (coll.collider.tag == "WeaponFire")
+		//if the asteroid collides with the player hurt the player
+		if (coll.collider.tag == "Player")
+		{
+			if (bigAsteroid == this.gameObject)
+			{
+				coll.collider.gameObject.GetComponent<Player>().Hurt((int)damage);
+			}	
+			else
+			{
+				coll.collider.gameObject.GetComponent<Player>().Hurt((int)(damage * smallAstDamageRatio));
+			}	
+		}
+	}
+
+	void OnTriggerEnter2D(Collider2D other)	
+	{
+		if (other.tag == "WeaponFire")
 		{
 			if (bigAsteroid == this.gameObject)
 			{
 				if (Random.Range(0.0f, 1.0f) >= powerupChance)
 				{
-					//instan
+					GameObject[] powerups = GameObject.Find("GameController").GetComponent<GameController>().powerups;
+					Instantiate(powerups[Random.Range(0, powerups.Length)], this.transform.position, Quaternion.identity);
 				}
 				//instantiate small asteroids spreading out.
 				int k = 0;
@@ -52,19 +73,6 @@ public class Asteroid : MonoBehaviour {
 			{
 				//play destroy animation and wait to destroy?
 			}
-		}
-
-		//if the asteroid collides with the player hurt the player
-		if (coll.collider.tag == "Player")
-		{
-			if (bigAsteroid == this.gameObject)
-			{
-				coll.collider.gameObject.GetComponent<Player>().Hurt((int)damage);
-			}	
-			else
-			{
-				coll.collider.gameObject.GetComponent<Player>().Hurt((int)(damage * smallAstDamageRatio));
-			}	
 		}
 	}
 }

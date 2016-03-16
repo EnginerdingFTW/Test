@@ -12,5 +12,10 @@ public class LaserMover : MonoBehaviour {
 	void Start () {
 		GetComponent<Rigidbody2D> ().velocity = transform.up * -laserSpeed;
 	}
+	
+	void OnTriggerEnter2D(Collider2D other)	
+	{
+		
+	}
 
 }

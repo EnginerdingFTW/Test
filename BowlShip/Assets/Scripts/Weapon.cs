@@ -5,7 +5,9 @@ public class Weapon : Collectable {
 
 	public float timer = 5.0f;			//if isTimer is false, this is the quantity of bullets of the weapon, else it is a timer
 	public bool isTimer = false;		//^
+	public bool isDual = false;			//if isDual is true, the weapon will instantiate out of two separate points
 	public float fireRate;				//how fast this weapon can fire (Set in each individual weapon)
+	public GameObject laserType;		//The laser that is instantiated with this powerup
 
 /// <summary>
 /// if the player collides with this object, the player picks up this object.

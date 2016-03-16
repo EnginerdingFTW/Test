@@ -15,6 +15,9 @@ public class Player : MonoBehaviour {
 	public float invTime = 0.5f;						//Shouldn't need this, invincibility after being hit
 	public List<Weapon> weapons;						//A list of collected weapons
 	public GameObject defaultLaser;						//The default laser weapon for the ship
+	public GameObject laserInstatiationPoint;			//Where the laser is fired from, in comparison to the player origin
+	public GameObject dualLaserInstatiationPoint1;		//Where the left laser is fired from
+	public GameObject dualLaserInstatiationPoint2;		//Where the right laser is fired from
 
 	private Weapon currentWeapon;						//The current Weapon the wielder has
 	private float horiz;								//The horizontal movement input
@@ -54,18 +57,21 @@ public class Player : MonoBehaviour {
 			canFire = false;
 
 			//default weapon
-			//Debug.Log ("weapons count = " + weapons.Count.ToString());
 			if (weapons.Count == 0) {
 				fireRate = defaultFireRate;
-				Instantiate (defaultLaser, transform.position, transform.rotation);
+				Instantiate (defaultLaser, laserInstatiationPoint.transform.position, transform.rotation);
 				StartCoroutine ("RegulateWeaponFire");
 			} else {
 				
 				//power up weapon
-			
 				currentWeapon = weapons [weapons.Count - 1];
 				fireRate = currentWeapon.fireRate;
-				//instantiate weapon's laser
+				if (currentWeapon.isDual) {
+					Instantiate (currentWeapon.laserType, dualLaserInstatiationPoint1.transform.position, transform.rotation);
+					Instantiate (currentWeapon.laserType, dualLaserInstatiationPoint2.transform.position, transform.rotation);
+				} else {
+					Instantiate (currentWeapon.laserType, laserInstatiationPoint.transform.position, transform.rotation);
+				}
 				StartCoroutine ("RegulateWeaponFire");
 				if (!currentWeapon.isTimer) {
 					currentWeapon.timer--;

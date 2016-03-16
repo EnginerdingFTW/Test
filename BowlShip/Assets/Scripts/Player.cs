@@ -7,9 +7,23 @@ public class Player : MonoBehaviour {
 	public int playerNum;								//The player controlling this player
 	public int health = 100;							//How much health the ship has left (permanent damage)
 	public int shield = 100;							//How much shields the ship has (possible to recharge with powerups)
+	public int maxShield = 100;							//The maximum amount of shields a ship can have
 	public float speed = 4.0f;							//How fast the ship can accelerate
+//	public float maxVelocity = 10.0f;					//The topSpeed of the ship, shouldn't need to use this
 	public float rotationSpeed = 5.0f;					//How fast the ship can rotate
-	public int man = 1;									//Maneuverability of the ship
+
+	public int man = 0;									//Maneuverability value of the ship
+	public float man0Drag = 0.0f;						//The default maneuverability drag
+	public float man0Speed = 4.0f;						//The default meneuverability speed
+	public float man0Rotation = 2.0f;					//How quickly the ship turns
+	public float man1Drag = 1.0f;						//The upgraded maneuverability drag
+	public float man1Speed = 10.0f;						//The upgraded meneuverability speed
+	public float man1Rotation = 6.0f;					//How quickly the ship turns
+	public float man2Drag = 5.0f;						//The max maneuverability drag
+	public float man2Speed = 100.0f;					//The max meneuverability speed
+	public float man2Rotation = 10.0f;					//How quickly the ship turns
+	public int maxMan = 2;								//The maximum maneuverability value of the ship
+
 	public float fireRate = 2;							//How fast the ship can fire (1s / firerate between shots)
 	public float defaultFireRate = 2;					//The basic weapon's fire rate
 	public float invTime = 0.5f;						//Shouldn't need this, invincibility after being hit
@@ -81,6 +95,39 @@ public class Player : MonoBehaviour {
 				}
 			}
 		}
+
+		//Maintain MaxValues
+		if (shield > maxShield) {
+			shield = maxShield;
+		}
+		//		if (rb.velocity.magnitude > maxVelocity) {
+		//			//might want to set this, should already be done by linear drag
+		//		}
+		if (man > maxMan) {
+			man = maxMan;
+		}
+		if (man < 0) {
+			man = 0;
+		}
+
+		//Apply Maneuverability
+		switch (man) {
+		case 1:
+			speed = man1Speed;
+			rb.drag = man1Drag;
+			rb.angularDrag = man1Rotation;
+			break;
+		case 2:
+			speed = man2Speed;
+			rb.drag = man2Drag;
+			rb.angularDrag = man2Rotation;
+			break;
+		default:
+			speed = man0Speed;
+			rb.drag = man0Drag;
+			rb.angularDrag = man0Rotation;
+			break;
+		} 
 	}
 
 	/// <summary>
@@ -93,7 +140,8 @@ public class Player : MonoBehaviour {
 		if (shield < 0) {
 			health += shield;
 			if (health < 1) {
-				//Player Destroyed, destroyed animation
+				//gameObject.SetActive (false); put in animation?
+				//destroyed animation
 				return;
 			} else {
 				//Invincible for a bit?, damage animation

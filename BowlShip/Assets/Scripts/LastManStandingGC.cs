@@ -19,7 +19,7 @@ public class LastManStandingGC : GameController {
 	
 	int CheckPlayersActive()
 	{
-		
+		return 0;
 	}
 
 	// Update is called once per frame

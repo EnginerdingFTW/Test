@@ -1,28 +1,43 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Player : MonoBehaviour {
 
 	public int playerNum;								//The player controlling this player
-	int health;											//How much health the ship has left
-	int shield;											//How much shields the ship has
-	float speed;										//How fast the ship can accelerate
-	float fireRate;										//How fast the ship can fire
-	float horiz;										//The horizontal movement input
-	float vert;											//The vertical movement input
-	Weapon[] weapons;									//An array of collected weapons
+	public int health = 100;							//How much health the ship has left
+	public int shield = 10;								//How much shields the ship has
+	public float speed = 1.0f;							//How fast the ship can accelerate
+	public float fireRate = 2;							//How fast the ship can fire (1s / firerate between shots)
+
+	private float horiz;								//The horizontal movement input
+	private float vert;									//The vertical movement input
+	private Vector2 movement;							//the total movement of the player
+	private List<Weapon> weapons;						//An array of collected weapons
+	private Rigidbody2D rb;								//The ship's Rigidbody component
 
 	/** Use this for initialization
 	 * 
 	 * */
 	void Start () {
-		
+		playerNum = 1;
+		rb = GetComponent<Rigidbody2D> ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
 
+		//Movement
+		horiz = Input.GetAxis ("Horizontal" + playerNum.ToString()) * speed;
+		vert = Input.GetAxis ("Vertical" + playerNum.ToString()) * speed;
+		movement = new Vector2(horiz, vert);
+		rb.AddForce(movement);
 
+		//Angular Movement
+		if(horiz != 0 || vert != 0)
+		{
+			float angle = Mathf.Atan2(vert, horiz) * Mathf.Rad2Deg;
+			transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+		} 
 	}
 }

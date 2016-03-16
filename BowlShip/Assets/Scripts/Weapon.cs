@@ -20,6 +20,16 @@ public class Weapon : Collectable {
 			other.GetComponent<Player>().weapons.Add(this);
 			this.GetComponent<Collider2D>().enabled = false;
 			this.GetComponent<SpriteRenderer>().enabled = false;
+			if (isTimer) {
+				StartCoroutine ("KeepTrackOfTime");
+			}
+		}
+	}
+
+	IEnumerator KeepTrackOfTime () {
+		while (true) {
+			yield return new WaitForSeconds (1.0f);
+			timer -= 1.0f;
 		}
 	}
 }

@@ -90,9 +90,9 @@ public class Player : MonoBehaviour {
 				return;
 			} else {
 				//Invincible for a bit?, damage animation
-				return;
 			}
 			shield = 0;
+			return;
 		}
 		//shield damage animation.
 	}

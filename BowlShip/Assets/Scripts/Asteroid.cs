@@ -5,11 +5,14 @@ public class Asteroid : MonoBehaviour {
 
 	public GameObject bigAsteroid;				//big asteroid prefab
 	public GameObject smallAsteroid;			//smal ".."
+	public GameObject tinyAsteroid;				
+	public GameObject explosion;				//explosion prefab
 	public float powerupChance = 0.5f;			//probability that a big asteroid drops a powerup
 	public float rotateSpeed = 1.0f;			//rotation speed of the asteroid
 	public float damage = 30.0f;				//damage done to player if hit
 	public float smallAstDamageRatio = 0.33f;	//ratio of small asteroid damage to large
 	public float spawnSpeed = 5.0f;				//velocity of small asteroids spawned
+	public float tinyAsteroidDestroyTime = 1.0f;
 	public int numberOfSmallAsteroids = 3;		//number of small asteroids maximum spawned when big one destroyed
 
 	// Use this for initialization
@@ -17,6 +20,10 @@ public class Asteroid : MonoBehaviour {
 	{
 		this.transform.parent = GameObject.Find("Asteroids").transform;
 		rotateSpeed *= Random.Range(0.0f, 1.0f);
+		if (this.gameObject == tinyAsteroid)
+		{
+			Destroy(this.gameObject, tinyAsteroidDestroyTime);
+		}
 	}
 	
 	// Update is called once per frame
@@ -67,11 +74,19 @@ public class Asteroid : MonoBehaviour {
 					Vector3 vel = newPos - this.transform.position;
 					temp.GetComponent<Rigidbody2D>().velocity = spawnSpeed * new Vector2(vel.x, vel.y);
 				}
+				for (k = 0; k < 5; k++)
+				{	
+					Vector3 newPos = this.transform.position + new Vector3(Random.Range(-1.5f, 1.5f), Random.Range(-1.5f, 1.5f), 0.0f);
+					GameObject temp = Instantiate(tinyAsteroid, newPos, Quaternion.identity) as GameObject;
+					Vector3 vel = newPos - this.transform.position;
+					temp.GetComponent<Rigidbody2D>().velocity = spawnSpeed * new Vector2(vel.x, vel.y);
+				}
 				Destroy(this.gameObject);
 			} 
 			else 
 			{
-				//play destroy animation and wait to destroy?
+				Instantiate(explosion, this.transform.position, Quaternion.identity);
+				Destroy(this.gameObject);
 			}
 		}
 	}

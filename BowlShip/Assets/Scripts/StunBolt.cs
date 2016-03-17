@@ -13,26 +13,27 @@ public class StunBolt : MonoBehaviour {
 	/// Additionally starts a despawn timer in case it stays on screen too long?
 	/// </summary>
 	void Start () {
-		GetComponent<Rigidbody2D> ().velocity = transform.up * -laserSpeed;
+		GetComponent<Rigidbody2D> ().velocity = transform.right * -laserSpeed;
 	}
 	
 	void OnTriggerEnter2D(Collider2D other)	
 	{
 		if (other.tag == "Player")
 		{
+					Debug.Log("in");
 			other.gameObject.GetComponent<Player>().Hurt(damage);
 			Player temp = other.GetComponent<Player>();
-			/*if (temp.poweredOn)
+			if (temp.poweredOn)
 			{
-
-			}
-			*/
+				StartCoroutine(stun(timeStunned, temp));
+			}		
 		}	
 	}
 
 	IEnumerator stun(float time, Player temp)
 	{
-		
+		temp.poweredOn = false;
 		yield return new WaitForSeconds(time);
+		temp.poweredOn = true;
 	}
 }

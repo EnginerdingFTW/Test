@@ -12,13 +12,14 @@ public class GameController : MonoBehaviour {
 	public GameObject smallAsteroid;									//the small Asteroid to be instantiated
 	public int gameMode;												//The int number corresponding to each gameMode
 	public int numPlayers; 												//The number of players remaining
-	public int[] scores;												//a list of each scores corresponding to each player
 	public float asteroidSpawnRate = 3.0f;								//how often the asteroids are spawned
 	public float big_small_asteroidProb = 0.8f;							//the probability to spawn either a big or small asteroid
 	public float AsteroidSpawnSpeed = 5.0f;								//How fast the asteroids move on spawn
 	//public float AsteroidSpawnSpeedRatio = 0.33f;
 
+	public int maxScore;												//the score needed to win the game
 	private GameObject[] players;										//a list of the prefabs each player is controlling
+	public int[] scores;												//a list of each scores corresponding to each player
 	private SceneController sceneController;							//The script to pass values between scenes
 	
 	/// <summary>
@@ -30,6 +31,7 @@ public class GameController : MonoBehaviour {
 		numPlayers = sceneController.numPlayers;
 		StartCoroutine(spawnAsteroids());
 		players = new GameObject[numPlayers];
+		scores = new int[numPlayers];
 		for (int i = 0; i < numPlayers; i++) {
 			players [i] = sceneController.playerShips [i];
 		}
@@ -99,14 +101,44 @@ public class GameController : MonoBehaviour {
 		temp.GetComponent<Rigidbody2D>().velocity = dir * AsteroidSpawnSpeed;	
 	}
 
+	/// <summary>
+	/// Checks if the round has ended each time a player is defeated. If a player has reached the maxScore, Show Victory Screen.
+	/// </summary>
+	/// <param name="playerNum">Defeated Player's number.</param>
 	public void CheckEnd (int playerNum) {
-		int playerThatWon;						//the winning player of the round
+		//Instance Variables to save memory
+		int playerThatWon;								//the winning player of the round
+		bool isDraw = true;								//was this round a draw?
+
 		numPlayers--;
+		Debug.Log ("Player " + playerNum.ToString() + " Defeated!");
 		if (numPlayers < 2) {
 			for (int i = 0; i < players.Length; i++) {
-				
+				if (players [i].activeInHierarchy) {
+					scores [i]++;
+					isDraw = false;						//Should never come to a draw, unless both players are defeated in the EXACT same frame
+					Debug.Log ("The winner of the round is: Player " + (i + 1).ToString() + " Score: " + scores[i].ToString());
+				}
 			}
-			SceneManager.LoadScene ("Parr");
+			if (isDraw) {
+				Debug.Log ("It's a draw!");
+			}
+			for (int i = 0; i < scores.Length; i++) {
+				if (scores[i] >= maxScore) {
+					Debug.Log ("The winner of the GAME is: Player " + (i + 1).ToString() + " Score: " + scores[i].ToString());
+					SceneManager.LoadScene ("Parr");		//To be replaced with Victory Screen
+				}
+			}
+			StartCoroutine ("BeginNextRound");				//if no one has won the game, begin the next round
 		}
+	}
+
+	/// <summary>
+	/// Begins the next round. Gives each player a random starting location based on given list, instantiates them, and releases control to them after a timer.
+	/// </summary>
+	/// <returns>The next round.</returns>
+	IEnumerator BeginNextRound () {
+		yield return new WaitForSeconds (1.0f);				//Second to breathe and check who won
+
 	}
 }

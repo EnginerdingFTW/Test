@@ -24,6 +24,7 @@ public class Player : MonoBehaviour {
 	public float man2Rotation = 10.0f;					//How quickly the ship turns
 	public int maxMan = 2;								//The maximum maneuverability value of the ship
 
+	public bool  poweredOn = true;						//can the ship move, rotate and fire?
 	public float fireRate = 2;							//How fast the ship can fire (1s / firerate between shots)
 	public float defaultFireRate = 2;					//The basic weapon's fire rate
 	public int playerCollisionDamage = 10;				//The amount of damage done to THIS ship after hitting another player
@@ -60,45 +61,47 @@ public class Player : MonoBehaviour {
 	/// </summary>
 	void Update () {
 
-		//Linear Movement
-		horiz = Input.GetAxis ("Horizontal" + playerNum.ToString()) * speed;
-		vert = Input.GetAxis ("Vertical" + playerNum.ToString()) * speed;
-		movement = new Vector2(horiz, vert);
-		rb.AddForce(movement);
+		if (poweredOn) {
+			
+			//Linear Movement
+			horiz = Input.GetAxis ("Horizontal" + playerNum.ToString ()) * speed;
+			vert = Input.GetAxis ("Vertical" + playerNum.ToString ()) * speed;
+			movement = new Vector2 (horiz, vert);
+			rb.AddForce (movement);
 
-		//Angular Movement
-		if(horiz != 0 || vert != 0)
-		{
-			float angle = Mathf.Atan2(vert, horiz) * Mathf.Rad2Deg + 90;
-			transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.AngleAxis (angle, Vector3.forward), Time.deltaTime * rotationSpeed);
-		} 
+			//Angular Movement
+			if (horiz != 0 || vert != 0) {
+				float angle = Mathf.Atan2 (vert, horiz) * Mathf.Rad2Deg + 90;
+				transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.AngleAxis (angle, Vector3.forward), Time.deltaTime * rotationSpeed);
+			} 
 
-		//Shooting
-		if (canFire && Input.GetButton("Fire" + playerNum.ToString())) {
-			canFire = false;
+			//Shooting
+			if (canFire && Input.GetButton ("Fire" + playerNum.ToString ())) {
+				canFire = false;
 
-			//default weapon
-			if (weapons.Count == 0) {
-				fireRate = defaultFireRate;
-				Instantiate (defaultLaser, laserInstatiationPoint.transform.position, transform.rotation);
-				StartCoroutine ("RegulateWeaponFire");
-			} else {
-				
-				//power up weapon
-				currentWeapon = weapons [weapons.Count - 1];
-				fireRate = currentWeapon.fireRate;
-				if (currentWeapon.isDual) {
-					Instantiate (currentWeapon.laserType, dualLaserInstatiationPoint1.transform.position, transform.rotation);
-					Instantiate (currentWeapon.laserType, dualLaserInstatiationPoint2.transform.position, transform.rotation);
+				//default weapon
+				if (weapons.Count == 0) {
+					fireRate = defaultFireRate;
+					Instantiate (defaultLaser, laserInstatiationPoint.transform.position, transform.rotation);
+					StartCoroutine ("RegulateWeaponFire");
 				} else {
-					Instantiate (currentWeapon.laserType, laserInstatiationPoint.transform.position, transform.rotation);
-				}
-				StartCoroutine ("RegulateWeaponFire");
-				if (!currentWeapon.isTimer) {
-					currentWeapon.timer--;
-				}
-				if (currentWeapon.timer <= 0.0f) {
-					weapons.Remove (currentWeapon);		//destroy weapon if it runs out of ammo
+				
+					//power up weapon
+					currentWeapon = weapons [weapons.Count - 1];
+					fireRate = currentWeapon.fireRate;
+					if (currentWeapon.isDual) {
+						Instantiate (currentWeapon.laserType, dualLaserInstatiationPoint1.transform.position, transform.rotation);
+						Instantiate (currentWeapon.laserType, dualLaserInstatiationPoint2.transform.position, transform.rotation);
+					} else {
+						Instantiate (currentWeapon.laserType, laserInstatiationPoint.transform.position, transform.rotation);
+					}
+					StartCoroutine ("RegulateWeaponFire");
+					if (!currentWeapon.isTimer) {
+						currentWeapon.timer--;
+					}
+					if (currentWeapon.timer <= 0.0f) {
+						weapons.Remove (currentWeapon);		//destroy weapon if it runs out of ammo
+					}
 				}
 			}
 		}

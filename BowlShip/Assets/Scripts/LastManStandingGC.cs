@@ -3,27 +3,35 @@ using System.Collections;
 
 public class LastManStandingGC : GameController {
 
-	int playersActive;
-	public int[] lives;
-	public int num_lives;
+	public int winScore;						//
 
 	// Use this for initialization
 	void Start () 
 	{
-		int i;
-		for (i = 0; i < lives.Length; i++)
-		{
-			lives[i] = num_lives;
-		}	
-	}
-	
-	int CheckPlayersActive()
-	{
-		return 0;
+		winScore = sceneController.score;
 	}
 
-	// Update is called once per frame
+	// Update is called once per frame, hopefully don't need to do this
 	void Update () {
 	
+	}
+
+	public void checkEnd () {
+		numPlayers--;
+		if (numPlayers == 1) {
+			//player that's left wins!
+			//update player's score
+			//reset
+		}
+		if (numPlayers < 1) {
+			//its a draw
+			//reset
+		}
+	}
+
+	public void resetMatch () {
+		//disable all players
+		//set playerPositions at random spawnPoints
+		//begin match
 	}
 }

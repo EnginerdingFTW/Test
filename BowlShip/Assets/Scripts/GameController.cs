@@ -16,13 +16,15 @@ public class GameController : MonoBehaviour {
 	public float big_small_asteroidProb = 0.8f;							//the probability to spawn either a big or small asteroid
 	public float AsteroidSpawnSpeed = 5.0f;								//How fast the asteroids move on spawn
 	//public float AsteroidSpawnSpeedRatio = 0.33f;
+
+	public SceneController sceneController;								//The script to pass values between scenes
 	
 	/// <summary>
 	/// Start this instance, i.e. Start the playerList to keep track of. Commence Asteroid bombardment.
 	/// </summary>
 	void Start () 
 	{
-		SceneController sceneController = GameObject.Find ("SceneController").GetComponent<SceneController>();      //The scene controller with starting values
+		sceneController = GameObject.Find ("SceneController").GetComponent<SceneController>();      //The scene controller with starting values
 		numPlayers = sceneController.numPlayers;
 		StartCoroutine(spawnAsteroids());
 		players = new GameObject[numPlayers];

@@ -3,25 +3,38 @@ using System.Collections;
 
 public class GameController : MonoBehaviour {
 
-	public GameObject[] powerups;
-	public GameObject[] players;
-	public GameObject[] spawnPoints;
-	public GameObject outerBoundary;
-	public GameObject innerBoundary;
-	public GameObject bigAsteroid;
-	public GameObject smallAsteroid;
-	public int[] scores;
-	public float asteroidSpawnRate = 3.0f;
-	public float big_small_asteroidProb = 0.8f;
-	public float AsteroidSpawnSpeed = 5.0f;
+	public GameObject[] powerups;										//the total list of spawnable powerups
+	public GameObject[] players;										//a list of the prefabs each player is controlling
+	public GameObject[] spawnPoints;									//a list of gameObjects with positions to spawn players at
+	public GameObject outerBoundary;									//the boundary to destroy faraway objects
+	public GameObject innerBoundary;									//the boundary wrapped around the screen
+	public GameObject bigAsteroid;										//the big Asteroid to be instantiated
+	public GameObject smallAsteroid;									//the small Asteroid to be instantiated
+	public int numPlayers; 												//The number of players remaining
+	public int[] scores;												//a list of each scores corresponding to each player
+	public float asteroidSpawnRate = 3.0f;								//how often the asteroids are spawned
+	public float big_small_asteroidProb = 0.8f;							//the probability to spawn either a big or small asteroid
+	public float AsteroidSpawnSpeed = 5.0f;								//How fast the asteroids move on spawn
 	//public float AsteroidSpawnSpeedRatio = 0.33f;
 	
-	// Use this for initialization
+	/// <summary>
+	/// Start this instance, i.e. Start the playerList to keep track of. Commence Asteroid bombardment.
+	/// </summary>
 	void Start () 
 	{
+		SceneController sceneController = GameObject.Find ("SceneController").GetComponent<SceneController>();      //The scene controller with starting values
+		numPlayers = sceneController.numPlayers;
 		StartCoroutine(spawnAsteroids());
+		players = new GameObject[numPlayers];
+		for (int i = 0; i < numPlayers; i++) {
+			players [i] = sceneController.playerShips [i];
+		}
 	}
 
+	/// <summary>
+	/// Spawns the big and small asteroids.
+	/// </summary>
+	/// <returns>The asteroids.</returns>
 	IEnumerator spawnAsteroids()
 	{
 		while (true)
@@ -42,6 +55,10 @@ public class GameController : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Gets the point within spawn range.
+	/// </summary>
+	/// <returns>The point within spawn range.</returns>
 	Vector3 GetPointWithinSpawnRange()
 	{
 		float radius = outerBoundary.GetComponent<CircleCollider2D>().radius;
@@ -53,10 +70,14 @@ public class GameController : MonoBehaviour {
 			{
 				return pos;
 			}
-			Debug.Log("in1");
+			//Debug.Log("in1");
 		}
 	}
 
+	/// <summary>
+	/// Sets the velocity of asteroid.
+	/// </summary>
+	/// <param name="temp">Temp.</param>
 	void SetVelocityOfAsteroid(GameObject temp)
 	{
 		Vector2 outer = innerBoundary.GetComponent<BoxCollider2D>().size;

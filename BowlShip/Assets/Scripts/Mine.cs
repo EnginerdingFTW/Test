@@ -3,9 +3,10 @@ using System.Collections;
 
 public class Mine : MonoBehaviour {
 
-	public GameObject blastRadius;
-	public GameObject explosion;
+	public GameObject blastRadius;		//gameobject containing collider for the blast radius
+	public GameObject explosion;		//prefab
 
+		//the loops themselves are just a nice organization of the explosion, but it's simply instantiating explosions
 	void Kaboom()
 	{
 		float i = 0.25f;
@@ -22,6 +23,7 @@ public class Mine : MonoBehaviour {
 		}
 	}
 
+		//if the collided object it a Player, explode.
 	void OnTriggerEnter2D(Collider2D other)	
 	{
 		if (other.tag == "Player")

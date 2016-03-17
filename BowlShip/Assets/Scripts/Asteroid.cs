@@ -30,11 +30,12 @@ public class Asteroid : MonoBehaviour {
 		pe = GetComponent<PointEffector2D> ();
 	}
 	
-	// Update is called once per frame
+	// Keep the asteroid rotating
 	void Update () 
 	{
 		transform.Rotate(Vector3.forward, Time.deltaTime * rotateSpeed);
 	}
+
 
 	void Death()
 	{
@@ -59,10 +60,12 @@ public class Asteroid : MonoBehaviour {
 		StartCoroutine ("RegulateForce");
 	}
 
+		
 	void OnTriggerEnter2D(Collider2D other)	
 	{
 		if (other.tag == "WeaponFire")
 		{
+				//if it is the big asteroid, possibly drop a powerup
 			if (bigAsteroid == this.gameObject)
 			{
 				if (Random.Range(0.0f, 1.0f) >= powerupChance)
@@ -70,6 +73,7 @@ public class Asteroid : MonoBehaviour {
 					GameObject[] powerups = GameObject.Find("GameController").GetComponent<GameController>().powerups;
 					Instantiate(powerups[Random.Range(0, powerups.Length)], this.transform.position, Quaternion.identity);
 				}
+
 				//instantiate small asteroids spreading out.
 				int k = 0;
 				int count = Random.Range(1, numberOfSmallAsteroids);
@@ -80,6 +84,8 @@ public class Asteroid : MonoBehaviour {
 					Vector3 vel = newPos - this.transform.position;
 					temp.GetComponent<Rigidbody2D>().velocity = spawnSpeed * new Vector2(vel.x, vel.y);
 				}
+
+				//instantiate tiny asteroids for the purpose of animation only
 				for (k = 0; k < 5; k++)
 				{	
 					Vector3 newPos = this.transform.position + new Vector3(Random.Range(-1.5f, 1.5f), Random.Range(-1.5f, 1.5f), 0.0f);

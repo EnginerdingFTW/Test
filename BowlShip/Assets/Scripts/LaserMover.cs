@@ -18,7 +18,7 @@ public class LaserMover : MonoBehaviour {
 	{
 		if (other.tag == "Player")
 		{
-			other.gameObject.GetComponent<Player>().Hurt(damage);
+			other.gameObject.GetComponent<Player>().Hurt(damage);	//apply damage
 		}
 	}
 

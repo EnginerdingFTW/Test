@@ -23,6 +23,7 @@ public class StunBolt : MonoBehaviour {
 					Debug.Log("in");
 			other.gameObject.GetComponent<Player>().Hurt(damage);
 			Player temp = other.GetComponent<Player>();
+				//only stun the player if they aren't already stunned
 			if (temp.poweredOn)
 			{
 				StartCoroutine(stun(timeStunned, temp));
@@ -30,6 +31,8 @@ public class StunBolt : MonoBehaviour {
 		}	
 	}
 
+
+	//freezes the pass player for the set amount of time
 	IEnumerator stun(float time, Player temp)
 	{
 		temp.poweredOn = false;

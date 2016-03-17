@@ -2,6 +2,8 @@
 using System.Collections;
 
 public class ExplosionHelper : MonoBehaviour {
+		//this script damages anything within a collider, used for explosion radius's
+
 
 	public bool exploded = false;
 	public int damage;

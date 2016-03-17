@@ -2,7 +2,8 @@
 using System.Collections;
 
 public class NukeMovement : MonoBehaviour {
-
+		//this script is for the nuke's movement, needed to be seperate from Nuke due to multiple colliders
+		
 	public float speed;
 	public float acc;
 	// Use this for initialization
@@ -11,7 +12,7 @@ public class NukeMovement : MonoBehaviour {
 		GetComponent<Rigidbody2D> ().velocity = transform.up * speed;
 	}
 	
-	// Update is called once per frame
+	//the nuke is accellerating.
 	void Update () 
 	{
 		this.gameObject.GetComponent<Rigidbody2D>().velocity += this.gameObject.GetComponent<Rigidbody2D>().velocity.normalized * acc;

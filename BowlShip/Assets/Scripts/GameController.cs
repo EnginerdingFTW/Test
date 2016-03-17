@@ -17,6 +17,10 @@ public class GameController : MonoBehaviour {
 	public float AsteroidSpawnSpeed = 5.0f;								//How fast the asteroids move on spawn
 	//public float AsteroidSpawnSpeedRatio = 0.33f;
 
+	public int defaultPlayerHealth = 100;								//The default health and
+	public int defaultPlayerShields = 100;								//shields to reset a player with
+
+	private bool asteroidTime = true;									//spawn Asteroids
 	public int maxScore;												//the score needed to win the game
 	private GameObject[] players;										//a list of the prefabs each player is controlling
 	public int[] scores;												//a list of each scores corresponding to each player
@@ -31,6 +35,7 @@ public class GameController : MonoBehaviour {
 		numPlayers = sceneController.numPlayers;
 		StartCoroutine(spawnAsteroids());
 		players = new GameObject[numPlayers];
+		maxScore = sceneController.score;
 		scores = new int[numPlayers];
 		for (int i = 0; i < numPlayers; i++) {
 			players [i] = sceneController.playerShips [i];
@@ -43,7 +48,7 @@ public class GameController : MonoBehaviour {
 	/// <returns>The asteroids.</returns>
 	IEnumerator spawnAsteroids()
 	{
-		while (true)
+		while (asteroidTime)
 		{
 			float value = Random.Range(0.0f, 1.0f);
 			Vector3 pos = GetPointWithinSpawnRange();
@@ -107,14 +112,22 @@ public class GameController : MonoBehaviour {
 	/// <param name="playerNum">Defeated Player's number.</param>
 	public void CheckEnd (int playerNum) {
 		//Instance Variables to save memory
-		int playerThatWon;								//the winning player of the round
+		//int playerThatWon;							//the winning player of the round, used for Victory Screen?
 		bool isDraw = true;								//was this round a draw?
+		GameObject[] asteroids;							//list of all leftover asteroids to destroy
 
 		numPlayers--;
 		Debug.Log ("Player " + playerNum.ToString() + " Defeated!");
 		if (numPlayers < 2) {
+			asteroidTime = false;
+
+			asteroids = GameObject.FindGameObjectsWithTag ("Asteroid");
+			for (int i = 0; i < asteroids.Length; i++) {
+				Destroy (asteroids [i]);
+			}
+
 			for (int i = 0; i < players.Length; i++) {
-				if (players [i].activeInHierarchy) {
+				if (!players [i].GetComponent<Player>().defeated) {
 					scores [i]++;
 					isDraw = false;						//Should never come to a draw, unless both players are defeated in the EXACT same frame
 					Debug.Log ("The winner of the round is: Player " + (i + 1).ToString() + " Score: " + scores[i].ToString());
@@ -138,11 +151,40 @@ public class GameController : MonoBehaviour {
 	/// </summary>
 	/// <returns>The next round.</returns>
 	IEnumerator BeginNextRound () {
-		yield return new WaitForSeconds (1.0f);				//Second to breathe and check who won
+		Player tempPlayer;										//temporary instance variable to save memory
 
+		yield return new WaitForSeconds (1.0f);					//Moment to breathe and check who won
+		Debug.Log ("Next Round Begins in");
 		for (int i = 0; i < players.Length; i++) {
 			players [i].transform.position = spawnPoints [i].transform.position;
 			players [i].transform.rotation = spawnPoints [i].transform.rotation;
+			tempPlayer = players [i].GetComponent<Player> ();
+			tempPlayer.poweredOn = false;
+			tempPlayer.health = 100;
+			tempPlayer.shield = 100;
+			tempPlayer.canFire = true;
+			tempPlayer.weapons.Clear ();
+			players [i].SetActive (true);
+			players [i].GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, 0);
 		}
+
+		yield return new WaitForSeconds (1.0f);
+		Debug.Log ("5");
+		yield return new WaitForSeconds (1.0f);
+		Debug.Log ("4");
+		yield return new WaitForSeconds (1.0f);
+		Debug.Log ("3");
+		yield return new WaitForSeconds (1.0f);
+		Debug.Log ("2");
+		yield return new WaitForSeconds (1.0f);
+		Debug.Log ("1");
+		yield return new WaitForSeconds (1.0f);
+		Debug.Log ("GO!");
+
+		for (int i = 0; i < players.Length; i++) {				//Activate players for next Round!
+			players[i].GetComponent<Player>().poweredOn = true;
+		}
+		asteroidTime = true;
+		StartCoroutine ("spawnAsteroids");
 	}
 }

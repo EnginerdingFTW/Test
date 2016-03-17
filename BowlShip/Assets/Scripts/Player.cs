@@ -25,11 +25,13 @@ public class Player : MonoBehaviour {
 	public int maxMan = 2;								//The maximum maneuverability value of the ship
 
 	public bool  poweredOn = true;						//can the ship move, rotate and fire?
+	public bool canFire = true;							//boolean to restrict fireRate of ship
 	public float fireRate = 2;							//How fast the ship can fire (1s / firerate between shots)
 	public float defaultFireRate = 2;					//The basic weapon's fire rate
 	public int playerCollisionDamage = 10;				//The amount of damage done to THIS ship after hitting another player
 	public float forceTime = 0.5f;						//How fast the player and collider is forced back after hitting an object
 	public float invTime = 0.5f;						//Shouldn't need this, invincibility after being hit
+	public bool defeated = false;						//Was the ship destroyed?
 	public List<Weapon> weapons;						//A list of collected weapons
 	public GameObject defaultLaser;						//The default laser weapon for the ship
 	public GameObject laserInstatiationPoint;			//Where the laser is fired from, in comparison to the player origin
@@ -39,7 +41,6 @@ public class Player : MonoBehaviour {
 	private Weapon currentWeapon;						//The current Weapon the wielder has
 	private float horiz;								//The horizontal movement input
 	private float vert;									//The vertical movement input
-	private bool canFire = true;						//boolean to restrict fireRate of ship
 	private Vector2 movement;							//the total movement of the player
 	private Rigidbody2D rb;								//The ship's Rigidbody component
 	private PointEffector2D pe;							//Used to know the ship and other objects back upon collision
@@ -150,6 +151,7 @@ public class Player : MonoBehaviour {
 		if (shield < 0) {
 			health += shield;
 			if (health < 1) {
+				defeated = true;
 				gc.CheckEnd (playerNum);
 				gameObject.SetActive (false); //put in animation?
 				//destroyed animation

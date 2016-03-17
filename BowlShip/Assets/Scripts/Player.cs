@@ -147,7 +147,7 @@ public class Player : MonoBehaviour {
 		if (shield < 0) {
 			health += shield;
 			if (health < 1) {
-				gc.
+				gc.CheckEnd (playerNum);
 				gameObject.SetActive (false); //put in animation?
 				//destroyed animation
 				return;

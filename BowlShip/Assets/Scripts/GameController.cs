@@ -10,6 +10,7 @@ public class GameController : MonoBehaviour {
 	public GameObject innerBoundary;									//the boundary wrapped around the screen
 	public GameObject bigAsteroid;										//the big Asteroid to be instantiated
 	public GameObject smallAsteroid;									//the small Asteroid to be instantiated
+	public int gameMode;												//The int number corresponding to each gameMode
 	public int numPlayers; 												//The number of players remaining
 	public int[] scores;												//a list of each scores corresponding to each player
 	public float asteroidSpawnRate = 3.0f;								//how often the asteroids are spawned
@@ -99,8 +100,12 @@ public class GameController : MonoBehaviour {
 	}
 
 	public void CheckEnd (int playerNum) {
+		int playerThatWon;						//the winning player of the round
 		numPlayers--;
 		if (numPlayers < 2) {
+			for (int i = 0; i < players.Length; i++) {
+				
+			}
 			SceneManager.LoadScene ("Parr");
 		}
 	}

@@ -140,5 +140,9 @@ public class GameController : MonoBehaviour {
 	IEnumerator BeginNextRound () {
 		yield return new WaitForSeconds (1.0f);				//Second to breathe and check who won
 
+		for (int i = 0; i < players.Length; i++) {
+			players [i].transform.position = spawnPoints [i].transform.position;
+			players [i].transform.rotation = spawnPoints [i].transform.rotation;
+		}
 	}
 }

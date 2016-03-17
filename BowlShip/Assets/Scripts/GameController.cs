@@ -155,11 +155,14 @@ public class GameController : MonoBehaviour {
 
 		yield return new WaitForSeconds (1.0f);					//Moment to breathe and check who won
 		Debug.Log ("Next Round Begins in");
+		numPlayers = 0;
 		for (int i = 0; i < players.Length; i++) {
+			numPlayers++;
 			players [i].transform.position = spawnPoints [i].transform.position;
 			players [i].transform.rotation = spawnPoints [i].transform.rotation;
 			tempPlayer = players [i].GetComponent<Player> ();
 			tempPlayer.poweredOn = false;
+			tempPlayer.defeated = false;
 			tempPlayer.health = 100;
 			tempPlayer.shield = 100;
 			tempPlayer.canFire = true;

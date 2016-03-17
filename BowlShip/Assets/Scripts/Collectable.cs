@@ -4,7 +4,7 @@ using System.Collections;
 public class Collectable : MonoBehaviour {
 	
 	public bool pickedUp = false;			//boolean indicating if a player has picked up this collectible
-	public float despawnTime = 5.0f;		//time before item despawns off map.
+	public float despawnTime = 30.0f;		//time before item despawns off map.
 
 	// Use this for initialization
 	void Start () 

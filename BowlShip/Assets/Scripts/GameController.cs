@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
 	public GameObject[] powerups;										//the total list of spawnable powerups
-	public GameObject[] players;										//a list of the prefabs each player is controlling
 	public GameObject[] spawnPoints;									//a list of gameObjects with positions to spawn players at
 	public GameObject outerBoundary;									//the boundary to destroy faraway objects
 	public GameObject innerBoundary;									//the boundary wrapped around the screen
@@ -17,14 +17,15 @@ public class GameController : MonoBehaviour {
 	public float AsteroidSpawnSpeed = 5.0f;								//How fast the asteroids move on spawn
 	//public float AsteroidSpawnSpeedRatio = 0.33f;
 
-	public SceneController sceneController;								//The script to pass values between scenes
+	private GameObject[] players;										//a list of the prefabs each player is controlling
+	private SceneController sceneController;							//The script to pass values between scenes
 	
 	/// <summary>
 	/// Start this instance, i.e. Start the playerList to keep track of. Commence Asteroid bombardment.
 	/// </summary>
 	void Start () 
 	{
-		sceneController = GameObject.Find ("SceneController").GetComponent<SceneController>();      //The scene controller with starting values
+		sceneController = GameObject.Find("SceneController").GetComponent<SceneController>();      
 		numPlayers = sceneController.numPlayers;
 		StartCoroutine(spawnAsteroids());
 		players = new GameObject[numPlayers];
@@ -95,5 +96,12 @@ public class GameController : MonoBehaviour {
 		} while (dir.magnitude == 0);
 		dir = dir / dir.magnitude;
 		temp.GetComponent<Rigidbody2D>().velocity = dir * AsteroidSpawnSpeed;	
+	}
+
+	public void CheckEnd (int playerNum) {
+		numPlayers--;
+		if (numPlayers < 2) {
+			SceneManager.LoadScene ("Parr");
+		}
 	}
 }

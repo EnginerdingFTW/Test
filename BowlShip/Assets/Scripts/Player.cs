@@ -43,6 +43,7 @@ public class Player : MonoBehaviour {
 	private Rigidbody2D rb;								//The ship's Rigidbody component
 	private PointEffector2D pe;							//Used to know the ship and other objects back upon collision
 	private CircleCollider2D cc;						//This ship's Larger circleCollider trigger for use with pe
+	private GameController gc;							//The Match's logic center
 
 	/// <summary>
 	/// Initialize
@@ -51,6 +52,7 @@ public class Player : MonoBehaviour {
 		rb = GetComponent<Rigidbody2D> ();
 		pe = GetComponent<PointEffector2D> ();
 		cc = GetComponent<CircleCollider2D> ();
+		gc = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ();
 	}
 	
 	/// <summary>
@@ -145,7 +147,8 @@ public class Player : MonoBehaviour {
 		if (shield < 0) {
 			health += shield;
 			if (health < 1) {
-				//gameObject.SetActive (false); put in animation?
+				gc.
+				gameObject.SetActive (false); //put in animation?
 				//destroyed animation
 				return;
 			} else {

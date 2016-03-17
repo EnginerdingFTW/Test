@@ -7,7 +7,7 @@ using System.Collections;
 /// </summary>
 public class SceneController : MonoBehaviour {
 
-	public int numPlayers = 1;									//The current number of players playing
+	public int numPlayers = 8;									//The current number of players playing
 	public int musicLevel = 100;								//The volume level of the music (1 - 100)
 	public int SFXLevel = 100;									//The volume level of the Sound fx (1 - 100)
 	public GameObject[] playerShips;							//An array of the ships that the players have selected to use

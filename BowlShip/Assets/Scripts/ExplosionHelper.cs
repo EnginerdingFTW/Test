@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MineHelper : MonoBehaviour {
+public class ExplosionHelper : MonoBehaviour {
 
 	public bool exploded = false;
 	public int damage;

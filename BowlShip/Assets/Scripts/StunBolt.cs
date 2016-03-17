@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LaserMover : MonoBehaviour {
+public class StunBolt : MonoBehaviour {
 
 	public float laserSpeed = 10.0f; 				//the speed at which the laser shoots out
+	public float timeStunned = 3.0f;
 	public int damage = 10;
+	
 
 	/// <summary>
 	/// Immediately set the laser to move forward at whatever rate given. Each prefab can set this rate differently.
@@ -19,7 +21,18 @@ public class LaserMover : MonoBehaviour {
 		if (other.tag == "Player")
 		{
 			other.gameObject.GetComponent<Player>().Hurt(damage);
-		}
+			Player temp = other.GetComponent<Player>();
+			/*if (temp.poweredOn)
+			{
+
+			}
+			*/
+		}	
 	}
 
+	IEnumerator stun(float time, Player temp)
+	{
+		
+		yield return new WaitForSeconds(time);
+	}
 }

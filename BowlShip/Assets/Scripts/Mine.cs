@@ -14,7 +14,7 @@ public class Mine : MonoBehaviour {
 			float angle = 0;
 			for (angle = 0; angle <= 2*Mathf.PI; angle = angle + Mathf.PI / 4)
 			{
-				Vector3 pos = blastRadius.transform.position + i * blastRadius.GetComponent<CircleCollider2D>().radius * new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0.0f);
+				Vector3 pos = blastRadius.transform.position + i * this.transform.localScale.x * blastRadius.GetComponent<CircleCollider2D>().radius * new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0.0f);
 				GameObject temp = Instantiate(explosion, pos, Quaternion.identity) as GameObject;
 				temp.transform.localScale = temp.transform.localScale / 10f;
 			}
@@ -27,7 +27,7 @@ public class Mine : MonoBehaviour {
 		if (other.tag == "Player")
 		{
 			Kaboom();
-			GetComponentInChildren<MineHelper>().exploded = true;
+			GetComponentInChildren<ExplosionHelper>().exploded = true;
 			//other.GetComponent<Player>().Hurt(damage);
 			Destroy(this.gameObject, 0.05f);
 		}

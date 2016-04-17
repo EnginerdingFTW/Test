@@ -38,6 +38,9 @@ public class Player : MonoBehaviour {
 	public GameObject dualLaserInstatiationPoint1;		//Where the left laser is fired from
 	public GameObject dualLaserInstatiationPoint2;		//Where the right laser is fired from
 
+	//Audio
+	public AudioClip damaged;							//The sound clip to be played when the ship takes damage
+
 	private Weapon currentWeapon;						//The current Weapon the wielder has
 	private float horiz;								//The horizontal movement input
 	private float vert;									//The vertical movement input
@@ -148,6 +151,7 @@ public class Player : MonoBehaviour {
 	/// <param name="damage">The amount of damge to be dealt to the player.</param>
 	public void Hurt (int damage) {
 		shield -= damage;
+//		AudioSource.PlayClipAtPoint (damaged, Vector3(0, 0, 0));
 		if (shield < 0) {
 			health += shield;
 			if (health < 1) {

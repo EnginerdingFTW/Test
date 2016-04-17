@@ -14,9 +14,11 @@ public class SceneController : MonoBehaviour {
 
 	public int score;											//A variable used to transfer a generic maxScore value to a specific gameMode
 
-	// Use this for initialization
-	void Start () {
-		//playerShips = new GameObject[8];
+	/// <summary>
+	/// Upon loading the application. This Scene Controller is never destroyed. This way the number of players, options settings, etc are consistent throughout multiple scenes.
+	/// </summary>
+	void Awake () {
+		DontDestroyOnLoad (this);
 	}
 
 	/// <summary>

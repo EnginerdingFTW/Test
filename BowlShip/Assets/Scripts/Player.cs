@@ -12,6 +12,7 @@ public class Player : MonoBehaviour {
 	public float speed = 4.0f;							//How fast the ship can accelerate
 //	public float maxVelocity = 10.0f;					//The topSpeed of the ship, shouldn't need to use this
 	public float rotationSpeed = 5.0f;					//How fast the ship can rotate
+	public float minInput = 0.2f;						//How far the joystick must be moved before the ship reacts
 
 	public int man = 0;									//Maneuverability value of the ship
 	public float man0Drag = 0.0f;						//The default maneuverability drag
@@ -81,7 +82,7 @@ public class Player : MonoBehaviour {
 			rb.AddForce (movement);
 
 			//Angular Movement
-			if (horiz != 0 || vert != 0) {
+			if (Mathf.Abs(horiz) > minInput || Mathf.Abs(vert) > minInput) {
 				float angle = Mathf.Atan2 (vert, horiz) * Mathf.Rad2Deg + 90;
 				transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.AngleAxis (angle, Vector3.forward), Time.deltaTime * rotationSpeed);
 			} 

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
@@ -10,6 +11,8 @@ public class GameController : MonoBehaviour {
 	public GameObject innerBoundary;									//the boundary wrapped around the screen
 	public GameObject bigAsteroid;										//the big Asteroid to be instantiated
 	public GameObject smallAsteroid;									//the small Asteroid to be instantiated
+	public AudioClip destroyed;											//The sound clip to be played when a player is destroyed
+	private AudioSource audioSource;									//The audioSource used to play our soundclips
 	public int gameMode;												//The int number corresponding to each gameMode
 	public int numPlayers; 												//The number of players remaining
 	public float asteroidSpawnRate = 3.0f;								//how often the asteroids are spawned
@@ -19,6 +22,8 @@ public class GameController : MonoBehaviour {
 
 	public int defaultPlayerHealth = 100;								//The default health and
 	public int defaultPlayerShields = 100;								//shields to reset a player with
+	public Slider[] healthSliders;										//The HUD sliders that must be assigned to players
+	public Slider[] shieldSliders;										//^^^same but for shields^^^
 
 	private bool asteroidTime = true;									//spawn Asteroids
 	public int maxScore;												//the score needed to win the game
@@ -31,7 +36,8 @@ public class GameController : MonoBehaviour {
 	/// </summary>
 	void Start () 
 	{
-		sceneController = GameObject.Find("SceneController").GetComponent<SceneController>();      
+		sceneController = GameObject.Find("SceneController").GetComponent<SceneController>();
+		audioSource = GetComponent<AudioSource> ();
 		numPlayers = sceneController.numPlayers;
 		StartCoroutine(spawnAsteroids());
 		players = new GameObject[numPlayers];
@@ -39,6 +45,10 @@ public class GameController : MonoBehaviour {
 		scores = new int[numPlayers];
 		for (int i = 0; i < numPlayers; i++) {
 			players [i] = sceneController.playerShips [i];
+			healthSliders [i].gameObject.SetActive (true);
+			shieldSliders [i].gameObject.SetActive (true);
+			healthSliders [i].value = defaultPlayerHealth;
+			shieldSliders [i].value = defaultPlayerShields;
 		}
 	}
 
@@ -116,6 +126,10 @@ public class GameController : MonoBehaviour {
 		bool isDraw = true;								//was this round a draw?
 		GameObject[] asteroids;							//list of all leftover asteroids to destroy
 
+		audioSource.PlayOneShot (destroyed);
+		healthSliders [playerNum - 1].gameObject.SetActive (false);
+		shieldSliders [playerNum - 1].gameObject.SetActive (false);
+
 		numPlayers--;
 		Debug.Log ("Player " + playerNum.ToString() + " Defeated!");
 		if (numPlayers < 2) {
@@ -169,6 +183,10 @@ public class GameController : MonoBehaviour {
 			tempPlayer.weapons.Clear ();
 			players [i].SetActive (true);
 			players [i].GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, 0);
+			healthSliders [i].value = 100;
+			shieldSliders [i].value = 100;
+			healthSliders [i].gameObject.SetActive (true);
+			shieldSliders [i].gameObject.SetActive (true);
 		}
 
 		yield return new WaitForSeconds (1.0f);

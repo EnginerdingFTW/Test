@@ -20,7 +20,7 @@ public class StunBolt : MonoBehaviour {
 	{
 		if (other.tag == "Player")
 		{
-					Debug.Log("in");
+					//Debug.Log("in");
 			other.gameObject.GetComponent<Player>().Hurt(damage);
 			Player temp = other.GetComponent<Player>();
 				//only stun the player if they aren't already stunned

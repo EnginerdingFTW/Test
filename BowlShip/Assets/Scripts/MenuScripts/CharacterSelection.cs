@@ -73,6 +73,7 @@ public class CharacterSelection : MonoBehaviour {
 	public GameObject borrosShip;							//blue spaceship
 	public GameObject tayShip;								//red spaceship
 	public float timeBetweenSelection = 0.1f;				//how much time a player has to wait in between selection
+	public float selectionTolerance = 0.8f;					//how far the joystick must be moved to make a selection
 
 
 	// Use this for initialization
@@ -84,56 +85,56 @@ public class CharacterSelection : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//Press 'Fire' to enter
-		if (!player1Selected && (Input.GetAxis("Fire1") > 0.1f)) {
+		if (!player1Selected && (Input.GetAxis("Fire1") > selectionTolerance)) {
 			player1Selected = true;
 			sceneController.playerShips [0] = parrShip;
 			parrShip1.SetActive (true);
 			sceneController.numPlayers++;
 			StartCoroutine ("Player1Wait");
 		}
-		if (!player2Selected && (Input.GetAxis("Fire2") > 0.1f)) {
+		if (!player2Selected && (Input.GetAxis("Fire2") > selectionTolerance)) {
 			player2Selected = true;
 			sceneController.playerShips [1] = parrShip;
 			parrShip2.SetActive (true);
 			sceneController.numPlayers++;
 			StartCoroutine ("Player2Wait");
 		}
-		if (!player3Selected && (Input.GetAxis("Fire3") > 0.1f)) {
+		if (!player3Selected && (Input.GetAxis("Fire3") > selectionTolerance)) {
 			player3Selected = true;
 			sceneController.playerShips [2] = parrShip;
 			parrShip3.SetActive (true);
 			sceneController.numPlayers++;
 			StartCoroutine ("Player3Wait");
 		}
-		if (!player4Selected && (Input.GetAxis("Fire4") > 0.1f)) {
+		if (!player4Selected && (Input.GetAxis("Fire4") > selectionTolerance)) {
 			player4Selected = true;
 			sceneController.playerShips [3] = parrShip;
 			parrShip4.SetActive (true);
 			sceneController.numPlayers++;
 			StartCoroutine ("Player4Wait");
 		}
-		if (!player5Selected && (Input.GetAxis("Fire5") > 0.1f)) {
+		if (!player5Selected && (Input.GetAxis("Fire5") > selectionTolerance)) {
 			player5Selected = true;
 			sceneController.playerShips [4] = parrShip;
 			parrShip5.SetActive (true);
 			sceneController.numPlayers++;
 			StartCoroutine ("Player5Wait");
 		}
-		if (!player6Selected && (Input.GetAxis("Fire6") > 0.1f)) {
+		if (!player6Selected && (Input.GetAxis("Fire6") > selectionTolerance)) {
 			player6Selected = true;
 			sceneController.playerShips [5] = parrShip;
 			parrShip6.SetActive (true);
 			sceneController.numPlayers++;
 			StartCoroutine ("Player6Wait");
 		}
-		if (!player7Selected && (Input.GetAxis("Fire7") > 0.1f)) {
+		if (!player7Selected && (Input.GetAxis("Fire7") > selectionTolerance)) {
 			player7Selected = true;
 			sceneController.playerShips [6] = parrShip;
 			parrShip7.SetActive (true);
 			sceneController.numPlayers++;
 			StartCoroutine ("Player7Wait");
 		}
-		if (!player8Selected && (Input.GetAxis("Fire8") > 0.1f)) {
+		if (!player8Selected && (Input.GetAxis("Fire8") > selectionTolerance)) {
 			player8Selected = true;
 			sceneController.playerShips [7] = parrShip;
 			parrShip8.SetActive (true);
@@ -143,11 +144,11 @@ public class CharacterSelection : MonoBehaviour {
 
 		//Player 1's options upon entering
 		if (player1Selected) {
-			if (!player1Waiting && Input.GetAxis ("Horizontal1") > 0.1f) {
+			if (!player1Waiting && Input.GetAxis ("Horizontal1") > selectionTolerance) {
 				player1Choosing++;
 				StartCoroutine ("Player1Wait");
 			}
-			if (!player1Waiting && Input.GetAxis ("Horizontal1") < -0.1f) {
+			if (!player1Waiting && Input.GetAxis ("Horizontal1") < -selectionTolerance) {
 				player1Choosing--;
 				StartCoroutine ("Player1Wait");
 			}
@@ -187,11 +188,11 @@ public class CharacterSelection : MonoBehaviour {
 
 		//Player 2's options upon entering
 		if (player2Selected) {
-			if (!player2Waiting && Input.GetAxis ("Horizontal2") > 0.1f) {
+			if (!player2Waiting && Input.GetAxis ("Horizontal2") > selectionTolerance) {
 				player2Choosing++;
 				StartCoroutine ("Player2Wait");
 			}
-			if (!player2Waiting && Input.GetAxis ("Horizontal2") < -0.1f) {
+			if (!player2Waiting && Input.GetAxis ("Horizontal2") < -selectionTolerance) {
 				player2Choosing--;
 				StartCoroutine ("Player2Wait");
 			}
@@ -231,11 +232,11 @@ public class CharacterSelection : MonoBehaviour {
 
 		//Player 3's options upon entering
 		if (player3Selected) {
-			if (!player3Waiting && Input.GetAxis ("Horizontal3") > 0.1f) {
+			if (!player3Waiting && Input.GetAxis ("Horizontal3") > selectionTolerance) {
 				player3Choosing++;
 				StartCoroutine ("Player3Wait");
 			}
-			if (!player3Waiting && Input.GetAxis ("Horizontal3") < -0.1f) {
+			if (!player3Waiting && Input.GetAxis ("Horizontal3") < -selectionTolerance) {
 				player3Choosing--;
 				StartCoroutine ("Player3Wait");
 			}
@@ -276,11 +277,11 @@ public class CharacterSelection : MonoBehaviour {
 		//Player 4's options upon entering
 		if (player4Selected) {
 			//Pick out a ship
-			if (!player4Waiting && Input.GetAxis ("Horizontal4") > 0.1f) {
+			if (!player4Waiting && Input.GetAxis ("Horizontal4") > selectionTolerance) {
 				player4Choosing++;
 				StartCoroutine ("Player4Wait");
 			}
-			if (!player4Waiting && Input.GetAxis ("Horizontal4") < -0.1f) {
+			if (!player4Waiting && Input.GetAxis ("Horizontal4") < -selectionTolerance) {
 				player4Choosing--;
 				StartCoroutine ("Player4Wait");
 			}
@@ -318,11 +319,11 @@ public class CharacterSelection : MonoBehaviour {
 
 		//Player 5's options upon entering
 		if (player5Selected) {
-			if (!player5Waiting && Input.GetAxis ("Horizontal5") > 0.1f) {
+			if (!player5Waiting && Input.GetAxis ("Horizontal5") > selectionTolerance) {
 				player5Choosing++;
 				StartCoroutine ("Player5Wait");
 			}
-			if (!player5Waiting && Input.GetAxis ("Horizontal5") < -0.1f) {
+			if (!player5Waiting && Input.GetAxis ("Horizontal5") < -selectionTolerance) {
 				player5Choosing--;
 				StartCoroutine ("Player5Wait");
 			}
@@ -362,11 +363,11 @@ public class CharacterSelection : MonoBehaviour {
 
 		//Player 6's options upon entering
 		if (player6Selected) {
-			if (!player6Waiting && Input.GetAxis ("Horizontal6") > 0.1f) {
+			if (!player6Waiting && Input.GetAxis ("Horizontal6") > selectionTolerance) {
 				player6Choosing++;
 				StartCoroutine ("Player6Wait");
 			}
-			if (!player6Waiting && Input.GetAxis ("Horizontal6") < -0.1f) {
+			if (!player6Waiting && Input.GetAxis ("Horizontal6") < -selectionTolerance) {
 				player6Choosing--;
 				StartCoroutine ("Player6Wait");
 			}
@@ -406,11 +407,11 @@ public class CharacterSelection : MonoBehaviour {
 
 		//Player 7's options upon entering
 		if (player7Selected) {
-			if (!player7Waiting && Input.GetAxis ("Horizontal7") > 0.1f) {
+			if (!player7Waiting && Input.GetAxis ("Horizontal7") > selectionTolerance) {
 				player7Choosing++;
 				StartCoroutine ("Player7Wait");
 			}
-			if (!player7Waiting && Input.GetAxis ("Horizontal7") < -0.1f) {
+			if (!player7Waiting && Input.GetAxis ("Horizontal7") < -selectionTolerance) {
 				player7Choosing--;
 				StartCoroutine ("Player7Wait");
 			}
@@ -451,11 +452,11 @@ public class CharacterSelection : MonoBehaviour {
 
 		//Player 8's options upon entering
 		if (player8Selected) {
-			if (!player8Waiting && Input.GetAxis ("Horizontal8") > 0.1f) {
+			if (!player8Waiting && Input.GetAxis ("Horizontal8") > selectionTolerance) {
 				player8Choosing++;
 				StartCoroutine ("Player8Wait");
 			}
-			if (!player8Waiting && Input.GetAxis ("Horizontal8") < -0.1f) {
+			if (!player8Waiting && Input.GetAxis ("Horizontal8") < -selectionTolerance) {
 				player8Choosing--;
 				StartCoroutine ("Player8Wait");
 			}

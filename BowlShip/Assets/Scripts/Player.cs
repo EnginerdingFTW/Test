@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -40,6 +41,11 @@ public class Player : MonoBehaviour {
 
 	//Audio
 	public AudioClip damaged;							//The sound clip to be played when the ship takes damage
+	private AudioSource audioSource;					//The audioSource used to play our soundclips
+
+	//HUD
+	public Slider shieldSlider;							//The HUD showing the amount of shield left on the player
+	public Slider healthSlider;							//The HUD showing the amount of health left on the player
 
 	private Weapon currentWeapon;						//The current Weapon the wielder has
 	private float horiz;								//The horizontal movement input
@@ -58,6 +64,7 @@ public class Player : MonoBehaviour {
 		pe = GetComponent<PointEffector2D> ();
 		cc = GetComponent<CircleCollider2D> ();
 		gc = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ();
+		audioSource = GetComponent<AudioSource> ();
 	}
 	
 	/// <summary>
@@ -151,10 +158,14 @@ public class Player : MonoBehaviour {
 	/// <param name="damage">The amount of damge to be dealt to the player.</param>
 	public void Hurt (int damage) {
 		shield -= damage;
-//		AudioSource.PlayClipAtPoint (damaged, Vector3(0, 0, 0));
-		if (shield < 0) {
+		shieldSlider.value = shield;
+		audioSource.PlayOneShot(damaged);
+		if (shield <= 0) {
+			shieldSlider.value = 0;
 			health += shield;
+			healthSlider.value = health;
 			if (health < 1) {
+				healthSlider.value = 0;
 				defeated = true;
 				gc.CheckEnd (playerNum);
 				gameObject.SetActive (false); //put in animation?

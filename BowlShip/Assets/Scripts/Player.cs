@@ -15,15 +15,15 @@ public class Player : MonoBehaviour {
 	public float minInput = 0.2f;						//How far the joystick must be moved before the ship reacts
 
 	public int man = 0;									//Maneuverability value of the ship
-	public float man0Drag = 0.0f;						//The default maneuverability drag
-	public float man0Speed = 4.0f;						//The default meneuverability speed
-	public float man0Rotation = 2.0f;					//How quickly the ship turns
-	public float man1Drag = 1.0f;						//The upgraded maneuverability drag
-	public float man1Speed = 10.0f;						//The upgraded meneuverability speed
-	public float man1Rotation = 6.0f;					//How quickly the ship turns
-	public float man2Drag = 5.0f;						//The max maneuverability drag
-	public float man2Speed = 100.0f;					//The max meneuverability speed
-	public float man2Rotation = 10.0f;					//How quickly the ship turns
+	public float man0Drag = 1.0f;						//The default maneuverability drag
+	public float man0Speed = 10.0f;						//The default meneuverability speed
+	public float man0Rotation = 6.0f;					//How quickly the ship turns
+	public float man1Drag = 5.0f;						//The upgraded maneuverability drag
+	public float man1Speed = 100.0f;					//The upgraded meneuverability speed
+	public float man1Rotation = 10.0f;					//How quickly the ship turns
+	public float man2Drag = 50.0f;						//The max maneuverability drag
+	public float man2Speed = 1000.0f;					//The max meneuverability speed
+	public float man2Rotation = 100.0f;					//How quickly the ship turns
 	public int maxMan = 2;								//The maximum maneuverability value of the ship
 
 	public bool  poweredOn = true;						//can the ship move, rotate and fire?
@@ -209,7 +209,9 @@ public class Player : MonoBehaviour {
 		//provide force between player and object
 		cc.enabled = true;
 		pe.enabled = true;
-		StartCoroutine ("RegulateCollisionForce");
+		if (coll.gameObject.activeSelf) {
+			StartCoroutine ("RegulateCollisionForce");
+		}
 	}
 		
 

@@ -4,6 +4,7 @@ using System.Collections;
 public class CharacterSelection : MonoBehaviour {
 
 	//This class currently doesn't account for only player 1 and player 3 wanting to play. i.e. The game won't begin if Player 1 and Player 3 join but Player 2 never does.
+	//It was also done at 4:30am and very poorly written
 
 	private GameObject sceneControllerObject;				//The sceneController GameObject
 	private SceneController sceneController;				//The sceneController to assign player ships to

@@ -20,6 +20,7 @@ public class Utility : Collectable {
 			this.pickedUp = true;
 			player = other.gameObject.GetComponent<Player> ();
 			player.shield += shieldCharge;
+			player.shieldSlider.value = player.shield;
 			player.man += maneuverabilityChange;
 			this.GetComponent<Collider2D>().enabled = false;
 			this.GetComponent<SpriteRenderer>().enabled = false;

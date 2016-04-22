@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class StunBolt : MonoBehaviour {
+public class StunBolt : WeaponFire {
 
-	public float laserSpeed = 10.0f; 				//the speed at which the laser shoots out
+	public float laserSpeed = 10.0f; 					//the speed at which the laser shoots out
 	public float timeStunned = 3.0f;
 	public int damage = 10;
 	
@@ -13,12 +13,12 @@ public class StunBolt : MonoBehaviour {
 	/// Additionally starts a despawn timer in case it stays on screen too long?
 	/// </summary>
 	void Start () {
-		GetComponent<Rigidbody2D> ().velocity = transform.right * -laserSpeed;
+		GetComponent<Rigidbody2D> ().velocity = transform.up * -laserSpeed;
 	}
-	
+
 	void OnTriggerEnter2D(Collider2D other)	
 	{
-		if (other.tag == "Player")
+		if (hasShot && other.tag == "Player" && other.gameObject != shootingPlayer)
 		{
 					//Debug.Log("in");
 			other.gameObject.GetComponent<Player>().Hurt(damage);
@@ -26,17 +26,11 @@ public class StunBolt : MonoBehaviour {
 				//only stun the player if they aren't already stunned
 			if (temp.poweredOn)
 			{
-				StartCoroutine(stun(timeStunned, temp));
-			}		
+				//freezes the pass player for the set amount of time
+				temp.poweredOn = false;
+				temp.StartCoroutine("Stunned", timeStunned);
+			}	
+			Destroy (this);
 		}	
-	}
-
-
-	//freezes the pass player for the set amount of time
-	IEnumerator stun(float time, Player temp)
-	{
-		temp.poweredOn = false;
-		yield return new WaitForSeconds(time);
-		temp.poweredOn = true;
 	}
 }

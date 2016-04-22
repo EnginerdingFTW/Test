@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Nuke : MonoBehaviour {
+public class Nuke : WeaponFire {
 
 	public GameObject explosion;
 	public int damage;
@@ -16,11 +16,11 @@ public class Nuke : MonoBehaviour {
 		//if the nuke collided with anything, explode, do damage (exploded to true), and destroy yourself
 	void OnTriggerEnter2D(Collider2D other)	
 	{
-		if (other.tag != "Boundary")
+		if (hasShot && other.gameObject != shootingPlayer && (other.tag == "Player" || other.tag == "Asteroid"))
 		{
 			Kaboom();
-			GetComponentInChildren<ExplosionHelper>().exploded = true;
-			Destroy(this.transform.parent.gameObject, 0.1f);
+			GetComponentInParent<ExplosionHelper>().exploded = true;
+			Destroy(this.gameObject, 0.1f);
 		}
 	}
 }

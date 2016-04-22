@@ -9,7 +9,7 @@ public class NukeMovement : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-		GetComponent<Rigidbody2D> ().velocity = transform.up * speed;
+		GetComponent<Rigidbody2D> ().velocity = transform.up * -speed;
 	}
 	
 	//the nuke is accellerating.

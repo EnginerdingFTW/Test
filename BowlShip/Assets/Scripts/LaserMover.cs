@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LaserMover : MonoBehaviour {
+public class LaserMover : WeaponFire {
 
-	public float laserSpeed = 10.0f; 				//the speed at which the laser shoots out
+	public float laserSpeed = 10.0f; 								//the speed at which the laser shoots out
 	public int damage = 10;
 
 	/// <summary>
@@ -13,12 +13,14 @@ public class LaserMover : MonoBehaviour {
 	void Start () {
 		GetComponent<Rigidbody2D> ().velocity = transform.up * -laserSpeed;
 	}
+		
 	
 	void OnTriggerEnter2D(Collider2D other)	
 	{
-		if (other.tag == "Player")
+		if (hasShot && other.tag == "Player" && other.gameObject != shootingPlayer)
 		{
 			other.gameObject.GetComponent<Player>().Hurt(damage);	//apply damage
+			Destroy(this);
 		}
 	}
 

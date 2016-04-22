@@ -49,6 +49,7 @@ public class Player : MonoBehaviour {
 	public Slider healthSlider;							//The HUD showing the amount of health left on the player
 
 	private Weapon currentWeapon;						//The current Weapon the wielder has
+	private GameObject laserObject;						//The shot object that the Player shoots out, used to make sure Player can't shoot themselves
 	private float horiz;								//The horizontal movement input
 	private float vert;									//The vertical movement input
 	private Vector2 movement;							//the total movement of the player
@@ -94,7 +95,8 @@ public class Player : MonoBehaviour {
 				//default weapon
 				if (weapons.Count == 0) {
 					fireRate = defaultFireRate;
-					Instantiate (defaultLaser, laserInstatiationPoint.transform.position, transform.rotation);
+					laserObject = (GameObject) Instantiate (defaultLaser, laserInstatiationPoint.transform.position, transform.rotation);
+					laserObject.GetComponent<WeaponFire>().AttachPlayer (this.gameObject);
 					StartCoroutine ("RegulateWeaponFire");
 				} else {
 				
@@ -102,10 +104,25 @@ public class Player : MonoBehaviour {
 					currentWeapon = weapons [weapons.Count - 1];
 					fireRate = currentWeapon.fireRate;
 					if (currentWeapon.isDual) {
-						Instantiate (currentWeapon.laserType, dualLaserInstatiationPoint1.transform.position, transform.rotation);
-						Instantiate (currentWeapon.laserType, dualLaserInstatiationPoint2.transform.position, transform.rotation);
+						laserObject = (GameObject) Instantiate (currentWeapon.laserType, dualLaserInstatiationPoint1.transform.position, transform.rotation);
+						if (laserObject.GetComponent<WeaponFire> () == null) {
+							laserObject.GetComponentInChildren<WeaponFire> ().AttachPlayer (this.gameObject);
+						} else {
+							laserObject.GetComponent<WeaponFire>().AttachPlayer (this.gameObject);
+						}
+						laserObject = (GameObject) Instantiate (currentWeapon.laserType, dualLaserInstatiationPoint2.transform.position, transform.rotation);
+						if (laserObject.GetComponent<WeaponFire> () == null) {
+							laserObject.GetComponentInChildren<WeaponFire> ().AttachPlayer (this.gameObject);
+						} else {
+							laserObject.GetComponent<WeaponFire>().AttachPlayer (this.gameObject);
+						}
 					} else {
-						Instantiate (currentWeapon.laserType, laserInstatiationPoint.transform.position, transform.rotation);
+						laserObject = (GameObject) Instantiate (currentWeapon.laserType, laserInstatiationPoint.transform.position, transform.rotation);
+						if (laserObject.GetComponent<WeaponFire> () == null) {
+							laserObject.GetComponentInChildren<WeaponFire> ().AttachPlayer (this.gameObject);
+						} else {
+							laserObject.GetComponent<WeaponFire>().AttachPlayer (this.gameObject);
+						}
 					}
 					StartCoroutine ("RegulateWeaponFire");
 					if (!currentWeapon.isTimer) {
@@ -194,6 +211,7 @@ public class Player : MonoBehaviour {
 		pe.enabled = true;
 		StartCoroutine ("RegulateCollisionForce");
 	}
+		
 
 	/// <summary>
 	/// Regulates the weapon fire. Will change a boolean after the fireRate is finished
@@ -212,5 +230,14 @@ public class Player : MonoBehaviour {
 		yield return new WaitForSeconds (forceTime);
 		pe.enabled = false;
 		cc.enabled = false;
+	}
+
+	/// <summary>
+	/// freezes the player for the set amount of time, called by StunBolt
+	/// </summary>
+	/// <param name="stunTime">Stun time.</param>
+	public IEnumerator Stunned (float stunTime) {
+		yield return new WaitForSeconds (stunTime);
+		poweredOn = true;
 	}
 }

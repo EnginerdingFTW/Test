@@ -210,7 +210,7 @@ public class Player : MonoBehaviour {
 		cc.enabled = true;
 		pe.enabled = true;
 		if (coll.gameObject.activeSelf) {
-			StartCoroutine ("RegulateCollisionForce");
+			StartCoroutine ("RegulateCollisionForce");				//bug here for some reason
 		}
 	}
 		

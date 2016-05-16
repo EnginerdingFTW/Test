@@ -6,8 +6,10 @@ public class HeatSeeker : WeaponFire {
 	public float rocketSpeed = 10.0f; 				//the speed at which the laser shoots out
 	public GameObject[] players;					//All the other players playing
 	public int damage = 10;							//How much damage the rocket does to the player
-	public float turnSpeed = 2.0f;						//How fast the rocket turns towards the player
+	public float turnSpeed = 2.0f;					//How fast the rocket turns towards the player
+	public float timeAlive = 8.0f;					//How long until the missile times out.
 
+	private bool timesUp = false;					//False while the missile is targeting an enemy
 	private Transform potentialTarget;				//A possible Player to follow
 	private Transform target;						//The target that's locked on
 	private Rigidbody2D rb;							//The attached Rigidbody used to set velocity
@@ -20,6 +22,7 @@ public class HeatSeeker : WeaponFire {
 		rb = GetComponent<Rigidbody2D> ();
 		rb.velocity = transform.up * rocketSpeed;
 		transform.Rotate(new Vector3(0, 0, 180));
+		StartCoroutine ("Timeout", timeAlive);
 	}
 
 	/// <summary>
@@ -27,7 +30,7 @@ public class HeatSeeker : WeaponFire {
 	/// </summary>
 	void Update ()
 	{
-		if (hasShot) {
+		if (!timesUp && hasShot) {
 			players = GameObject.FindGameObjectsWithTag ("Player");
 			target = GetClosestEnemy (players);
 			if (target != null) {
@@ -74,6 +77,20 @@ public class HeatSeeker : WeaponFire {
 		{
 			other.gameObject.GetComponent<Player>().Hurt(damage);	//apply damage
 			Destroy(this.gameObject);
+		}
+	}
+
+	/// <summary>
+	/// As soon as the rocket launches, start a timer, once the times up the rocket no longer targets a player and flies straight.
+	/// </summary>
+	/// <param name="timeAlive">Time alive.</param>
+	IEnumerator Timeout (float timeAlive) {
+		yield return new WaitForSeconds (1.0f);
+		timeAlive--;
+		if (timeAlive <= 0.0f) {
+			timesUp = true;
+		} else {
+			StartCoroutine ("Timeout", timeAlive);
 		}
 	}
 }

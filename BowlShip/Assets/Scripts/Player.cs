@@ -242,4 +242,14 @@ public class Player : MonoBehaviour {
 		yield return new WaitForSeconds (stunTime);
 		poweredOn = true;
 	}
+
+	/// <summary>
+	/// Assigns the HUD. This function is utilized by the GameController to assign each player their HUD before the game starts.
+	/// </summary>
+	/// <param name="healthS">Health s.</param>
+	/// <param name="shieldS">Shield s.</param>
+	public void AssignHUD (Slider healthS, Slider shieldS) {
+		this.healthSlider = healthS;
+		this.shieldSlider = shieldS;
+	}
 }

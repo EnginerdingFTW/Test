@@ -32,7 +32,7 @@ public class GameController : MonoBehaviour {
 	private SceneController sceneController;							//The script to pass values between scenes
 	
 	/// <summary>
-	/// Start this instance, i.e. Start the playerList to keep track of. Commence Asteroid bombardment.
+	/// Start this instance, i.e. Start the playerList to keep track of. Assign and show each player's health HUD. Commence Asteroid bombardment.
 	/// </summary>
 	void Start () 
 	{
@@ -45,6 +45,7 @@ public class GameController : MonoBehaviour {
 		scores = new int[numPlayers];
 		for (int i = 0; i < numPlayers; i++) {
 			players [i] = sceneController.playerShips [i];
+			players [i].GetComponent<Player> ().AssignHUD (healthSliders [i], shieldSliders [i]);  				//assigns the player their health HUD
 			healthSliders [i].gameObject.SetActive (true);
 			shieldSliders [i].gameObject.SetActive (true);
 			healthSliders [i].value = defaultPlayerHealth;

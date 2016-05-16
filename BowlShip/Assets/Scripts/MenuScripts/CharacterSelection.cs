@@ -181,7 +181,7 @@ public class CharacterSelection : MonoBehaviour {
 			}
 				
 			//Confirm your ship
-			if (!player1Waiting && Input.GetAxis ("Fire1") == 1.0) {
+			if (!player1Waiting && Input.GetAxis ("Fire1") > selectionTolerance) {
 				player1Ready = true;
 				StartCoroutine ("Player1Wait");
 			}
@@ -225,7 +225,7 @@ public class CharacterSelection : MonoBehaviour {
 			}
 
 			//Confirm your ship
-			if (!player2Waiting && Input.GetAxis ("Fire2") == 1.0) {
+			if (!player2Waiting && Input.GetAxis ("Fire2") > selectionTolerance) {
 				player2Ready = true;
 				StartCoroutine ("Player2Wait");
 			}
@@ -269,7 +269,7 @@ public class CharacterSelection : MonoBehaviour {
 			}
 
 			//Confirm your ship
-			if (!player3Waiting && Input.GetAxis ("Fire3") == 1.0) {
+			if (!player3Waiting && Input.GetAxis ("Fire3") > selectionTolerance) {
 				player3Ready = true;
 				StartCoroutine ("Player3Wait");
 			}
@@ -312,7 +312,7 @@ public class CharacterSelection : MonoBehaviour {
 			}
 
 			//Confirm your ship
-			if (!player4Waiting && Input.GetAxis ("Fire4") == 1.0) {
+			if (!player4Waiting && Input.GetAxis ("Fire4") > selectionTolerance) {
 				player4Ready = true;
 				StartCoroutine ("Player4Wait");
 			}
@@ -356,7 +356,7 @@ public class CharacterSelection : MonoBehaviour {
 			}
 
 			//Confirm your ship
-			if (!player5Waiting && Input.GetAxis ("Fire5") == 1.0) {
+			if (!player5Waiting && Input.GetAxis ("Fire5") > selectionTolerance) {
 				player5Ready = true;
 				StartCoroutine ("Player5Wait");
 			}
@@ -400,7 +400,7 @@ public class CharacterSelection : MonoBehaviour {
 			}
 
 			//Confirm your ship
-			if (!player6Waiting && Input.GetAxis ("Fire6") == 1.0) {
+			if (!player6Waiting && Input.GetAxis ("Fire6") > selectionTolerance) {
 				player6Ready = true;
 				StartCoroutine ("Player6Wait");
 			}
@@ -445,7 +445,7 @@ public class CharacterSelection : MonoBehaviour {
 
 
 			//Confirm your ship
-			if (!player7Waiting && Input.GetAxis ("Fire7") == 1.0) {
+			if (!player7Waiting && Input.GetAxis ("Fire7") > selectionTolerance) {
 				player7Ready = true;
 				StartCoroutine ("Player7Wait");
 			}
@@ -489,7 +489,7 @@ public class CharacterSelection : MonoBehaviour {
 			}
 
 			//Confirm your ship
-			if (!player8Waiting && Input.GetAxis ("Fire8") == 1.0) {
+			if (!player8Waiting && Input.GetAxis ("Fire8") > selectionTolerance) {
 				player8Ready = true;
 				StartCoroutine ("Player8Wait");
 			}

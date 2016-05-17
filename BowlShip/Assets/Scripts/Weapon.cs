@@ -8,6 +8,7 @@ public class Weapon : Collectable {
 	public bool isDual = false;			//if isDual is true, the weapon will instantiate out of two separate points
 	public float fireRate;				//how fast this weapon can fire (Set in each individual weapon)
 	public GameObject laserType;		//The laser that is instantiated with this powerup
+	public AudioClip sound;				//The sound to be played when picked up by a player
 
 /// <summary>
 /// if the player collides with this object, the player picks up this object.
@@ -18,6 +19,7 @@ public class Weapon : Collectable {
 	{
 		if (other.tag == "Player")
 		{
+			AudioSource.PlayClipAtPoint (sound, new Vector3(0,0,0));
 			this.pickedUp = true;
 			other.GetComponent<Player>().weapons.Add(this);
 			this.GetComponent<Collider2D>().enabled = false;

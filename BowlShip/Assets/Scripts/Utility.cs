@@ -5,6 +5,7 @@ public class Utility : Collectable {
 
 	public int shieldCharge = 0;						//How much shields to recharge on the pickedUp Player
 	public int maneuverabilityChange = 0;				//How much to change the player's maneuverability
+	public AudioClip sound;								//Play this sound when its picked up by a player
 
 	private Player player;								//The player to be affected by powerUp
 
@@ -24,6 +25,7 @@ public class Utility : Collectable {
 			player.man += maneuverabilityChange;
 			this.GetComponent<Collider2D>().enabled = false;
 			this.GetComponent<SpriteRenderer>().enabled = false;
+			AudioSource.PlayClipAtPoint (sound, new Vector3(0,0,0));
 		}
 	}
 }

@@ -632,4 +632,67 @@ public class CharacterSelection : MonoBehaviour {
 		yield return new WaitForSeconds (timeBetweenSelection);
 		player8Waiting = false;
 	}
+
+	/// <summary>
+	/// Resets the character selection. First hides all selection tokens on the screen, then resets all values to default. Finally resets sceneController to indicate nothing is selected.
+	/// </summary>
+	public void resetCharacterSelection () {
+//		GameObject[] tokens = GameObject.FindGameObjectsWithTag ("Player");
+//		for (int i = 0; i < tokens.Length; i++) {
+//			tokens [i].SetActive (false);
+//		}
+		parrShip1.SetActive(false);
+		parrShip2.SetActive(false);
+		parrShip3.SetActive(false);
+		parrShip4.SetActive(false);
+		parrShip5.SetActive(false);
+		parrShip6.SetActive(false);
+		parrShip7.SetActive(false);
+		parrShip8.SetActive(false);
+		borrosShip1.SetActive(false);
+		borrosShip2.SetActive(false);
+		borrosShip3.SetActive(false);
+		borrosShip4.SetActive(false);
+		borrosShip5.SetActive(false);
+		borrosShip6.SetActive(false);
+		borrosShip7.SetActive(false);
+		borrosShip8.SetActive(false);
+		tayShip1.SetActive(false);
+		tayShip2.SetActive(false);
+		tayShip3.SetActive(false);
+		tayShip4.SetActive(false);
+		tayShip5.SetActive(false);
+		tayShip6.SetActive(false);
+		tayShip7.SetActive(false);
+		tayShip8.SetActive(false);
+
+		player1Selected = false;
+		player1Waiting = false;
+		player1Ready = false;
+		player2Selected = false;
+		player2Waiting = false;
+		player2Ready = false;
+		player3Selected = false;
+		player3Waiting = false;
+		player3Ready = false;
+		player4Selected = false;
+		player4Waiting = false;
+		player4Ready = false;
+		player5Selected = false;
+		player5Waiting = false;
+		player5Ready = false;
+		player6Selected = false;
+		player6Waiting = false;
+		player6Ready = false;
+		player7Selected = false;
+		player7Waiting = false;
+		player7Ready = false;
+		player8Selected = false;
+		player8Waiting = false;
+		player8Ready = false;
+		sceneController.numPlayers = 0;
+		for (int i = 0; i < sceneController.playerShips.Length; i++) {
+			sceneController.playerShips [i] = null;
+		}
+	}
 }

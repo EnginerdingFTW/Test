@@ -43,6 +43,7 @@ public class Player : MonoBehaviour {
 	//Audio
 	public AudioClip damaged;							//The sound clip to be played when the ship takes damage
 	private AudioSource audioSource;					//The audioSource used to play our soundclips
+	public float volume = 0.5f;								//How loud all SFX from this script is
 
 	//HUD
 	public Slider shieldSlider;							//The HUD showing the amount of shield left on the player
@@ -177,7 +178,7 @@ public class Player : MonoBehaviour {
 	public void Hurt (int damage) {
 		shield -= damage;
 		shieldSlider.value = shield;
-		audioSource.PlayOneShot(damaged);
+		audioSource.PlayOneShot(damaged, volume);
 		if (shield <= 0) {
 			shieldSlider.value = 0;
 			health += shield;

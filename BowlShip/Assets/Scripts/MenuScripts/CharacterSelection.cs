@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class CharacterSelection : MonoBehaviour {
@@ -71,8 +72,9 @@ public class CharacterSelection : MonoBehaviour {
 	public GameObject mainMenu;								//the previous menu
 	public GameObject stageSelection;						//the next menu (Stage Selection)
 	public GameObject parrShip;								//green spaceship
-	public GameObject borrosShip;							//blue spaceship
-	public GameObject tayShip;								//red spaceship
+	public GameObject borrosShip;							//red spaceship
+	public GameObject tayShip;								//blue spaceship
+	public Button defaultSelection;							//Upon entering stage selection, select a default button
 	public float timeBetweenSelection = 0.1f;				//how much time a player has to wait in between selection
 	public float selectionTolerance = 0.8f;					//how far the joystick must be moved to make a selection
 
@@ -499,48 +501,56 @@ public class CharacterSelection : MonoBehaviour {
 		if (sceneController.numPlayers == 1) {
 			if (player1Ready) {
 				stageSelection.SetActive (true);
+				defaultSelection.Select();
 				characterSelection.SetActive (false);
 			}
 		}
 		if (sceneController.numPlayers == 2) {
 			if (player1Ready && player2Ready) {
 				stageSelection.SetActive (true);
+				defaultSelection.Select();
 				characterSelection.SetActive (false);
 			}
 		}
 		if (sceneController.numPlayers == 3) {
 			if (player1Ready && player2Ready && player3Ready) {
 				stageSelection.SetActive (true);
+				defaultSelection.Select();
 				characterSelection.SetActive (false);
 			}
 		}
 		if (sceneController.numPlayers == 4) {
 			if (player1Ready && player2Ready && player3Ready && player4Ready) {
 				stageSelection.SetActive (true);
+				defaultSelection.Select();
 				characterSelection.SetActive (false);
 			}
 		}
 		if (sceneController.numPlayers == 5) {
 			if (player1Ready && player2Ready && player3Ready && player4Ready && player5Ready) {
 				stageSelection.SetActive (true);
+				defaultSelection.Select();
 				characterSelection.SetActive (false);
 			}
 		}
 		if (sceneController.numPlayers == 6) {
 			if (player1Ready && player2Ready && player3Ready && player4Ready && player5Ready && player6Ready) {
 				stageSelection.SetActive (true);
+				defaultSelection.Select();
 				characterSelection.SetActive (false);
 			}
 		}
 		if (sceneController.numPlayers == 7) {
 			if (player1Ready && player2Ready && player3Ready && player4Ready && player5Ready && player6Ready && player7Ready) {
 				stageSelection.SetActive (true);
+				defaultSelection.Select();
 				characterSelection.SetActive (false);
 			}
 		}
 		if (sceneController.numPlayers == 8) {
 			if (player1Ready && player2Ready && player3Ready && player4Ready && player5Ready && player6Ready && player7Ready && player8Ready) {
 				stageSelection.SetActive (true);
+				defaultSelection.Select();
 				characterSelection.SetActive (false);
 			}
 		}

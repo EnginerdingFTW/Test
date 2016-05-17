@@ -48,6 +48,7 @@ public class Player : MonoBehaviour {
 	public Slider shieldSlider;							//The HUD showing the amount of shield left on the player
 	public Slider healthSlider;							//The HUD showing the amount of health left on the player
 
+	private GameController gc;							//The Match's logic center
 	private Weapon currentWeapon;						//The current Weapon the wielder has
 	private GameObject laserObject;						//The shot object that the Player shoots out, used to make sure Player can't shoot themselves
 	private float horiz;								//The horizontal movement input
@@ -56,7 +57,6 @@ public class Player : MonoBehaviour {
 	private Rigidbody2D rb;								//The ship's Rigidbody component
 	private PointEffector2D pe;							//Used to know the ship and other objects back upon collision
 	private CircleCollider2D cc;						//This ship's Larger circleCollider trigger for use with pe
-	private GameController gc;							//The Match's logic center
 
 	/// <summary>
 	/// Initialize

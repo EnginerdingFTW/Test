@@ -8,8 +8,12 @@ public class MenuHandler : MonoBehaviour {
 		SceneManager.LoadScene ("Parr");
 	}
 
-	public void Play () {
+	public void Test () {
 		SceneManager.LoadScene ("Parr");
+	}
+
+	public void Play () {
+		SceneManager.LoadScene ("Asteroids");
 	}
 
 	public void Quit () {

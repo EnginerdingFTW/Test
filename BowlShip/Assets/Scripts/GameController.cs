@@ -15,6 +15,7 @@ public class GameController : MonoBehaviour {
 	private AudioSource audioSource;									//The audioSource used to play our soundclips
 	public int gameMode;												//The int number corresponding to each gameMode
 	public int numPlayers; 												//The number of players remaining
+	public bool useAsteroids = true;									//Should Asteroids be spawned?
 	public float asteroidSpawnRate = 3.0f;								//how often the asteroids are spawned
 	public float big_small_asteroidProb = 0.8f;							//the probability to spawn either a big or small asteroid
 	public float AsteroidSpawnSpeed = 5.0f;								//How fast the asteroids move on spawn
@@ -32,25 +33,27 @@ public class GameController : MonoBehaviour {
 	private SceneController sceneController;							//The script to pass values between scenes
 	
 	/// <summary>
-	/// Start this instance, i.e. Start the playerList to keep track of. Assign and show each player's health HUD. Commence Asteroid bombardment.
+	/// Start this instance, i.e. Start the playerList to keep track of. Instantiate each player. Assign and show each player's health HUD. Commence Asteroid bombardment after beginning next round.
 	/// </summary>
 	void Start () 
 	{
 		sceneController = GameObject.Find("SceneController").GetComponent<SceneController>();
 		audioSource = GetComponent<AudioSource> ();
 		numPlayers = sceneController.numPlayers;
-		StartCoroutine(spawnAsteroids());
 		players = new GameObject[numPlayers];
 		maxScore = sceneController.score;
 		scores = new int[numPlayers];
 		for (int i = 0; i < numPlayers; i++) {
-			players [i] = sceneController.playerShips [i];
+			players [i] = Instantiate (sceneController.playerShips [i]);
 			players [i].GetComponent<Player> ().AssignHUD (healthSliders [i], shieldSliders [i]);  				//assigns the player their health HUD
+			players [i].GetComponent<Player> ().playerNum = i + 1;
 			healthSliders [i].gameObject.SetActive (true);
 			shieldSliders [i].gameObject.SetActive (true);
 			healthSliders [i].value = defaultPlayerHealth;
 			shieldSliders [i].value = defaultPlayerShields;
+			players [i].SetActive (false);
 		}
+		StartCoroutine ("BeginNextRound");
 	}
 
 	/// <summary>
@@ -154,7 +157,8 @@ public class GameController : MonoBehaviour {
 			for (int i = 0; i < scores.Length; i++) {
 				if (scores[i] >= maxScore) {
 					Debug.Log ("The winner of the GAME is: Player " + (i + 1).ToString() + " Score: " + scores[i].ToString());
-					SceneManager.LoadScene ("Parr");		//To be replaced with Victory Screen
+					sceneController.numPlayers = 0;
+					SceneManager.LoadScene ("Menu");		//To be replaced with Victory Screen
 				}
 			}
 			StartCoroutine ("BeginNextRound");				//if no one has won the game, begin the next round
@@ -207,6 +211,8 @@ public class GameController : MonoBehaviour {
 			players[i].GetComponent<Player>().poweredOn = true;
 		}
 		asteroidTime = true;
-		StartCoroutine ("spawnAsteroids");
+		if (useAsteroids) {
+			StartCoroutine ("spawnAsteroids");
+		}
 	}
 }

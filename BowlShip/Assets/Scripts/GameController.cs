@@ -46,7 +46,7 @@ public class GameController : MonoBehaviour {
 		for (int i = 0; i < numPlayers; i++) {
 			players [i] = Instantiate (sceneController.playerShips [i]);
 			players [i].GetComponent<Player> ().AssignHUD (healthSliders [i], shieldSliders [i]);  				//assigns the player their health HUD
-			players [i].GetComponent<Player> ().playerNum = i + 1;
+			players [i].GetComponent<Player> ().playerNum = sceneController.playerNumArray[i];
 			healthSliders [i].gameObject.SetActive (true);
 			shieldSliders [i].gameObject.SetActive (true);
 			healthSliders [i].value = defaultPlayerHealth;

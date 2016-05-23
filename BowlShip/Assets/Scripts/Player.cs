@@ -43,7 +43,7 @@ public class Player : MonoBehaviour {
 	//Audio
 	public AudioClip damaged;							//The sound clip to be played when the ship takes damage
 	private AudioSource audioSource;					//The audioSource used to play our soundclips
-	public float volume = 0.5f;								//How loud all SFX from this script is
+	public float volume = 0.5f;							//How loud all SFX from this script is
 
 	//HUD
 	public Slider shieldSlider;							//The HUD showing the amount of shield left on the player
@@ -66,8 +66,8 @@ public class Player : MonoBehaviour {
 		rb = GetComponent<Rigidbody2D> ();
 		pe = GetComponent<PointEffector2D> ();
 		cc = GetComponent<CircleCollider2D> ();
-		gc = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ();
 		audioSource = GetComponent<AudioSource> ();
+		gc = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ();
 	}
 	
 	/// <summary>
@@ -173,6 +173,7 @@ public class Player : MonoBehaviour {
 	/// <summary>
 	/// Hurt the specified damage. Affects shields first, then any remaining damage is done to health. Destroys the player if health drops below 1.
 	/// It will play either a shield damaged animation or a player damaged and/or destroyed animation.
+	/// If the gameController is null then must be in menu, thus revive player fully.
 	/// </summary>
 	/// <param name="damage">The amount of damge to be dealt to the player.</param>
 	public void Hurt (int damage) {
@@ -186,9 +187,16 @@ public class Player : MonoBehaviour {
 			if (health < 1) {
 				healthSlider.value = 0;
 				defeated = true;
-				gc.CheckEnd (playerNum);
-				gameObject.SetActive (false); //put in animation?
-				//destroyed animation
+				if (gc == null) {
+					health = 100;
+					shield = maxShield;
+					healthSlider.value = health;
+					shieldSlider.value = shield;
+				} else {
+					gc.CheckEnd (playerNum);
+					gameObject.SetActive (false); //put in animation?
+					//destroyed animation
+				}
 				return;
 			} else {
 				//Invincible for a bit?, damage animation

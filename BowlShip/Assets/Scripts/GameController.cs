@@ -191,6 +191,7 @@ public class GameController : MonoBehaviour {
 			tempPlayer.health = 100;
 			tempPlayer.shield = 100;
 			tempPlayer.canFire = true;
+			tempPlayer.canRecharge = true;
 			tempPlayer.weapons.Clear ();
 			players [i].SetActive (true);
 			players [i].GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, 0);

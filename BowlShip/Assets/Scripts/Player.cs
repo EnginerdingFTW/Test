@@ -47,8 +47,7 @@ public class Player : MonoBehaviour {
 	public int shieldCharge = 1;						//How much the shield charges each cycle
 	public float shieldChargeRate = 1.0f;				//How fast the shield will recharge
 	public int speedShieldChargeAdjustment = 1;			//Used to change how fast the shield recharges based on speed
-
-	private bool canRecharge = true;					//Stops too many threads being instantiated with shieldRecharge IENumerator
+	public bool canRecharge = true;						//Stops too many threads being instantiated with shieldRecharge IENumerator
 
 	//Audio
 	public AudioClip damaged;							//The sound clip to be played when the ship takes damage

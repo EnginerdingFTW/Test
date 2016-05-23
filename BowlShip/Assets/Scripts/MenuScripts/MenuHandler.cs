@@ -34,4 +34,12 @@ public class MenuHandler : MonoBehaviour {
 		sc.setScore ((int) scoreToWin.value);
 		scoreToWinText.text = "" + ((int)scoreToWin.value);
 	}
+
+	public void ToggleThrust () {
+		Player.toggleThrust();
+	}
+
+	public void ToggleShieldRecharge () {
+		Player.toggleShieldRecharge();
+	}
 }

@@ -122,6 +122,7 @@ public class GameController : MonoBehaviour {
 
 	/// <summary>
 	/// Checks if the round has ended each time a player is defeated. If a player has reached the maxScore, Show Victory Screen.
+	/// Destroy any leftover objects from previous round, like asteroids or weaponFire.
 	/// </summary>
 	/// <param name="playerNum">Defeated Player's number.</param>
 	public void CheckEnd (int playerNum) {
@@ -140,6 +141,11 @@ public class GameController : MonoBehaviour {
 			asteroidTime = false;
 
 			asteroids = GameObject.FindGameObjectsWithTag ("Asteroid");
+			for (int i = 0; i < asteroids.Length; i++) {
+				Destroy (asteroids [i]);
+			}
+
+			asteroids = GameObject.FindGameObjectsWithTag ("WeaponFire");		//piggy back off asteroids variable to also destroy all weaponfire
 			for (int i = 0; i < asteroids.Length; i++) {
 				Destroy (asteroids [i]);
 			}

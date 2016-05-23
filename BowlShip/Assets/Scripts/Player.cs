@@ -40,6 +40,16 @@ public class Player : MonoBehaviour {
 	public GameObject dualLaserInstatiationPoint1;		//Where the left laser is fired from
 	public GameObject dualLaserInstatiationPoint2;		//Where the right laser is fired from
 
+	//May 23rd Thrust Update
+	public float thrust = 1.0f;							//The trigger movement input
+	public static bool useThrust = true;				//Allows us to experiment with and without 2nd trigger as gas pedal
+	public static bool useShieldRecharge = true;		//Allows us to experiment with shield recharge based on movement
+	public int shieldCharge = 1;						//How much the shield charges each cycle
+	public float shieldChargeRate = 1.0f;				//How fast the shield will recharge
+	public int speedShieldChargeAdjustment = 1;			//Used to change how fast the shield recharges based on speed
+
+	private bool canRecharge = true;					//Stops too many threads being instantiated with shieldRecharge IENumerator
+
 	//Audio
 	public AudioClip damaged;							//The sound clip to be played when the ship takes damage
 	private AudioSource audioSource;					//The audioSource used to play our soundclips
@@ -80,14 +90,40 @@ public class Player : MonoBehaviour {
 			//Linear Movement
 			horiz = Input.GetAxis ("Horizontal" + playerNum.ToString ()) * speed;
 			vert = Input.GetAxis ("Vertical" + playerNum.ToString ()) * speed;
-			movement = new Vector2 (horiz, vert);
-			rb.AddForce (movement);
+			if (!useThrust) {
+				movement = new Vector2 (horiz, vert);
+				rb.AddForce (movement);
+			}
 
 			//Angular Movement
 			if (Mathf.Abs(horiz) > minInput || Mathf.Abs(vert) > minInput) {
 				float angle = Mathf.Atan2 (vert, horiz) * Mathf.Rad2Deg + 90;
 				transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.AngleAxis (angle, Vector3.forward), Time.deltaTime * rotationSpeed);
 			} 
+
+			//Thrust Adjustment
+			if (useThrust) {
+				thrust = Input.GetAxis ("Thrust" + playerNum.ToString ());
+				if (thrust < 0) {
+					thrust += 1;
+				}
+				if (thrust <= 0.1) {
+					man0Drag = 0;
+					man1Drag = 0;
+					man2Drag = 0;
+				} else {
+					man0Drag = 1;
+					man1Drag = 1;
+					man2Drag = 1;
+				}
+				movement = new Vector2 (horiz * thrust, vert * thrust);
+				rb.AddForce (movement);
+			}
+
+			//Shield Recharge Adjustment
+			if (useShieldRecharge && canRecharge) {
+				StartCoroutine ("ShieldRecharge", shieldChargeRate);
+			}
 
 			//Shooting
 			if (canFire && Input.GetButton ("Fire" + playerNum.ToString ())) {
@@ -252,6 +288,17 @@ public class Player : MonoBehaviour {
 		poweredOn = true;
 	}
 
+	public IEnumerator ShieldRecharge (float rechargeRate) {
+		canRecharge = false;
+		shield += shieldCharge * (int)(rb.velocity.magnitude / speedShieldChargeAdjustment);
+		if (shield > maxShield) {
+			shield = maxShield;
+		}
+		shieldSlider.value = shield;
+		yield return new WaitForSeconds (rechargeRate);
+		canRecharge = true;
+	}
+
 	/// <summary>
 	/// Assigns the HUD. This function is utilized by the GameController to assign each player their HUD before the game starts.
 	/// </summary>
@@ -260,5 +307,19 @@ public class Player : MonoBehaviour {
 	public void AssignHUD (Slider healthS, Slider shieldS) {
 		this.healthSlider = healthS;
 		this.shieldSlider = shieldS;
+	}
+
+	/// <summary>
+	/// Toggles the use of thrust, used by options menu
+	/// </summary>
+	public static void toggleThrust () {
+		useThrust = !useThrust;
+	}
+
+	/// <summary>
+	/// Toggles the use of shield recharging, used by options menu
+	/// </summary>
+	public static void toggleShieldRecharge () {
+		useShieldRecharge = !useShieldRecharge;
 	}
 }

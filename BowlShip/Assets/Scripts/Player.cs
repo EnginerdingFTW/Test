@@ -100,23 +100,36 @@ public class Player : MonoBehaviour {
 				transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.AngleAxis (angle, Vector3.forward), Time.deltaTime * rotationSpeed);
 			} 
 
-			//Thrust Adjustment
+//			//Old Thrust Adjustment
+//			if (useThrust) {
+//				thrust = Input.GetAxis ("Thrust" + playerNum.ToString ());
+//				if (thrust < 0) {
+//					thrust += 1;
+//				}
+//				if (thrust <= 0.1) {
+//					man0Drag = 0;
+//					man1Drag = 0;
+//					man2Drag = 0;
+//				} else {
+//					man0Drag = 1;
+//					man1Drag = 1;
+//					man2Drag = 1;
+//				}
+//				movement = new Vector2 (horiz * thrust, vert * thrust);
+//				rb.AddForce (movement);
+//			}
+
+			//New Thrust Adjustment (drift)
 			if (useThrust) {
 				thrust = Input.GetAxis ("Thrust" + playerNum.ToString ());
 				if (thrust < 0) {
-					thrust += 1;
-				}
-				if (thrust <= 0.1) {
+					movement = new Vector2 (horiz, vert);
+					rb.AddForce (movement);
+				} else {
 					man0Drag = 0;
 					man1Drag = 0;
 					man2Drag = 0;
-				} else {
-					man0Drag = 1;
-					man1Drag = 1;
-					man2Drag = 1;
 				}
-				movement = new Vector2 (horiz * thrust, vert * thrust);
-				rb.AddForce (movement);
 			}
 
 			//Shield Recharge Adjustment

@@ -21,10 +21,23 @@ public class GameController : MonoBehaviour {
 	public float AsteroidSpawnSpeed = 5.0f;								//How fast the asteroids move on spawn
 	//public float AsteroidSpawnSpeedRatio = 0.33f;
 
-	public int defaultPlayerHealth = 100;								//The default health and
-	public int defaultPlayerShields = 100;								//shields to reset a player with
+	//UI Elements
 	public Slider[] healthSliders;										//The HUD sliders that must be assigned to players
 	public Slider[] shieldSliders;										//^^^same but for shields^^^
+	public GameObject roundStarter;										//The UI Message that displays the round countdown between rounds
+	public Sprite roundReady;											//The UI Sprite to start a round
+	public Sprite roundGo;												//The UI Sprite to initialize combat
+	public Text roundWaitText;											//The text saying to wait or go
+	public Text roundNumberText;										//The text displaying how much time is left till the next round
+	public GameObject roundFire;										//The fire prefab with the Commence logo
+	public string roundWaitString = "Next Round\nBegins In...";			//The text to be displayed when a round begins
+	public string roundBeginString = "Commence\nBOWLSHIP";				//The text to be displayed when a round begins
+	public float roundMoveAwaySpeed = 10.0f;							//The speed at which the GO icon moves off the screen
+	public float roundDestroyTime = 3.0f;								//How soon after a match begins does the icon disappear
+	private Rigidbody2D roundStarterRB;									//The rigidbody for the roundStarter Icon
+
+	public int defaultPlayerHealth = 100;								//The default health and
+	public int defaultPlayerShields = 100;								//shields to reset a player with
 
 	private bool asteroidTime = true;									//spawn Asteroids
 	public int maxScore;												//the score needed to win the game
@@ -42,6 +55,7 @@ public class GameController : MonoBehaviour {
 		numPlayers = sceneController.numPlayers;
 		players = new GameObject[numPlayers];
 		maxScore = sceneController.score;
+		roundStarterRB = roundStarter.GetComponent<Rigidbody2D> ();
 		scores = new int[numPlayers];
 		for (int i = 0; i < numPlayers; i++) {
 			players [i] = Instantiate (sceneController.playerShips [i]);
@@ -178,8 +192,15 @@ public class GameController : MonoBehaviour {
 	IEnumerator BeginNextRound () {
 		Player tempPlayer;										//temporary instance variable to save memory
 
-		yield return new WaitForSeconds (1.0f);					//Moment to breathe and check who won
+		yield return new WaitForSeconds (1.0f);					//moment to breathe and make sure all ships have gone through their destroy sequence
 		Debug.Log ("Next Round Begins in");
+		roundWaitText.text = roundWaitString;
+		roundFire.SetActive (false);
+		roundStarterRB.velocity = new Vector3 (0, 0, 0);
+		roundStarter.transform.position = new Vector3(0, 0, 0);
+		roundStarter.GetComponent<Image>().sprite = roundReady;
+		roundStarter.SetActive(true);
+	
 		numPlayers = 0;
 		for (int i = 0; i < players.Length; i++) {
 			numPlayers++;
@@ -203,16 +224,26 @@ public class GameController : MonoBehaviour {
 
 		yield return new WaitForSeconds (1.0f);
 		Debug.Log ("5");
+		roundNumberText.text = "5";
 		yield return new WaitForSeconds (1.0f);
 		Debug.Log ("4");
+		roundNumberText.text = "4";
 		yield return new WaitForSeconds (1.0f);
 		Debug.Log ("3");
+		roundNumberText.text = "3";
 		yield return new WaitForSeconds (1.0f);
 		Debug.Log ("2");
+		roundNumberText.text = "2";
 		yield return new WaitForSeconds (1.0f);
 		Debug.Log ("1");
+		roundNumberText.text = "1";
 		yield return new WaitForSeconds (1.0f);
 		Debug.Log ("GO!");
+		roundStarter.GetComponent<Image> ().sprite = roundGo;
+		roundWaitText.text = roundBeginString;
+		roundNumberText.text = "!!!";
+		roundFire.SetActive (true);
+		roundStarterRB.velocity = new Vector3 (roundMoveAwaySpeed, 0, 0);
 
 		for (int i = 0; i < players.Length; i++) {				//Activate players for next Round!
 			players[i].GetComponent<Player>().poweredOn = true;
@@ -221,5 +252,8 @@ public class GameController : MonoBehaviour {
 		if (useAsteroids) {
 			StartCoroutine ("spawnAsteroids");
 		}
+
+		yield return new WaitForSeconds (roundDestroyTime);
+		roundStarter.SetActive (false);
 	}
 }

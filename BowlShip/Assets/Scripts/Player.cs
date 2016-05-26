@@ -122,7 +122,7 @@ public class Player : MonoBehaviour {
 			//New Thrust Adjustment (drift)
 			if (useThrust) {
 				thrust = Input.GetAxis ("Thrust" + playerNum.ToString ());
-				if (thrust < 0) {
+				if (thrust <= 0) {
 					movement = new Vector2 (horiz, vert);
 					rb.AddForce (movement);
 				} else {

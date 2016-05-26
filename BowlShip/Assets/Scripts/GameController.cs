@@ -5,14 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
+	public GameObject sceneCamera;										//The camera of the scene, used to set the final audio
+	public GameObject trophy;											//The trophy to spawn for the winner to play with
 	public GameObject[] powerups;										//the total list of spawnable powerups
 	public GameObject[] spawnPoints;									//a list of gameObjects with positions to spawn players at
 	public GameObject outerBoundary;									//the boundary to destroy faraway objects
 	public GameObject innerBoundary;									//the boundary wrapped around the screen
 	public GameObject bigAsteroid;										//the big Asteroid to be instantiated
 	public GameObject smallAsteroid;									//the small Asteroid to be instantiated
-	public AudioClip destroyed;											//The sound clip to be played when a player is destroyed
-	private AudioSource audioSource;									//The audioSource used to play our soundclips
 	public int gameMode;												//The int number corresponding to each gameMode
 	public int numPlayers; 												//The number of players remaining
 	public bool useAsteroids = true;									//Should Asteroids be spawned?
@@ -21,9 +21,20 @@ public class GameController : MonoBehaviour {
 	public float AsteroidSpawnSpeed = 5.0f;								//How fast the asteroids move on spawn
 	//public float AsteroidSpawnSpeedRatio = 0.33f;
 
+	//Audio Elements
+	public AudioClip destroyed;											//The sound clip to be played when a player is destroyed
+	public AudioClip victoryJingle;										//The sound clip to be played when a player has won
+	public AudioClip victoryOver;										//The sound clip to be played when the game is over
+	private AudioSource audioSource;									//The audioSource used to play our soundclips
+
 	//UI Elements
+	public GameObject gameOverScreen;									//The menu to show asking for a rematch or return to menu
+	public Button gameOverDefault;										//The default button to select when showing the gameOverScreen
 	public Slider[] healthSliders;										//The HUD sliders that must be assigned to players
 	public Slider[] shieldSliders;										//^^^same but for shields^^^
+	public GameObject victoryIcon;										//The Icon that shows up when a player won a round
+	public Vector3 victoryPosition;										//The position to instantiate a copied winner for a victorious round.
+	public float victoryWaitTime = 1.5f;								//The time to wait to show round winner
 	public GameObject roundStarter;										//The UI Message that displays the round countdown between rounds
 	public Sprite roundReady;											//The UI Sprite to start a round
 	public Sprite roundGo;												//The UI Sprite to initialize combat
@@ -39,6 +50,7 @@ public class GameController : MonoBehaviour {
 	public int defaultPlayerHealth = 100;								//The default health and
 	public int defaultPlayerShields = 100;								//shields to reset a player with
 
+	private bool gameOver = false;										//Is the game over? 
 	private bool asteroidTime = true;									//spawn Asteroids
 	public int maxScore;												//the score needed to win the game
 	private GameObject[] players;										//a list of the prefabs each player is controlling
@@ -169,19 +181,28 @@ public class GameController : MonoBehaviour {
 					scores [i]++;
 					isDraw = false;						//Should never come to a draw, unless both players are defeated in the EXACT same frame
 					Debug.Log ("The winner of the round is: Player " + (i + 1).ToString() + " Score: " + scores[i].ToString());
+
+					//Victory Screen
+					sceneCamera.GetComponent<AudioSource>().volume = 0;
+					audioSource.PlayOneShot(victoryJingle);
+					victoryIcon.SetActive (true);
+					GameObject playerIcon = (GameObject) Instantiate (players [i], victoryPosition, Quaternion.identity);
+					playerIcon.GetComponent<Player> ().canFire = false;
+					players [i].SetActive (false);
+					StartCoroutine ("ShowVictoryScreens", playerIcon);
 				}
 			}
 			if (isDraw) {
 				Debug.Log ("It's a draw!");
+				roundWaitText.text = "DRAW!";
+				StartCoroutine ("BeginNextRound");				//if no one has won the game, begin the next round
 			}
 			for (int i = 0; i < scores.Length; i++) {
 				if (scores[i] >= maxScore) {
 					Debug.Log ("The winner of the GAME is: Player " + (i + 1).ToString() + " Score: " + scores[i].ToString());
-					sceneController.numPlayers = 0;
-					SceneManager.LoadScene ("Menu");		//To be replaced with Victory Screen
+					gameOver = true;
 				}
 			}
-			StartCoroutine ("BeginNextRound");				//if no one has won the game, begin the next round
 		}
 	}
 
@@ -192,7 +213,7 @@ public class GameController : MonoBehaviour {
 	IEnumerator BeginNextRound () {
 		Player tempPlayer;										//temporary instance variable to save memory
 
-		yield return new WaitForSeconds (1.0f);					//moment to breathe and make sure all ships have gone through their destroy sequence
+//		yield return new WaitForSeconds (1.0f);					//moment to breathe and make sure all ships have gone through their destroy sequence
 		Debug.Log ("Next Round Begins in");
 		roundWaitText.text = roundWaitString;
 		roundFire.SetActive (false);
@@ -238,6 +259,7 @@ public class GameController : MonoBehaviour {
 		Debug.Log ("1");
 		roundNumberText.text = "1";
 		yield return new WaitForSeconds (1.0f);
+		victoryIcon.SetActive (false);
 		Debug.Log ("GO!");
 		roundStarter.GetComponent<Image> ().sprite = roundGo;
 		roundWaitText.text = roundBeginString;
@@ -255,5 +277,42 @@ public class GameController : MonoBehaviour {
 
 		yield return new WaitForSeconds (roundDestroyTime);
 		roundStarter.SetActive (false);
+	}
+
+	/// <summary>
+	/// Called every time a round ends, first shows the victory screen, then proceeds to either begin the next round or display the gameOverScreen.
+	/// </summary>
+	/// <returns>The time to wait in order to appreciate the winner.</returns>
+	/// <param name="winner">The winning player inside the win circle.</param>
+	IEnumerator ShowVictoryScreens (GameObject winner) {
+		yield return new WaitForSeconds (victoryWaitTime);
+		sceneCamera.GetComponent<AudioSource>().volume = sceneController.musicLevel;
+		if (!gameOver) {
+			Destroy (winner, 5.0f);
+			StartCoroutine ("BeginNextRound");				//if no one has won the game, begin the next round
+		} else {
+			sceneCamera.GetComponent<AudioSource> ().clip = victoryOver;
+			sceneCamera.GetComponent<AudioSource> ().Play();
+			Instantiate (trophy, new Vector3 (0, 0, 0), Quaternion.identity);
+			victoryIcon.SetActive (false);
+			winner.GetComponent<Player> ().canFire = true;
+			gameOverScreen.SetActive (true);
+			gameOverDefault.Select ();
+		}
+	}
+
+	/// <summary>
+	/// Used by the Game Over Screen to start the same scene again.
+	/// </summary>
+	public void Rematch () {
+		SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
+	}
+
+	/// <summary>
+	/// Used by the Game Over Screen to start boot up the main menu.
+	/// </summary>
+	public void MainMenu () {
+		sceneController.numPlayers = 0;
+		SceneManager.LoadScene ("Menu");
 	}
 }

@@ -1,0 +1,144 @@
+fileFormatVersion: 2
+guid: 362ea25333f4c4f16b43890750683e98
+timeCreated: 1464292977
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: ScoreBox_0
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: ScoreBox_0
+      rect:
+        serializedVersion: 2
+        x: 241
+        y: 69
+        width: 524
+        height: 579
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 9, y: 202.5}
+        - {x: 8, y: 203.5}
+        - {x: -4, y: 203.5}
+        - {x: -5, y: 204.5}
+        - {x: -17, y: 204.5}
+        - {x: -18, y: 205.5}
+        - {x: -29, y: 205.5}
+        - {x: -30, y: 206.5}
+        - {x: -42, y: 206.5}
+        - {x: -43, y: 207.5}
+        - {x: -55, y: 207.5}
+        - {x: -56, y: 208.5}
+        - {x: -65, y: 209.5}
+        - {x: -80, y: 212.5}
+        - {x: -89, y: 213.5}
+        - {x: -90, y: 214.5}
+        - {x: -94, y: 215.5}
+        - {x: -109, y: 218.5}
+        - {x: -118, y: 220.5}
+        - {x: -124, y: 222.5}
+        - {x: -131, y: 224.5}
+        - {x: -137, y: 226.5}
+        - {x: -144, y: 228.5}
+        - {x: -150, y: 230.5}
+        - {x: -160, y: 233.5}
+        - {x: -166, y: 235.5}
+        - {x: -170, y: 236.5}
+        - {x: -175, y: 237.5}
+        - {x: -190, y: 245.5}
+        - {x: -192, y: 245.5}
+        - {x: -211, y: 255.5}
+        - {x: -213, y: 257.5}
+        - {x: -222, y: 262.5}
+        - {x: -226, y: 265.5}
+        - {x: -236, y: 271.5}
+        - {x: -240, y: 273.5}
+        - {x: -245, y: 279.5}
+        - {x: -254, y: 289.5}
+        - {x: -261, y: 289.5}
+        - {x: -262, y: 288.5}
+        - {x: -262, y: -220.5}
+        - {x: -260, y: -222.5}
+        - {x: 11, y: -222.5}
+        - {x: 12, y: -223.5}
+        - {x: 23, y: -223.5}
+        - {x: 24, y: -224.5}
+        - {x: 35, y: -224.5}
+        - {x: 36, y: -225.5}
+        - {x: 47, y: -225.5}
+        - {x: 48, y: -226.5}
+        - {x: 56, y: -226.5}
+        - {x: 57, y: -227.5}
+        - {x: 71, y: -229.5}
+        - {x: 84, y: -230.5}
+        - {x: 85, y: -231.5}
+        - {x: 91, y: -232.5}
+        - {x: 105, y: -234.5}
+        - {x: 118, y: -235.5}
+        - {x: 119, y: -236.5}
+        - {x: 124, y: -237.5}
+        - {x: 164, y: -247.5}
+        - {x: 171, y: -248.5}
+        - {x: 174, y: -250.5}
+        - {x: 190, y: -256.5}
+        - {x: 195, y: -258.5}
+        - {x: 200, y: -259.5}
+        - {x: 208, y: -263.5}
+        - {x: 216, y: -266.5}
+        - {x: 221, y: -267.5}
+        - {x: 229, y: -272.5}
+        - {x: 247, y: -284.5}
+        - {x: 254, y: -289.5}
+        - {x: 262, y: -289.5}
+        - {x: 262, y: 201.5}
+        - {x: 261, y: 202.5}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

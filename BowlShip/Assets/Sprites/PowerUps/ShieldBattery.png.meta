@@ -1,9 +1,10 @@
 fileFormatVersion: 2
-guid: 87db02c5e3a3a4a8e83cd0b20550b7e7
-timeCreated: 1458181442
+guid: 75ff1582e5c194e2694d1a3483e77b65
+timeCreated: 1464808597
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: ShieldBattery_0
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -30,7 +31,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     filterMode: -1
-    aniso: -1
+    aniso: 16
     mipBias: -1
     wrapMode: 1
   nPOTScale: 0
@@ -38,7 +39,7 @@ TextureImporter:
   rGBM: 0
   compressionQuality: 50
   allowsAlphaSplitting: 0
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -49,7 +50,26 @@ TextureImporter:
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: ShieldBattery_0
+      rect:
+        serializedVersion: 2
+        x: 236
+        y: 65
+        width: 133
+        height: 255
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 24.5, y: 127.5}
+        - {x: -27.5, y: 127.5}
+        - {x: -27.5, y: 122.5}
+        - {x: -66.5, y: 122.5}
+        - {x: -66.5, y: -127.5}
+        - {x: 66.5, y: -127.5}
+        - {x: 66.5, y: 122.5}
+        - {x: 24.5, y: 122.5}
     outline: []
   spritePackingTag: 
   userData: 

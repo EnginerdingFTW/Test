@@ -1,9 +1,10 @@
 fileFormatVersion: 2
-guid: cfc4ce8a47d4744fb94800977522121c
-timeCreated: 1458181677
+guid: efbc06b9f190141b3b06651105d6bd98
+timeCreated: 1464808529
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: BasicLaserIcon_0
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -30,7 +31,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     filterMode: -1
-    aniso: -1
+    aniso: 16
     mipBias: -1
     wrapMode: 1
   nPOTScale: 0
@@ -38,7 +39,7 @@ TextureImporter:
   rGBM: 0
   compressionQuality: 50
   allowsAlphaSplitting: 0
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -49,7 +50,22 @@ TextureImporter:
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: BasicLaserIcon_0
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 15
+        width: 633
+        height: 568
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -316.5, y: 284}
+        - {x: -316.5, y: -284}
+        - {x: 316.5, y: -284}
+        - {x: 316.5, y: 284}
     outline: []
   spritePackingTag: 
   userData: 

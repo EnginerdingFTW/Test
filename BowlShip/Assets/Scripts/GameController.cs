@@ -32,6 +32,11 @@ public class GameController : MonoBehaviour {
 	public Button gameOverDefault;										//The default button to select when showing the gameOverScreen
 	public Slider[] healthSliders;										//The HUD sliders that must be assigned to players
 	public Slider[] shieldSliders;										//^^^same but for shields^^^
+	public GameObject[] playerIcons;									//A list of all player icons to be displayed in the HUD
+	public GameObject[] weaponIcons;									//A list of all player's weapon icons to be displayed in the HUD
+	public GameObject[] scoreBoxs;										//A list of all player's score icons to be displayed in the HUD
+	public GameObject[] chargeIndicators;								//A list of all player's charge/stun icons to be displayed in the HUD
+	public GameObject[] barIcons;										//All the icons that make health/shield look nice
 	public GameObject victoryIcon;										//The Icon that shows up when a player won a round
 	public Vector3 victoryPosition;										//The position to instantiate a copied winner for a victorious round.
 	public float victoryWaitTime = 1.5f;								//The time to wait to show round winner
@@ -46,6 +51,7 @@ public class GameController : MonoBehaviour {
 	public float roundMoveAwaySpeed = 10.0f;							//The speed at which the GO icon moves off the screen
 	public float roundDestroyTime = 3.0f;								//How soon after a match begins does the icon disappear
 	private Rigidbody2D roundStarterRB;									//The rigidbody for the roundStarter Icon
+	private Text[] scoreBoxTexts;										//A list of all the text fields for the scoreboxs
 
 	public int defaultPlayerHealth = 100;								//The default health and
 	public int defaultPlayerShields = 100;								//shields to reset a player with
@@ -69,15 +75,16 @@ public class GameController : MonoBehaviour {
 		maxScore = sceneController.score;
 		roundStarterRB = roundStarter.GetComponent<Rigidbody2D> ();
 		scores = new int[numPlayers];
+		scoreBoxTexts = new Text[numPlayers];
 		for (int i = 0; i < numPlayers; i++) {
 			players [i] = Instantiate (sceneController.playerShips [i]);
-			players [i].GetComponent<Player> ().AssignHUD (healthSliders [i], shieldSliders [i]);  				//assigns the player their health HUD
+			players [i].GetComponent<Player> ().AssignHUD (healthSliders [i], shieldSliders [i], chargeIndicators[i], weaponIcons[i], playerIcons[i]);  				//assigns the player their HUD
 			players [i].GetComponent<Player> ().playerNum = sceneController.playerNumArray[i];
-			healthSliders [i].gameObject.SetActive (true);
-			shieldSliders [i].gameObject.SetActive (true);
+			ActivatePlayerHUD (i);
 			healthSliders [i].value = defaultPlayerHealth;
 			shieldSliders [i].value = defaultPlayerShields;
 			players [i].SetActive (false);
+			scoreBoxTexts [i] = scoreBoxs [i].GetComponentInChildren<Text> ();
 		}
 		StartCoroutine ("BeginNextRound");
 	}
@@ -153,16 +160,16 @@ public class GameController : MonoBehaviour {
 	/// <param name="playerNum">Defeated Player's number.</param>
 	public void CheckEnd (int playerNum) {
 		//Instance Variables to save memory
-		//int playerThatWon;							//the winning player of the round, used for Victory Screen?
+		int playerThatWasDefeated;						//the player that just died
 		bool isDraw = true;								//was this round a draw?
 		GameObject[] asteroids;							//list of all leftover asteroids to destroy
 
+		playerThatWasDefeated = FindPlayerJustDefeated (playerNum);
 		audioSource.PlayOneShot (destroyed);
-		healthSliders [playerNum - 1].gameObject.SetActive (false);
-		shieldSliders [playerNum - 1].gameObject.SetActive (false);
+		DeactivatePlayerHUD (playerThatWasDefeated);
 
 		numPlayers--;
-		Debug.Log ("Player " + playerNum.ToString() + " Defeated!");
+		Debug.Log ("Player " + playerThatWasDefeated.ToString() + " Defeated!");
 		if (numPlayers < 2) {
 			asteroidTime = false;
 
@@ -179,6 +186,7 @@ public class GameController : MonoBehaviour {
 			for (int i = 0; i < players.Length; i++) {
 				if (!players [i].GetComponent<Player>().defeated) {
 					scores [i]++;
+					scoreBoxTexts [i].text = scores [i].ToString();
 					isDraw = false;						//Should never come to a draw, unless both players are defeated in the EXACT same frame
 					Debug.Log ("The winner of the round is: Player " + (i + 1).ToString() + " Score: " + scores[i].ToString());
 
@@ -231,16 +239,15 @@ public class GameController : MonoBehaviour {
 			tempPlayer.poweredOn = false;
 			tempPlayer.defeated = false;
 			tempPlayer.health = 100;
-			tempPlayer.shield = 100;
+			tempPlayer.shield = 20;
 			tempPlayer.canFire = true;
 			tempPlayer.canRecharge = true;
 			tempPlayer.weapons.Clear ();
 			players [i].SetActive (true);
 			players [i].GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, 0);
 			healthSliders [i].value = 100;
-			shieldSliders [i].value = 100;
-			healthSliders [i].gameObject.SetActive (true);
-			shieldSliders [i].gameObject.SetActive (true);
+			shieldSliders [i].value = 20;
+			ActivatePlayerHUD (i);
 		}
 
 		yield return new WaitForSeconds (1.0f);
@@ -299,6 +306,47 @@ public class GameController : MonoBehaviour {
 			gameOverScreen.SetActive (true);
 			gameOverDefault.Select ();
 		}
+	}
+
+	/// <summary>
+	/// Used by Start and BeginRound functions to set true the proper UI elements
+	/// </summary>
+	/// <param name="player">Player.</param>
+	void ActivatePlayerHUD (int player) {
+		healthSliders [player].gameObject.SetActive (true);
+		shieldSliders [player].gameObject.SetActive (true);
+		playerIcons [player].SetActive (true);
+		weaponIcons [player].SetActive (true);
+		scoreBoxs [player].SetActive (true);
+		chargeIndicators [player].SetActive (true);
+		barIcons [player].SetActive (true);
+	}
+
+	/// <summary>
+	/// Used by the CheckEnd function to set false the proper UI elements
+	/// </summary>
+	/// <param name="playerDefeated">Player defeated.</param>
+	void DeactivatePlayerHUD (int playerDefeated) {
+		healthSliders [playerDefeated].gameObject.SetActive (false);
+		shieldSliders [playerDefeated].gameObject.SetActive (false);
+		playerIcons [playerDefeated].SetActive (false);
+		weaponIcons [playerDefeated].SetActive (false);
+		scoreBoxs [playerDefeated].SetActive (false);
+		chargeIndicators [playerDefeated].SetActive (false);
+		barIcons [playerDefeated].SetActive (false);
+	}
+
+	/// <summary>
+	/// Used by the CheckEnd function to find which player actually was defeated, from what controller was used.
+	/// </summary>
+	/// <param name="playerNum">Player number.</param>
+	int FindPlayerJustDefeated (int playerNum) {
+		for (int i = 0; i < numPlayers; i++) {
+			if (playerNum == sceneController.playerNumArray [i]) {
+				return i;
+			}
+		}
+		return -1;	//error, should never get here
 	}
 
 	/// <summary>

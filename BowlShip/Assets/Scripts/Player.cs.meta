@@ -1,10 +1,23 @@
 fileFormatVersion: 2
 guid: 16acf55c53b5c47c99813467d3a156b6
-timeCreated: 1458109968
+timeCreated: 1464811963
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - defaultLaser: {fileID: 168602, guid: 9c9965b6dd7cc4343997d30a6630c87d, type: 2}
+  - laserInstatiationPoint: {instanceID: 0}
+  - dualLaserInstatiationPoint1: {instanceID: 0}
+  - dualLaserInstatiationPoint2: {instanceID: 0}
+  - damaged: {fileID: 8300000, guid: bc734c598f888417a9f57ff0813717c2, type: 3}
+  - shipIcon: {instanceID: 0}
+  - defaultWeaponIcon: {fileID: 21300000, guid: efbc06b9f190141b3b06651105d6bd98,
+      type: 3}
+  - shieldSlider: {instanceID: 0}
+  - healthSlider: {instanceID: 0}
+  - playerIcon: {instanceID: 0}
+  - weaponIcon: {instanceID: 0}
+  - chargingIcon: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

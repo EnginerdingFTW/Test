@@ -40,9 +40,9 @@ public class Player : MonoBehaviour {
 	public GameObject dualLaserInstatiationPoint1;		//Where the left laser is fired from
 	public GameObject dualLaserInstatiationPoint2;		//Where the right laser is fired from
 
-	//May 23rd Thrust Update
+	//May 23rd Thrust Update, changed to drift
 	public float thrust = 1.0f;							//The trigger movement input
-	public static bool useThrust = true;				//Allows us to experiment with and without 2nd trigger as gas pedal
+	public static bool useThrust = true;				//Allows us to experiment with and without 2nd trigger as a drift
 	public static bool useShieldRecharge = true;		//Allows us to experiment with shield recharge based on movement
 	public int shieldCharge = 1;						//How much the shield charges each cycle
 	public float shieldChargeRate = 1.0f;				//How fast the shield will recharge
@@ -55,8 +55,15 @@ public class Player : MonoBehaviour {
 	public float volume = 0.5f;							//How loud all SFX from this script is
 
 	//HUD
+	public Sprite shipIcon;								//the ship to be assigned to the playerIcon
+	public Sprite defaultWeaponIcon;					//the default box to be assigned to the weaponIcon
 	public Slider shieldSlider;							//The HUD showing the amount of shield left on the player
 	public Slider healthSlider;							//The HUD showing the amount of health left on the player
+	public GameObject playerIcon;						//The Hud showing the player's ship, to differentiate who is who
+	public GameObject weaponIcon;						//the HUD showing which weapon the player currently has
+	public GameObject chargingIcon;						//the HUD showing if the shield is recharging or if the ship is stunned
+	private Animator chargingIconAnimator;				//the animator attached to the chargingIcon;
+	private Image weaponIconImage;						//the image of the weaponIcon gameObject
 
 	private GameController gc;							//The Match's logic center
 	private Weapon currentWeapon;						//The current Weapon the wielder has
@@ -123,6 +130,9 @@ public class Player : MonoBehaviour {
 			if (useThrust) {
 				thrust = Input.GetAxis ("Thrust" + playerNum.ToString ());
 				if (thrust <= 0) {
+					man0Drag = 1;
+					man1Drag = 1;
+					man2Drag = 1;
 					movement = new Vector2 (horiz, vert);
 					rb.AddForce (movement);
 				} else {
@@ -145,12 +155,14 @@ public class Player : MonoBehaviour {
 				if (weapons.Count == 0) {
 					fireRate = defaultFireRate;
 					laserObject = (GameObject) Instantiate (defaultLaser, laserInstatiationPoint.transform.position, transform.rotation);
+					weaponIconImage.sprite = defaultWeaponIcon;
 					laserObject.GetComponent<WeaponFire>().AttachPlayer (this.gameObject);
 					StartCoroutine ("RegulateWeaponFire");
 				} else {
 				
 					//power up weapon
 					currentWeapon = weapons [weapons.Count - 1];
+					weaponIconImage.sprite = currentWeapon.GetComponent<SpriteRenderer> ().sprite;
 					fireRate = currentWeapon.fireRate;
 					if (currentWeapon.isDual) {
 						laserObject = (GameObject) Instantiate (currentWeapon.laserType, dualLaserInstatiationPoint1.transform.position, transform.rotation);
@@ -296,18 +308,22 @@ public class Player : MonoBehaviour {
 	/// </summary>
 	/// <param name="stunTime">Stun time.</param>
 	public IEnumerator Stunned (float stunTime) {
+		chargingIconAnimator.SetBool ("Stunned", true);
 		yield return new WaitForSeconds (stunTime);
+		chargingIconAnimator.SetBool ("Stunned", false);
 		poweredOn = true;
 	}
 
 	public IEnumerator ShieldRecharge (float rechargeRate) {
 		canRecharge = false;
+		chargingIconAnimator.SetBool ("Charging", true);
 		shield += shieldCharge * (int)(rb.velocity.magnitude / speedShieldChargeAdjustment);
 		if (shield > maxShield) {
 			shield = maxShield;
 		}
 		shieldSlider.value = shield;
 		yield return new WaitForSeconds (rechargeRate);
+		chargingIconAnimator.SetBool ("Charging", false);
 		canRecharge = true;
 	}
 
@@ -316,9 +332,18 @@ public class Player : MonoBehaviour {
 	/// </summary>
 	/// <param name="healthS">Health s.</param>
 	/// <param name="shieldS">Shield s.</param>
-	public void AssignHUD (Slider healthS, Slider shieldS) {
+	/// <param name="chargingIcon">Charging icon.</param>
+	/// <param name="weaponIcon">Weapon icon.</param>
+	/// <param name="playerIcon">Player icon.</param>
+	public void AssignHUD (Slider healthS, Slider shieldS, GameObject chargingIcon, GameObject weaponIcon, GameObject playerIcon) {
 		this.healthSlider = healthS;
 		this.shieldSlider = shieldS;
+		this.weaponIcon = weaponIcon;
+		weaponIconImage = this.weaponIcon.GetComponent<Image> ();
+		this.playerIcon = playerIcon;
+		this.playerIcon.GetComponentsInChildren<Image> ()[1].sprite = shipIcon;
+		this.chargingIcon = chargingIcon;
+		chargingIconAnimator = this.chargingIcon.GetComponent<Animator> ();
 	}
 
 	/// <summary>

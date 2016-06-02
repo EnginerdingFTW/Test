@@ -244,7 +244,7 @@ public class Player : MonoBehaviour {
 	public void Hurt (int damage) {
 		shield -= damage;
 		shieldSlider.value = shield;
-		audioSource.PlayOneShot(damaged, volume);
+		audioSource.PlayOneShot (damaged, volume);
 		if (shield <= 0) {
 			shieldSlider.value = 0;
 			health += shield;

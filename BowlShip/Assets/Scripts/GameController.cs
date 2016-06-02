@@ -30,6 +30,7 @@ public class GameController : MonoBehaviour {
 	//UI Elements
 	public GameObject gameOverScreen;									//The menu to show asking for a rematch or return to menu
 	public Button gameOverDefault;										//The default button to select when showing the gameOverScreen
+	public Color fullHealthC;											//The default color of health for a player
 	public Slider[] healthSliders;										//The HUD sliders that must be assigned to players
 	public Slider[] shieldSliders;										//^^^same but for shields^^^
 	public GameObject[] playerIcons;									//A list of all player icons to be displayed in the HUD
@@ -242,10 +243,12 @@ public class GameController : MonoBehaviour {
 			tempPlayer.shield = 20;
 			tempPlayer.canFire = true;
 			tempPlayer.canRecharge = true;
+			tempPlayer.man = 0;
 			tempPlayer.weapons.Clear ();
 			players [i].SetActive (true);
 			players [i].GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, 0);
 			healthSliders [i].value = 100;
+			healthSliders [i].GetComponentsInChildren<Image> () [1].color = fullHealthC;
 			shieldSliders [i].value = 20;
 			ActivatePlayerHUD (i);
 		}

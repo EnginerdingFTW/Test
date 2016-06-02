@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class Utility : Collectable {
@@ -20,8 +21,9 @@ public class Utility : Collectable {
 		{
 			this.pickedUp = true;
 			player = other.gameObject.GetComponent<Player> ();
-			player.shield += shieldCharge;
-			player.shieldSlider.value = player.shield;
+			player.health += shieldCharge;
+			player.healthSlider.value = player.health;
+			player.healthSlider.GetComponentsInChildren<Image> () [1].color = Color.cyan;
 			player.man += maneuverabilityChange;
 			this.GetComponent<Collider2D>().enabled = false;
 			this.GetComponent<SpriteRenderer>().enabled = false;

@@ -14,14 +14,15 @@ public class LaserMover : WeaponFire {
 		GetComponent<Rigidbody2D> ().velocity = transform.up * -laserSpeed;
 	}
 		
-	
+	/// <summary>
+	/// Destroy the laser on impact, apply damage if necessary.
+	/// </summary>
+	/// <param name="other">Other.</param>
 	void OnTriggerEnter2D(Collider2D other)	
 	{
-		if (hasShot && other.tag == "Player" && other.gameObject != shootingPlayer)
-		{
-			other.gameObject.GetComponent<Player>().Hurt(damage);	//apply damage
-			Destroy(this);
+		if (hasShot && other.tag == "Player" && other.gameObject != shootingPlayer) {
+			other.gameObject.GetComponent<Player> ().Hurt (damage);	//apply damage
+			Destroy (this.gameObject);
 		}
 	}
-
 }

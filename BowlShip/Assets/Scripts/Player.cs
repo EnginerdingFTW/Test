@@ -8,6 +8,7 @@ public class Player : MonoBehaviour {
 	public int playerNum;								//The player controlling this player
 	public int health = 100;							//How much health the ship has left (permanent damage)
 	public int shield = 100;							//How much shields the ship has (possible to recharge with powerups)
+	public int startingHealth = 100;					//The typical max health, unless given a powerup
 	public int maxShield = 100;							//The maximum amount of shields a ship can have
 	public float speed = 4.0f;							//How fast the ship can accelerate
 //	public float maxVelocity = 10.0f;					//The topSpeed of the ship, shouldn't need to use this
@@ -251,7 +252,7 @@ public class Player : MonoBehaviour {
 			healthSlider.value = health;
 
 			//change healthbar colors
-			if (health > highHealthThreshhold) {
+			if (health > highHealthThreshhold && health <= startingHealth) {
 				healthSlider.GetComponentsInChildren<Image> () [1].color = fullHealthC;
 			} else if (health > midHealthThreshhold && health <= highHealthThreshhold) {
 				healthSlider.GetComponentsInChildren<Image> () [1].color = midHealthC;

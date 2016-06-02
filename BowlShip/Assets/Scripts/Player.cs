@@ -57,6 +57,11 @@ public class Player : MonoBehaviour {
 	//HUD
 	public Sprite shipIcon;								//the ship to be assigned to the playerIcon
 	public Sprite defaultWeaponIcon;					//the default box to be assigned to the weaponIcon
+	public Color fullHealthC;							//The color of a full health bar
+	public int highHealthThreshhold = 60;				//The value of health when the health color changes to yellow
+	public Color midHealthC;							//The color of a mid health bar
+	public int midHealthThreshhold = 25;				//The value of health when the health color changes to red
+	public Color lowHealthC;							//The color of a low health bar
 	public Slider shieldSlider;							//The HUD showing the amount of shield left on the player
 	public Slider healthSlider;							//The HUD showing the amount of health left on the player
 	public GameObject playerIcon;						//The Hud showing the player's ship, to differentiate who is who
@@ -244,8 +249,18 @@ public class Player : MonoBehaviour {
 			shieldSlider.value = 0;
 			health += shield;
 			healthSlider.value = health;
+
+			//change healthbar colors
+			if (health > highHealthThreshhold) {
+				healthSlider.GetComponentsInChildren<Image> () [1].color = fullHealthC;
+			} else if (health > midHealthThreshhold && health <= highHealthThreshhold) {
+				healthSlider.GetComponentsInChildren<Image> () [1].color = midHealthC;
+			} else if (health <= midHealthThreshhold) {
+				healthSlider.GetComponentsInChildren<Image> () [1].color = lowHealthC;
+			}
 			if (health < 1) {
 				healthSlider.value = 0;
+				healthSlider.GetComponentsInChildren<Image> () [1].color = fullHealthC;
 				defeated = true;
 				if (gc == null) {
 					health = 100;

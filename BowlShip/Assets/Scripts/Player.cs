@@ -332,10 +332,11 @@ public class Player : MonoBehaviour {
 
 	public IEnumerator ShieldRecharge (float rechargeRate) {
 		canRecharge = false;
-		chargingIconAnimator.SetBool ("Charging", true);
 		shield += shieldCharge * (int)(rb.velocity.magnitude / speedShieldChargeAdjustment);
-		if (shield > maxShield) {
+		if (shield >= maxShield) {
 			shield = maxShield;
+		} else {
+			chargingIconAnimator.SetBool ("Charging", true);
 		}
 		shieldSlider.value = shield;
 		yield return new WaitForSeconds (rechargeRate);

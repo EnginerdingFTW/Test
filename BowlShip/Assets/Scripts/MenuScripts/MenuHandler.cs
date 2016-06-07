@@ -26,6 +26,10 @@ public class MenuHandler : MonoBehaviour {
 		SceneManager.LoadScene ("Asteroids");
 	}
 
+	public void PlayWalls () {
+		SceneManager.LoadScene ("Walls");
+	}
+
 	public void Quit () {
 		Application.Quit();
 	}

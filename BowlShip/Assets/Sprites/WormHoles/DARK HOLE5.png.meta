@@ -1,0 +1,112 @@
+fileFormatVersion: 2
+guid: eae3af3a6463341879a35cb193b8cca5
+timeCreated: 1465420493
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: DARK HOLE5_0
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: DARK HOLE5_0
+      rect:
+        serializedVersion: 2
+        x: 197
+        y: 189
+        width: 493
+        height: 376
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 224.5, y: 158}
+        - {x: 205.5, y: 186}
+        - {x: 194.5, y: 188}
+        - {x: 91.5, y: 188}
+        - {x: 73.5, y: 165}
+        - {x: 72.5, y: 149}
+        - {x: 130.5, y: 132}
+        - {x: 140.5, y: 92}
+        - {x: 179.5, y: 13}
+        - {x: 124.5, y: -110}
+        - {x: 47.5, y: -95}
+        - {x: -17.5, y: -94}
+        - {x: -68.5, y: -61}
+        - {x: -59.5, y: -13}
+        - {x: -51.5, y: 18}
+        - {x: -62.5, y: -33}
+        - {x: -10.5, y: -68}
+        - {x: 50.5, y: -69}
+        - {x: 105.5, y: -54}
+        - {x: 146.5, y: -13}
+        - {x: 120.5, y: 71}
+        - {x: 36.5, y: 144}
+        - {x: -162.5, y: 142}
+        - {x: -220.5, y: 92}
+        - {x: -246.5, y: 92}
+        - {x: -246.5, y: 4}
+        - {x: -234.5, y: -82}
+        - {x: -167.5, y: -125}
+        - {x: -167.5, y: -103}
+        - {x: -177.5, y: -53}
+        - {x: -154.5, y: 5}
+        - {x: -162.5, y: 36}
+        - {x: -130.5, y: 57}
+        - {x: -128.5, y: -29}
+        - {x: -144.5, y: -62}
+        - {x: -139.5, y: -92}
+        - {x: -30.5, y: -185}
+        - {x: -16.5, y: -188}
+        - {x: 99.5, y: -188}
+        - {x: 205.5, y: -177}
+        - {x: 233.5, y: -140}
+        - {x: 246.5, y: -5}
+        - {x: 246.5, y: 80}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

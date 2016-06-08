@@ -1,0 +1,99 @@
+fileFormatVersion: 2
+guid: c1f81492a18c5488298122826afb13b6
+timeCreated: 1465420518
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: DARK HOLE9_0
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: DARK HOLE9_0
+      rect:
+        serializedVersion: 2
+        x: 196
+        y: 180
+        width: 487
+        height: 330
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 26.5, y: 68}
+        - {x: -41.5, y: 18}
+        - {x: -48.5, y: -27}
+        - {x: -48.5, y: -67}
+        - {x: -10.5, y: -107}
+        - {x: 158.5, y: -101}
+        - {x: 243.5, y: -43}
+        - {x: 243.5, y: 65}
+        - {x: 231.5, y: 77}
+        - {x: 181.5, y: 86}
+        - {x: 178.5, y: 70}
+        - {x: 98.5, y: -20}
+        - {x: 98.5, y: 67}
+        - {x: 69.5, y: 144}
+        - {x: 32.5, y: 165}
+        - {x: -23.5, y: 165}
+        - {x: -72.5, y: 156}
+        - {x: -146.5, y: 139}
+        - {x: -163.5, y: 131}
+        - {x: -199.5, y: 110}
+        - {x: -222.5, y: 82}
+        - {x: -243.5, y: 22}
+        - {x: -243.5, y: -90}
+        - {x: -234.5, y: -133}
+        - {x: -183.5, y: -165}
+        - {x: -114.5, y: -165}
+        - {x: -107.5, y: -163}
+        - {x: -113.5, y: -127}
+        - {x: -154.5, y: -59}
+        - {x: -132.5, y: 30}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

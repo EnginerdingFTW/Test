@@ -3,6 +3,8 @@ using System.Collections;
 
 public class LightningWall : MonoBehaviour {
 
+	public int damage = 1;				//How much damage do the lightning walls do upon collision
+
 	private Animator anim;				//The animator this is attached to
 
 	/// <summary>
@@ -20,6 +22,8 @@ public class LightningWall : MonoBehaviour {
 		anim.SetTrigger ("Hit");
 		if (!coll.gameObject.tag.Equals ("Player")) {
 			Destroy (coll.gameObject);
+		} else {
+			coll.gameObject.GetComponent<Player> ().Hurt (damage);
 		}
 	}
 

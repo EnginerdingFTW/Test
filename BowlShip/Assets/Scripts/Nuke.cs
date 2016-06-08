@@ -19,7 +19,7 @@ public class Nuke : WeaponFire {
 		if (hasShot && other.gameObject != shootingPlayer && (other.tag == "Player" || other.tag == "Asteroid"))
 		{
 			Kaboom();
-			GetComponentInParent<ExplosionHelper>().exploded = true;
+			GetComponentInParent<ExplosionHelper> ().Explode ();
 			Destroy(this.gameObject, 0.1f);
 		}
 	}

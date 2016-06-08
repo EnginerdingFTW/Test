@@ -69,10 +69,10 @@ public class Player : MonoBehaviour {
 	public GameObject weaponIcon;						//the HUD showing which weapon the player currently has
 	public GameObject chargingIcon;						//the HUD showing if the shield is recharging or if the ship is stunned
 	private Animator chargingIconAnimator;				//the animator attached to the chargingIcon;
-	private Image weaponIconImage;						//the image of the weaponIcon gameObject
+	[HideInInspector] public Image weaponIconImage;		//the image of the weaponIcon gameObject
 
 	private GameController gc;							//The Match's logic center
-	private Weapon currentWeapon;						//The current Weapon the wielder has
+	[HideInInspector] public Weapon currentWeapon;		//The current Weapon the wielder has
 	private GameObject laserObject;						//The shot object that the Player shoots out, used to make sure Player can't shoot themselves
 	private float horiz;								//The horizontal movement input
 	private float vert;									//The vertical movement input

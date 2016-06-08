@@ -11,7 +11,7 @@ public class SceneController : MonoBehaviour {
 	public float musicLevel = 1.0f;								//The volume level of the music (1 - 1)
 	public float SFXLevel = 1.0f;								//The volume level of the Sound fx (1 - 1)
 	public GameObject[] playerShips;							//An array of the ships that the players have selected to use
-	public int[] playerNumArray;				//An array of PlayerNums that correspond to the playerShips array
+	public int[] playerNumArray;								//An array of PlayerNums that correspond to the playerShips array
 
 	public int score;											//A variable used to transfer a generic maxScore value to a specific gameMode
 
@@ -20,7 +20,7 @@ public class SceneController : MonoBehaviour {
 	/// </summary>
 	void Awake () {
 		DontDestroyOnLoad (this);
-		playerNumArray = new int[8];
+//		playerNumArray = new int[8];
 	}
 
 	/// <summary>

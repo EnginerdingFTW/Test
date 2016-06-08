@@ -57,6 +57,8 @@ public class GameController : MonoBehaviour {
 	public int defaultPlayerHealth = 100;								//The default health and
 	public int defaultPlayerShields = 100;								//shields to reset a player with
 
+	private bool roundOver = false;										//Is the round finished? Used to stop nuke glitch of 2 wins for one
+	private GameObject[] walls;											//All the walls in the scene
 	private bool gameOver = false;										//Is the game over? 
 	private bool asteroidTime = true;									//spawn Asteroids
 	public int maxScore;												//the score needed to win the game
@@ -77,6 +79,7 @@ public class GameController : MonoBehaviour {
 		roundStarterRB = roundStarter.GetComponent<Rigidbody2D> ();
 		scores = new int[numPlayers];
 		scoreBoxTexts = new Text[numPlayers];
+		walls = GameObject.FindGameObjectsWithTag ("Wall");
 		for (int i = 0; i < numPlayers; i++) {
 			players [i] = Instantiate (sceneController.playerShips [i]);
 			players [i].GetComponent<Player> ().AssignHUD (healthSliders [i], shieldSliders [i], chargeIndicators[i], weaponIcons[i], playerIcons[i]);  				//assigns the player their HUD
@@ -171,7 +174,8 @@ public class GameController : MonoBehaviour {
 
 		numPlayers--;
 		Debug.Log ("Player " + playerThatWasDefeated.ToString() + " Defeated!");
-		if (numPlayers < 2) {
+		if (!roundOver && numPlayers < 2) {
+			roundOver = true;
 			asteroidTime = false;
 
 			asteroids = GameObject.FindGameObjectsWithTag ("Asteroid");
@@ -182,6 +186,11 @@ public class GameController : MonoBehaviour {
 			asteroids = GameObject.FindGameObjectsWithTag ("WeaponFire");		//piggy back off asteroids variable to also destroy all weaponfire
 			for (int i = 0; i < asteroids.Length; i++) {
 				Destroy (asteroids [i]);
+			}
+
+			//walls = GameObject.FindGameObjectsWithTag ("Wall");					//disable all walls
+			for (int i = 0; i < walls.Length; i++) {
+				walls [i].SetActive (false);
 			}
 
 			for (int i = 0; i < players.Length; i++) {
@@ -277,6 +286,10 @@ public class GameController : MonoBehaviour {
 		roundFire.SetActive (true);
 		roundStarterRB.velocity = new Vector3 (roundMoveAwaySpeed, 0, 0);
 
+		for (int i = 0; i < walls.Length; i++) {				//Activate all the walls for the round
+			walls [i].SetActive(true);
+		}
+
 		for (int i = 0; i < players.Length; i++) {				//Activate players for next Round!
 			players[i].GetComponent<Player>().poweredOn = true;
 		}
@@ -296,6 +309,7 @@ public class GameController : MonoBehaviour {
 	/// <param name="winner">The winning player inside the win circle.</param>
 	IEnumerator ShowVictoryScreens (GameObject winner) {
 		yield return new WaitForSeconds (victoryWaitTime);
+		roundOver = false;
 		sceneCamera.GetComponent<AudioSource>().volume = sceneController.musicLevel;
 		if (!gameOver) {
 			Destroy (winner, 5.0f);
@@ -344,7 +358,7 @@ public class GameController : MonoBehaviour {
 	/// </summary>
 	/// <param name="playerNum">Player number.</param>
 	int FindPlayerJustDefeated (int playerNum) {
-		for (int i = 0; i < numPlayers; i++) {
+		for (int i = 0; i < sceneController.numPlayers; i++) {
 			if (playerNum == sceneController.playerNumArray [i]) {
 				return i;
 			}

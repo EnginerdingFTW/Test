@@ -30,6 +30,10 @@ public class MenuHandler : MonoBehaviour {
 		SceneManager.LoadScene ("Walls");
 	}
 
+	public void PlayRotation () {
+		SceneManager.LoadScene ("Rotation");
+	}
+
 	public void Quit () {
 		Application.Quit();
 	}

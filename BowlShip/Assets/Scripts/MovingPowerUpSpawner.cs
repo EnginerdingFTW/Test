@@ -3,27 +3,29 @@ using System.Collections;
 
 public class MovingPowerUpSpawner : MonoBehaviour {
 
+	//powerup spawn
 	public GameObject pusher;							//The pusher box attached to the spawner
 	public float timeTillSpawn = 8.0f;					//How much time until a powerup is spawned
 	public GameObject[] powerUps;						//One of the powerUps that can be spawned
+
+	private int powerUpToSpawn;							//The number associated with the spawned powerup
+
+	//Movement
 	public GameObject[] targets;						//Where the mover has to move to with NavAgent
 	public float proximatyToTarget = 0.2f;				//How close does the mover need to get to its target before moving on to the next one
 	public float proximatyAngle = 0.05f;				//How close does the angle have to be before moving
-
-	private Rigidbody2D rb;								//The rigidbody of this powerup spawner
-	private GameObject currentTarget;					//Where the mover is currently moving
-	private int targetNum;								//The current target's number identification
-	private int powerUpToSpawn;							//The number associated with the spawned powerup
-	private bool onTarget = false;						//Did the mover reach its intended target
-	//private NavMeshAgent agent;						//The NavMeshAgent attached to the mover
-
-	//Movement
 	public float speed = 2.0f;							//How fast does the ship move
-	private float angle;								//what angle the ship must turn to
-	private int missed;									//a counter to see make the ship go where it needs to
 	public int timeAllowedToRotate = 1000;				//what missed has to go to in order to break out of while loop
 	public float rotationSpeed = 0.1f;					//how fast to turn the ship
 	public float updateTime = 0.1f;						//how quickly to apply movement
+
+	private float angle;								//what angle the ship must turn to
+	private int missed;									//a counter to see make the ship go where it needs to
+	private Rigidbody2D rb;								//The rigidbody of this powerup spawner
+	private GameObject currentTarget;					//Where the mover is currently moving
+	private int targetNum;								//The current target's number identification
+	private bool onTarget = false;						//Did the mover reach its intended target
+	//private NavMeshAgent agent;						//The NavMeshAgent attached to the mover
 
 	// Use this for initialization
 	void Start () {

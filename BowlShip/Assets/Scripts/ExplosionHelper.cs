@@ -8,6 +8,14 @@ public class ExplosionHelper : MonoBehaviour {
 	public bool exploded = false;
 	public int damage;
 
+	/// <summary>
+	/// Sets the bool exploded to true and activates the proper collider
+	/// </summary>
+	public void Explode () {
+		exploded = true;
+		GetComponent<CircleCollider2D> ().enabled = true;
+	}
+
 	// Update is called once per frame
 	void OnTriggerStay2D(Collider2D other)
 	{

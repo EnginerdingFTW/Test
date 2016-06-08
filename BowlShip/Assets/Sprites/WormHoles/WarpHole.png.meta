@@ -1,0 +1,129 @@
+fileFormatVersion: 2
+guid: f9062e7e705e0406a9ec0caf1d945038
+timeCreated: 1465415184
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: WarpHole_0
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: WarpHole_0
+      rect:
+        serializedVersion: 2
+        x: 278
+        y: 119
+        width: 529
+        height: 506
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 144.5, y: -87}
+        - {x: 105.5, y: -185}
+        - {x: 104.5, y: -215}
+        - {x: 127.5, y: -216}
+        - {x: 142.5, y: -214}
+        - {x: 170.5, y: -199}
+        - {x: 202.5, y: -101}
+        - {x: 172.5, y: -57}
+        - {x: 120.5, y: 50}
+        - {x: 233.5, y: -62}
+        - {x: 242.5, y: -72}
+        - {x: 255.5, y: -68}
+        - {x: 264.5, y: -59}
+        - {x: 264.5, y: -46}
+        - {x: 244.5, y: 24}
+        - {x: 183.5, y: 85}
+        - {x: 115.5, y: 115}
+        - {x: 158.5, y: 120}
+        - {x: 243.5, y: 32}
+        - {x: 264.5, y: 34}
+        - {x: 264.5, y: 102}
+        - {x: 238.5, y: 167}
+        - {x: 41.5, y: 163}
+        - {x: 196.5, y: 187}
+        - {x: 185.5, y: 230}
+        - {x: 4.5, y: 232}
+        - {x: -37.5, y: 213}
+        - {x: -61.5, y: 166}
+        - {x: -46.5, y: 222}
+        - {x: -1.5, y: 236}
+        - {x: 2.5, y: 245}
+        - {x: -5.5, y: 253}
+        - {x: -67.5, y: 253}
+        - {x: -79.5, y: 251}
+        - {x: -98.5, y: 231}
+        - {x: -129.5, y: 175}
+        - {x: -125.5, y: 205}
+        - {x: -132.5, y: 217}
+        - {x: -167.5, y: 222}
+        - {x: -207.5, y: 187}
+        - {x: -220.5, y: 81}
+        - {x: -264.5, y: 51}
+        - {x: -264.5, y: -23}
+        - {x: -259.5, y: -34}
+        - {x: -243.5, y: -53}
+        - {x: -230.5, y: -62}
+        - {x: -192.5, y: -71}
+        - {x: -215.5, y: -82}
+        - {x: -247.5, y: -49}
+        - {x: -255.5, y: -53}
+        - {x: -264.5, y: -62}
+        - {x: -264.5, y: -110}
+        - {x: -259.5, y: -156}
+        - {x: -123.5, y: -246}
+        - {x: -55.5, y: -225}
+        - {x: -24.5, y: -253}
+        - {x: 43.5, y: -253}
+        - {x: 87.5, y: -214}
+        - {x: 108.5, y: -153}
+        - {x: 111.5, y: -100}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -34,6 +34,10 @@ public class MenuHandler : MonoBehaviour {
 		SceneManager.LoadScene ("Rotation");
 	}
 
+	public void PlayWarp () {
+		SceneManager.LoadScene ("WarpHoles");
+	}
+
 	public void Quit () {
 		Application.Quit();
 	}

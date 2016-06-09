@@ -96,22 +96,23 @@ public class Player : MonoBehaviour {
 	/// Sets the Movement of the Player, allows it to fire.
 	/// </summary>
 	void Update () {
+		if (gc != null && gc.paused == false) {
 
-		if (poweredOn) {
+			if (poweredOn) {
+				//Linear Movement
+				horiz = Input.GetAxis ("Horizontal" + playerNum.ToString ()) * speed;
+				vert = Input.GetAxis ("Vertical" + playerNum.ToString ()) * speed;
+				if (!useThrust) {
+					movement = new Vector2 (horiz, vert);
+					rb.AddForce (movement);
+				}
+
+				//Angular Movement
+				if (Mathf.Abs (horiz) > minInput || Mathf.Abs (vert) > minInput) {
+					float angle = Mathf.Atan2 (vert, horiz) * Mathf.Rad2Deg + 90;
+					transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.AngleAxis (angle, Vector3.forward), Time.deltaTime * rotationSpeed);
+				} 
 			
-			//Linear Movement
-			horiz = Input.GetAxis ("Horizontal" + playerNum.ToString ()) * speed;
-			vert = Input.GetAxis ("Vertical" + playerNum.ToString ()) * speed;
-			if (!useThrust) {
-				movement = new Vector2 (horiz, vert);
-				rb.AddForce (movement);
-			}
-
-			//Angular Movement
-			if (Mathf.Abs(horiz) > minInput || Mathf.Abs(vert) > minInput) {
-				float angle = Mathf.Atan2 (vert, horiz) * Mathf.Rad2Deg + 90;
-				transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.AngleAxis (angle, Vector3.forward), Time.deltaTime * rotationSpeed);
-			} 
 
 //			//Old Thrust Adjustment
 //			if (useThrust) {
@@ -132,113 +133,114 @@ public class Player : MonoBehaviour {
 //				rb.AddForce (movement);
 //			}
 
-			//New Thrust Adjustment (drift)
-			if (useThrust) {
-				thrust = Input.GetAxis ("Thrust" + playerNum.ToString ());
-				if (thrust <= 0) {
-					man0Drag = 1;
-					man1Drag = 1;
-					man2Drag = 1;
-					movement = new Vector2 (horiz, vert);
-					rb.AddForce (movement);
-				} else {
-					man0Drag = 0;
-					man1Drag = 0;
-					man2Drag = 0;
-				}
-			}
-
-			//Shield Recharge Adjustment
-			if (useShieldRecharge && canRecharge) {
-				StartCoroutine ("ShieldRecharge", shieldChargeRate);
-			}
-
-			//Shooting
-			if (canFire && Input.GetButton ("Fire" + playerNum.ToString ())) {
-				canFire = false;
-
-				//default weapon
-				if (weapons.Count == 0) {
-					fireRate = defaultFireRate;
-					laserObject = (GameObject) Instantiate (defaultLaser, laserInstatiationPoint.transform.position, transform.rotation);
-					weaponIconImage.sprite = defaultWeaponIcon;
-					laserObject.GetComponent<WeaponFire>().AttachPlayer (this.gameObject);
-					StartCoroutine ("RegulateWeaponFire");
-				} else {
-				
-					//power up weapon
-					currentWeapon = weapons [weapons.Count - 1];
-					weaponIconImage.sprite = currentWeapon.GetComponent<SpriteRenderer> ().sprite;
-					fireRate = currentWeapon.fireRate;
-					if (currentWeapon.isDual) {
-						laserObject = (GameObject) Instantiate (currentWeapon.laserType, dualLaserInstatiationPoint1.transform.position, transform.rotation);
-						if (laserObject.GetComponent<WeaponFire> () == null) {
-							laserObject.GetComponentInChildren<WeaponFire> ().AttachPlayer (this.gameObject);
-						} else {
-							laserObject.GetComponent<WeaponFire>().AttachPlayer (this.gameObject);
-						}
-						laserObject = (GameObject) Instantiate (currentWeapon.laserType, dualLaserInstatiationPoint2.transform.position, transform.rotation);
-						if (laserObject.GetComponent<WeaponFire> () == null) {
-							laserObject.GetComponentInChildren<WeaponFire> ().AttachPlayer (this.gameObject);
-						} else {
-							laserObject.GetComponent<WeaponFire>().AttachPlayer (this.gameObject);
-						}
+				//New Thrust Adjustment (drift)
+				if (useThrust) {
+					thrust = Input.GetAxis ("Thrust" + playerNum.ToString ());
+					if (thrust <= 0) {
+						man0Drag = 1;
+						man1Drag = 1;
+						man2Drag = 1;
+						movement = new Vector2 (horiz, vert);
+						rb.AddForce (movement);
 					} else {
-						laserObject = (GameObject) Instantiate (currentWeapon.laserType, laserInstatiationPoint.transform.position, transform.rotation);
-						if (laserObject.GetComponent<WeaponFire> () == null) {
-							laserObject.GetComponentInChildren<WeaponFire> ().AttachPlayer (this.gameObject);
+						man0Drag = 0;
+						man1Drag = 0;
+						man2Drag = 0;
+					}
+				}
+
+				//Shield Recharge Adjustment
+				if (useShieldRecharge && canRecharge) {
+					StartCoroutine ("ShieldRecharge", shieldChargeRate);
+				}
+
+				//Shooting
+				if (canFire && Input.GetButton ("Fire" + playerNum.ToString ())) {
+					canFire = false;
+
+					//default weapon
+					if (weapons.Count == 0) {
+						fireRate = defaultFireRate;
+						laserObject = (GameObject)Instantiate (defaultLaser, laserInstatiationPoint.transform.position, transform.rotation);
+						weaponIconImage.sprite = defaultWeaponIcon;
+						laserObject.GetComponent<WeaponFire> ().AttachPlayer (this.gameObject);
+						StartCoroutine ("RegulateWeaponFire");
+					} else {
+				
+						//power up weapon
+						currentWeapon = weapons [weapons.Count - 1];
+						weaponIconImage.sprite = currentWeapon.GetComponent<SpriteRenderer> ().sprite;
+						fireRate = currentWeapon.fireRate;
+						if (currentWeapon.isDual) {
+							laserObject = (GameObject)Instantiate (currentWeapon.laserType, dualLaserInstatiationPoint1.transform.position, transform.rotation);
+							if (laserObject.GetComponent<WeaponFire> () == null) {
+								laserObject.GetComponentInChildren<WeaponFire> ().AttachPlayer (this.gameObject);
+							} else {
+								laserObject.GetComponent<WeaponFire> ().AttachPlayer (this.gameObject);
+							}
+							laserObject = (GameObject)Instantiate (currentWeapon.laserType, dualLaserInstatiationPoint2.transform.position, transform.rotation);
+							if (laserObject.GetComponent<WeaponFire> () == null) {
+								laserObject.GetComponentInChildren<WeaponFire> ().AttachPlayer (this.gameObject);
+							} else {
+								laserObject.GetComponent<WeaponFire> ().AttachPlayer (this.gameObject);
+							}
 						} else {
-							laserObject.GetComponent<WeaponFire>().AttachPlayer (this.gameObject);
+							laserObject = (GameObject)Instantiate (currentWeapon.laserType, laserInstatiationPoint.transform.position, transform.rotation);
+							if (laserObject.GetComponent<WeaponFire> () == null) {
+								laserObject.GetComponentInChildren<WeaponFire> ().AttachPlayer (this.gameObject);
+							} else {
+								laserObject.GetComponent<WeaponFire> ().AttachPlayer (this.gameObject);
+							}
 						}
-					}
-					StartCoroutine ("RegulateWeaponFire");
-					if (!currentWeapon.isTimer) {
-						currentWeapon.timer--;
-					}
-					if (currentWeapon.timer <= 0.0f) {
-						weapons.Remove (currentWeapon);		//destroy weapon if it runs out of ammo
+						StartCoroutine ("RegulateWeaponFire");
+						if (!currentWeapon.isTimer) {
+							currentWeapon.timer--;
+						}
+						if (currentWeapon.timer <= 0.0f) {
+							weapons.Remove (currentWeapon);		//destroy weapon if it runs out of ammo
+						}
 					}
 				}
 			}
-		}
 
-		//Pause Menu
-		if (gc != null && Input.GetButton("Pause")) {
-			gc.Pause ();
-		}
+			//Pause Menu
+			if (gc != null && Input.GetButton ("Pause")) {
+				gc.Pause ();
+			}
 
-		//Maintain MaxValues
-		if (shield > maxShield) {
-			shield = maxShield;
-		}
-		//		if (rb.velocity.magnitude > maxVelocity) {
-		//			//might want to set this, should already be done by linear drag
-		//		}
-		if (man > maxMan) {
-			man = maxMan;
-		}
-		if (man < 0) {
-			man = 0;
-		}
+			//Maintain MaxValues
+			if (shield > maxShield) {
+				shield = maxShield;
+			}
+			//		if (rb.velocity.magnitude > maxVelocity) {
+			//			//might want to set this, should already be done by linear drag
+			//		}
+			if (man > maxMan) {
+				man = maxMan;
+			}
+			if (man < 0) {
+				man = 0;
+			}
 
-		//Apply Maneuverability
-		switch (man) {
-		case 1:
-			speed = man1Speed;
-			rb.drag = man1Drag;
-			rb.angularDrag = man1Rotation;
-			break;
-		case 2:
-			speed = man2Speed;
-			rb.drag = man2Drag;
-			rb.angularDrag = man2Rotation;
-			break;
-		default:
-			speed = man0Speed;
-			rb.drag = man0Drag;
-			rb.angularDrag = man0Rotation;
-			break;
-		} 
+			//Apply Maneuverability
+			switch (man) {
+			case 1:
+				speed = man1Speed;
+				rb.drag = man1Drag;
+				rb.angularDrag = man1Rotation;
+				break;
+			case 2:
+				speed = man2Speed;
+				rb.drag = man2Drag;
+				rb.angularDrag = man2Rotation;
+				break;
+			default:
+				speed = man0Speed;
+				rb.drag = man0Drag;
+				rb.angularDrag = man0Rotation;
+				break;
+			} 
+		}
 	}
 
 	/// <summary>

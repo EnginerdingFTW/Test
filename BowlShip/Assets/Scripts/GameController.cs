@@ -393,6 +393,7 @@ public class GameController : MonoBehaviour {
 		canPause = true;
 		paused = false;
 		Time.timeScale = 1.0f;
+		//Input.ResetInputAxes ();
 	}
 
 	/// <summary>

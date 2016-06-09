@@ -14,12 +14,15 @@ public class GameController : MonoBehaviour {
 	public GameObject bigAsteroid;										//the big Asteroid to be instantiated
 	public GameObject smallAsteroid;									//the small Asteroid to be instantiated
 	public int gameMode;												//The int number corresponding to each gameMode
+	public bool paused = false;											//If the game is paused, stop time
 	public int numPlayers; 												//The number of players remaining
 	public bool useAsteroids = true;									//Should Asteroids be spawned?
 	public float asteroidSpawnRate = 3.0f;								//how often the asteroids are spawned
 	public float big_small_asteroidProb = 0.8f;							//the probability to spawn either a big or small asteroid
 	public float AsteroidSpawnSpeed = 5.0f;								//How fast the asteroids move on spawn
 	//public float AsteroidSpawnSpeedRatio = 0.33f;
+
+	private bool canPause = true;										//Can the game be paused
 
 	//Audio Elements
 	public AudioClip destroyed;											//The sound clip to be played when a player is destroyed
@@ -28,6 +31,8 @@ public class GameController : MonoBehaviour {
 	private AudioSource audioSource;									//The audioSource used to play our soundclips
 
 	//UI Elements
+	public GameObject pauseScreen;										//The menu to pull up for pause screens
+	public Button pauseDefault;											//The default button to select when showing the pause menu
 	public GameObject gameOverScreen;									//The menu to show asking for a rematch or return to menu
 	public Button gameOverDefault;										//The default button to select when showing the gameOverScreen
 	public Color fullHealthC;											//The default color of health for a player
@@ -80,6 +85,7 @@ public class GameController : MonoBehaviour {
 		scores = new int[numPlayers];
 		scoreBoxTexts = new Text[numPlayers];
 		walls = GameObject.FindGameObjectsWithTag ("Wall");
+		canPause = true;
 		for (int i = 0; i < numPlayers; i++) {
 			players [i] = Instantiate (sceneController.playerShips [i]);
 			players [i].GetComponent<Player> ().AssignHUD (healthSliders [i], shieldSliders [i], chargeIndicators[i], weaponIcons[i], playerIcons[i]);  				//assigns the player their HUD
@@ -364,6 +370,29 @@ public class GameController : MonoBehaviour {
 			}
 		}
 		return -1;	//error, should never get here
+	}
+
+	/// <summary>
+	/// Pause the game and pull up a pause menu
+	/// </summary>
+	public void Pause () {
+		if (canPause) {
+			pauseScreen.SetActive (true);
+			canPause = false;
+			paused = true;
+			Time.timeScale = 0.0f;
+			pauseDefault.Select ();
+		}
+	}
+
+	/// <summary>
+	/// Unpause the game and take down the pause menu
+	/// </summary>
+	public void UnPause () {
+		pauseScreen.SetActive (false);
+		canPause = true;
+		paused = false;
+		Time.timeScale = 1.0f;
 	}
 
 	/// <summary>

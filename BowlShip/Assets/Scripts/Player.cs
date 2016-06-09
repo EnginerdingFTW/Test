@@ -202,6 +202,11 @@ public class Player : MonoBehaviour {
 			}
 		}
 
+		//Pause Menu
+		if (gc != null && Input.GetButton("Pause")) {
+			gc.Pause ();
+		}
+
 		//Maintain MaxValues
 		if (shield > maxShield) {
 			shield = maxShield;
@@ -284,17 +289,17 @@ public class Player : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Check if the player collides with anything, hurt the player if the collision is another player, and bounce the player off of the collision.
+	/// Check if the player collides with anything, hurt the player if the collision is another player, and bounce the player off of the collision. 
 	/// </summary>
 	/// <param name="coll">The Collision against the player.</param>
 	void OnCollisionEnter2D (Collision2D coll) {
-		if (coll.gameObject.CompareTag ("Player")) {
+		if (coll.gameObject.CompareTag ("Player")) { //Change damage based on speed?
 			Hurt (playerCollisionDamage);
 		}
 		//provide force between player and object
 		cc.enabled = true;
 		pe.enabled = true;
-		if (coll.gameObject.activeSelf) {
+		if (gameObject.activeSelf) {
 			StartCoroutine ("RegulateCollisionForce");				//bug here for some reason
 		}
 	}

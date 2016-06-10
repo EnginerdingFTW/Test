@@ -33,6 +33,9 @@ public class BetterCharacterSelection : MonoBehaviour {
 	public GameObject[] spawnPoints;						//a list of gameObjects with positions to spawn players at
 	public Slider[] healthSliders;							//a list of all shieldSliders
 	public Slider[] shieldSliders;							//a list of all healthSliders
+	public GameObject[] charginStuff;						//A list of all charging icons
+	public GameObject[] playerCircle;						//a list of all playercircles
+	public GameObject[] weaponIcons;						//a list of all weapon icons
 	public Image[] textBackgrounds;							//a list of all textBackgrounds to set false when playerEntered
 	public GameObject[] arrows;								//a list of all the arrows to set true when playerEntered
 
@@ -53,6 +56,9 @@ public class BetterCharacterSelection : MonoBehaviour {
 			playerChoice [i] = 0;
 			healthSliders [i].gameObject.SetActive(false);
 			shieldSliders [i].gameObject.SetActive (false);
+			charginStuff [i].SetActive (false);
+			playerCircle [i].SetActive (false);
+			weaponIcons [i].SetActive (false);
 			textBackgrounds [i].gameObject.SetActive (true);
 			arrows [i].gameObject.SetActive (false);
 		}
@@ -93,8 +99,7 @@ public class BetterCharacterSelection : MonoBehaviour {
 		players[player] = (GameObject) Instantiate (spaceShips [0], spawnPoints [player].transform.position, defaultRotation);
 		playerScript [player] = players [player].GetComponent<Player> ();
 		playerScript [player].poweredOn = false;
-		playerScript [player].healthSlider = healthSliders [player];
-		playerScript [player].shieldSlider = shieldSliders [player];
+		playerScript [player].AssignHUD (healthSliders [player], shieldSliders [player], charginStuff [player], weaponIcons [player], playerCircle [player]);
 		numPlayers++;
 	}
 
@@ -141,8 +146,7 @@ public class BetterCharacterSelection : MonoBehaviour {
 		players [player] = (GameObject) Instantiate (spaceShips [playerChoice[player]], spawnPoints [player].transform.position, defaultRotation);
 		playerScript [player] = players [player].GetComponent<Player> ();
 		playerScript [player].poweredOn = false;
-		playerScript [player].healthSlider = healthSliders [player];
-		playerScript [player].shieldSlider = shieldSliders [player];
+		playerScript [player].AssignHUD (healthSliders [player], shieldSliders [player], charginStuff [player], weaponIcons [player], playerCircle [player]);
 	}
 
 	/// <summary>
@@ -156,6 +160,9 @@ public class BetterCharacterSelection : MonoBehaviour {
 					arrows [i].gameObject.SetActive (false);
 					healthSliders [i].gameObject.SetActive (true);
 					shieldSliders [i].gameObject.SetActive (true);
+					charginStuff [i].SetActive (true);
+					weaponIcons [i].SetActive (true);
+					playerCircle [i].SetActive (true);
 					playerScript [i].playerNum = i + 1;
 					playerScript [i].poweredOn = true;
 				}

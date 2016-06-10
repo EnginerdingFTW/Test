@@ -400,6 +400,7 @@ public class GameController : MonoBehaviour {
 	/// Used by the Game Over Screen to start the same scene again.
 	/// </summary>
 	public void Rematch () {
+		UnPause ();
 		SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
 	}
 
@@ -408,6 +409,7 @@ public class GameController : MonoBehaviour {
 	/// </summary>
 	public void MainMenu () {
 		sceneController.numPlayers = 0;
+		UnPause ();
 		SceneManager.LoadScene ("Menu");
 	}
 }

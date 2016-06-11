@@ -14,6 +14,14 @@ public class MenuHandler : MonoBehaviour {
 		sc = GameObject.FindGameObjectWithTag ("SceneController").GetComponent<SceneController> ();
 	}
 
+	public void PeoplePerController (bool two) {
+		if (two) {
+			Player.fireButton = "Fire";
+		} else {
+			Player.fireButton = "FireAlt";
+		}
+	}
+
 	void OnSubmit() {
 		SceneManager.LoadScene ("Parr");
 	}

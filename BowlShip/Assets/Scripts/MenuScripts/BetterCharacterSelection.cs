@@ -76,12 +76,19 @@ public class BetterCharacterSelection : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Every frame checks for input by a player to enter in the match. 
+	/// Every frame checks for input by a player to enter in the match. Only allows 4 players if controls set to one person per controller.
 	/// </summary>
 	void CheckForPlayerEntering () {
 		for (int i = 0; i < TOTALPLAYERS; i++) {
-			if (!playerEntered[i] && (Input.GetAxis(string.Concat("Fire", (i + 1).ToString())) > selectionTolerance)) {
-				PlayerEnterInstantiation (i);
+			if (!playerEntered[i] && (Input.GetAxis(string.Concat(Player.fireButton, (i + 1).ToString())) > selectionTolerance)) {
+				if (Player.fireButton.Equals ("Fire")) {
+					PlayerEnterInstantiation (i);
+				} else {
+					if (i == 1 || i == 3 || i == 5 || i == 7) {
+						continue;
+					}
+					PlayerEnterInstantiation (i);
+				}
 			}
 		}
 	}
@@ -155,7 +162,7 @@ public class BetterCharacterSelection : MonoBehaviour {
 	void PlayerConfirmation () {
 		for (int i = 0; i < TOTALPLAYERS; i++) {
 			if (playerEntered [i] && !playerSelected [i] && !playerWaiting [i]) {
-				if (Input.GetAxis(string.Concat("Fire" + (i + 1).ToString())) > selectionTolerance) {
+				if (Input.GetAxis(string.Concat(Player.fireButton + (i + 1).ToString())) > selectionTolerance) {
 					playerSelected [i] = true;
 					arrows [i].gameObject.SetActive (false);
 					healthSliders [i].gameObject.SetActive (true);

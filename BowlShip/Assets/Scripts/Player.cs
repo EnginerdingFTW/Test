@@ -7,9 +7,9 @@ public class Player : MonoBehaviour {
 
 	public int playerNum;								//The player controlling this player
 	public int health = 100;							//How much health the ship has left (permanent damage)
-	public int shield = 100;							//How much shields the ship has (possible to recharge with powerups)
+	public int shield = 20;								//How much shields the ship has (possible to recharge with powerups)
 	public int startingHealth = 100;					//The typical max health, unless given a powerup
-	public int maxShield = 100;							//The maximum amount of shields a ship can have
+	public int maxShield = 20;							//The maximum amount of shields a ship can have
 	public float speed = 4.0f;							//How fast the ship can accelerate
 //	public float maxVelocity = 10.0f;					//The topSpeed of the ship, shouldn't need to use this
 	public float rotationSpeed = 5.0f;					//How fast the ship can rotate
@@ -28,6 +28,7 @@ public class Player : MonoBehaviour {
 	public int maxMan = 2;								//The maximum maneuverability value of the ship
 
 	public bool  poweredOn = true;						//can the ship move, rotate and fire?
+	[HideInInspector] public static string fireButton = "Fire";		//The string used to allow the ship to fire, changable to allow one or two player options per controller
 	public bool canFire = true;							//boolean to restrict fireRate of ship
 	public float fireRate = 2;							//How fast the ship can fire (1s / firerate between shots)
 	public float defaultFireRate = 2;					//The basic weapon's fire rate
@@ -137,7 +138,7 @@ public class Player : MonoBehaviour {
 				}
 
 				//Shooting
-				if (canFire && Input.GetButton ("Fire" + playerNum.ToString ())) {
+				if (canFire && Input.GetAxis (fireButton + playerNum.ToString ()) > 0.3f) {
 					canFire = false;
 
 					//default weapon
@@ -256,7 +257,7 @@ public class Player : MonoBehaviour {
 				}
 
 				//Shooting
-				if (canFire && Input.GetButton ("Fire" + playerNum.ToString ())) {
+				if (canFire && Input.GetAxis (fireButton + playerNum.ToString ()) > 0.3f) {
 					canFire = false;
 
 					//default weapon

@@ -5,10 +5,16 @@ using UnityEngine.SceneManagement;
 
 public class MenuHandler : MonoBehaviour {
 
-	public Slider scoreToWin;
-	public Text scoreToWinText;
+	//This script is almost entirely small public functions used in the Menu 
+	//in order to do specific lines of code at runtime, functions implementations are fairly obvious
 
-	private SceneController sc;
+	public Slider scoreToWin;				//used in options to set max score
+	public Text scoreToWinText;				//used in options to show max score
+
+	public Slider gameModeSlider;			//used in options to set game mode
+	public Text currentGameMode;			//used in options to show current game mode
+
+	private SceneController sc;				//used to set scene controller values in menu
 
 	void Start () {
 		sc = GameObject.FindGameObjectWithTag ("SceneController").GetComponent<SceneController> ();
@@ -61,5 +67,26 @@ public class MenuHandler : MonoBehaviour {
 
 	public void ToggleShieldRecharge () {
 		Player.toggleShieldRecharge();
+	}
+
+	public void SetGameMode () {
+		sc.gameMode = (int) gameModeSlider.value;
+		switch ((int) gameModeSlider.value) {
+		case 0:
+			currentGameMode.text = "Last Ship Standing";
+			break;
+		case 1:
+			currentGameMode.text = "Score Attack";
+			break;
+		case 2:
+			currentGameMode.text = "Time Attack";
+			break;
+		case 3:
+			currentGameMode.text = "Stock Match";
+			break;
+		default:
+			currentGameMode.text = "Error";
+			break;
+		}
 	}
 }

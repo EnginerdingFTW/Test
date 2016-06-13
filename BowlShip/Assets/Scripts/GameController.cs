@@ -14,6 +14,8 @@ public class GameController : MonoBehaviour {
 	public GameObject bigAsteroid;										//the big Asteroid to be instantiated
 	public GameObject smallAsteroid;									//the small Asteroid to be instantiated
 	public int gameMode;												//The int number corresponding to each gameMode
+	public float timeOfTimedMatch = 187.0f;								//The time used in a Time Attack match
+	public float timeForRespawn = 3.0f;									//How much time until a player comes back to life
 	public bool paused = false;											//If the game is paused, stop time
 	public int numPlayers; 												//The number of players remaining
 	public bool useAsteroids = true;									//Should Asteroids be spawned?
@@ -31,6 +33,7 @@ public class GameController : MonoBehaviour {
 	private AudioSource audioSource;									//The audioSource used to play our soundclips
 
 	//UI Elements
+	public GameObject[] circleImage;									//The spawn gameObject attached to be radially filled
 	public GameObject pauseScreen;										//The menu to pull up for pause screens
 	public Button pauseDefault;											//The default button to select when showing the pause menu
 	public GameObject gameOverScreen;									//The menu to show asking for a rematch or return to menu
@@ -56,12 +59,14 @@ public class GameController : MonoBehaviour {
 	public string roundBeginString = "Commence\nBOWLSHIP";				//The text to be displayed when a round begins
 	public float roundMoveAwaySpeed = 10.0f;							//The speed at which the GO icon moves off the screen
 	public float roundDestroyTime = 3.0f;								//How soon after a match begins does the icon disappear
+	public Text timeLeft;												//Used in a timebased game to show the remaining time in a round
 	private Rigidbody2D roundStarterRB;									//The rigidbody for the roundStarter Icon
 	private Text[] scoreBoxTexts;										//A list of all the text fields for the scoreboxs
 
 	public int defaultPlayerHealth = 100;								//The default health and
 	public int defaultPlayerShields = 100;								//shields to reset a player with
 
+	private Image[] circleFill;											//The UI component by the spawn that shows when a player will be respawned
 	private bool roundOver = false;										//Is the round finished? Used to stop nuke glitch of 2 wins for one
 	private GameObject[] walls;											//All the walls in the scene
 	private bool gameOver = false;										//Is the game over? 
@@ -77,6 +82,7 @@ public class GameController : MonoBehaviour {
 	void Start () 
 	{
 		sceneController = GameObject.Find("SceneController").GetComponent<SceneController>();
+		gameMode = sceneController.gameMode;
 		audioSource = GetComponent<AudioSource> ();
 		numPlayers = sceneController.numPlayers;
 		players = new GameObject[numPlayers];
@@ -86,7 +92,9 @@ public class GameController : MonoBehaviour {
 		scoreBoxTexts = new Text[numPlayers];
 		walls = GameObject.FindGameObjectsWithTag ("Wall");
 		canPause = true;
+		circleFill = new Image[numPlayers];
 		for (int i = 0; i < numPlayers; i++) {
+			circleFill[i] = circleImage[i].GetComponent<Image> ();
 			players [i] = Instantiate (sceneController.playerShips [i]);
 			players [i].GetComponent<Player> ().AssignHUD (healthSliders [i], shieldSliders [i], chargeIndicators[i], weaponIcons[i], playerIcons[i]);  				//assigns the player their HUD
 			players [i].GetComponent<Player> ().playerNum = sceneController.playerNumArray[i];
@@ -95,6 +103,17 @@ public class GameController : MonoBehaviour {
 			shieldSliders [i].value = defaultPlayerShields;
 			players [i].SetActive (false);
 			scoreBoxTexts [i] = scoreBoxs [i].GetComponentInChildren<Text> ();
+		}
+		if (gameMode == 2) {
+			timeOfTimedMatch = maxScore * 60 + 7;
+			timeLeft.gameObject.SetActive (true);
+			StartCoroutine ("TimeBasedGame", timeOfTimedMatch);
+		}
+		if (gameMode == 3) {
+			for (int i = 0; i < numPlayers; i++) {
+				scores [i] = maxScore;
+				scoreBoxTexts [i].text = scores [i].ToString ();
+			}
 		}
 		StartCoroutine ("BeginNextRound");
 	}
@@ -166,67 +185,278 @@ public class GameController : MonoBehaviour {
 	/// <summary>
 	/// Checks if the round has ended each time a player is defeated. If a player has reached the maxScore, Show Victory Screen.
 	/// Destroy any leftover objects from previous round, like asteroids or weaponFire.
+	/// A -1 player that shot value indicates self destruction.
 	/// </summary>
 	/// <param name="playerNum">Defeated Player's number.</param>
-	public void CheckEnd (int playerNum) {
-		//Instance Variables to save memory
+	public void CheckEnd (int playerNum, int playerThatShot) {
 		int playerThatWasDefeated;						//the player that just died
-		bool isDraw = true;								//was this round a draw?
+		playerThatShot = FindPlayerJustDefeated (playerThatShot);
 		GameObject[] asteroids;							//list of all leftover asteroids to destroy
 
-		playerThatWasDefeated = FindPlayerJustDefeated (playerNum);
-		audioSource.PlayOneShot (destroyed);
-		DeactivatePlayerHUD (playerThatWasDefeated);
+		//Last Ship Standing
+		if (gameMode == 0) {
+			//Instance Variables to save memory
+			bool isDraw = true;								//was this round a draw?
 
-		numPlayers--;
-		Debug.Log ("Player " + playerThatWasDefeated.ToString() + " Defeated!");
-		if (!roundOver && numPlayers < 2) {
-			roundOver = true;
-			asteroidTime = false;
 
-			asteroids = GameObject.FindGameObjectsWithTag ("Asteroid");
-			for (int i = 0; i < asteroids.Length; i++) {
-				Destroy (asteroids [i]);
+			playerThatWasDefeated = FindPlayerJustDefeated (playerNum);
+			audioSource.PlayOneShot (destroyed);
+			DeactivatePlayerHUD (playerThatWasDefeated);
+
+			numPlayers--;
+			Debug.Log ("Player " + playerThatWasDefeated.ToString () + " Defeated!");
+			if (!roundOver && numPlayers < 2) {
+				roundOver = true;
+				asteroidTime = false;
+
+				asteroids = GameObject.FindGameObjectsWithTag ("Asteroid");
+				for (int i = 0; i < asteroids.Length; i++) {
+					Destroy (asteroids [i]);
+				}
+
+				asteroids = GameObject.FindGameObjectsWithTag ("WeaponFire");		//piggy back off asteroids variable to also destroy all weaponfire
+				for (int i = 0; i < asteroids.Length; i++) {
+					Destroy (asteroids [i]);
+				}
+
+				//walls = GameObject.FindGameObjectsWithTag ("Wall");					//disable all walls
+				for (int i = 0; i < walls.Length; i++) {
+					walls [i].SetActive (false);
+				}
+
+				for (int i = 0; i < players.Length; i++) {
+					if (!players [i].GetComponent<Player> ().defeated) {
+						scores [i]++;
+						scoreBoxTexts [i].text = scores [i].ToString ();
+						isDraw = false;						//Should never come to a draw, unless both players are defeated in the EXACT same frame
+						Debug.Log ("The winner of the round is: Player " + (i + 1).ToString () + " Score: " + scores [i].ToString ());
+
+						//Victory Screen
+						sceneCamera.GetComponent<AudioSource> ().volume = 0;
+						audioSource.PlayOneShot (victoryJingle);
+						victoryIcon.SetActive (true);
+						GameObject playerIcon = (GameObject)Instantiate (players [i], victoryPosition, Quaternion.identity);
+						playerIcon.GetComponent<Player> ().canFire = false;
+						players [i].SetActive (false);
+						StartCoroutine ("ShowVictoryScreens", playerIcon);
+					}
+				}
+				if (isDraw) {
+					Debug.Log ("It's a draw!");
+					roundWaitText.text = "DRAW!";
+					StartCoroutine ("BeginNextRound");				//if no one has won the game, begin the next round
+				}
+				for (int i = 0; i < scores.Length; i++) {
+					if (scores [i] >= maxScore) {
+						Debug.Log ("The winner of the GAME is: Player " + (i + 1).ToString () + " Score: " + scores [i].ToString ());
+						gameOver = true;
+					}
+				}
+			}
+		}
+
+		//Score Attack Logic
+		if (gameMode == 1) {
+			playerThatWasDefeated = FindPlayerJustDefeated (playerNum);
+			audioSource.PlayOneShot (destroyed);
+			Debug.Log ("Player " + (playerThatWasDefeated + 1).ToString () + " Defeated!");
+			DeactivatePlayerHUD (playerThatWasDefeated);
+			if (playerThatShot != -1) {
+				scores [playerThatShot]++;
+				scoreBoxTexts [playerThatShot].text = scores [playerThatShot].ToString ();
 			}
 
-			asteroids = GameObject.FindGameObjectsWithTag ("WeaponFire");		//piggy back off asteroids variable to also destroy all weaponfire
-			for (int i = 0; i < asteroids.Length; i++) {
-				Destroy (asteroids [i]);
-			}
+			//CheckEnd of game
+			for (int i = 0; i < scores.Length; i++) {
+				if (scores [i] >= maxScore) {
+					Debug.Log ("The winner of the GAME is: Player " + (i + 1).ToString () + " Score: " + scores [i].ToString ());
+					gameOver = true;
+					roundOver = true;
+					asteroidTime = false;
 
-			//walls = GameObject.FindGameObjectsWithTag ("Wall");					//disable all walls
-			for (int i = 0; i < walls.Length; i++) {
-				walls [i].SetActive (false);
-			}
-
-			for (int i = 0; i < players.Length; i++) {
-				if (!players [i].GetComponent<Player>().defeated) {
-					scores [i]++;
-					scoreBoxTexts [i].text = scores [i].ToString();
-					isDraw = false;						//Should never come to a draw, unless both players are defeated in the EXACT same frame
-					Debug.Log ("The winner of the round is: Player " + (i + 1).ToString() + " Score: " + scores[i].ToString());
-
-					//Victory Screen
-					sceneCamera.GetComponent<AudioSource>().volume = 0;
-					audioSource.PlayOneShot(victoryJingle);
+					sceneCamera.GetComponent<AudioSource> ().volume = 0;
+					audioSource.PlayOneShot (victoryJingle);
 					victoryIcon.SetActive (true);
 					GameObject playerIcon = (GameObject) Instantiate (players [i], victoryPosition, Quaternion.identity);
 					playerIcon.GetComponent<Player> ().canFire = false;
-					players [i].SetActive (false);
 					StartCoroutine ("ShowVictoryScreens", playerIcon);
+
+					for (int j = 0; j < players.Length; j++) {							//disable all players
+						players [j].SetActive (false);
+					}
+
+					asteroids = GameObject.FindGameObjectsWithTag ("Asteroid");
+					for (int j = 0; j < asteroids.Length; j++) {
+						Destroy (asteroids [j]);
+					}
+
+					asteroids = GameObject.FindGameObjectsWithTag ("WeaponFire");		//piggy back off asteroids variable to also destroy all weaponfire
+					for (int j = 0; j < asteroids.Length; j++) {
+						Destroy (asteroids [j]);
+					}
+
+					//walls = GameObject.FindGameObjectsWithTag ("Wall");					//disable all walls
+					for (int j = 0; j < walls.Length; j++) {
+						walls [j].SetActive (false);
+					}
+					break;
 				}
 			}
-			if (isDraw) {
-				Debug.Log ("It's a draw!");
-				roundWaitText.text = "DRAW!";
-				StartCoroutine ("BeginNextRound");				//if no one has won the game, begin the next round
+			if (!gameOver) {
+				StartCoroutine ("TimedRespawn", playerThatWasDefeated);
 			}
-			for (int i = 0; i < scores.Length; i++) {
-				if (scores[i] >= maxScore) {
-					Debug.Log ("The winner of the GAME is: Player " + (i + 1).ToString() + " Score: " + scores[i].ToString());
-					gameOver = true;
+		}
+
+		//Time Attack Logic
+		if (gameMode == 2) {
+			playerThatWasDefeated = FindPlayerJustDefeated (playerNum);
+			audioSource.PlayOneShot (destroyed);
+			Debug.Log ("Player " + (playerThatWasDefeated + 1).ToString () + " Defeated!");
+			DeactivatePlayerHUD (playerThatWasDefeated);
+			if (playerThatShot != -1) {
+				scores [playerThatShot]++;
+				scoreBoxTexts [playerThatShot].text = scores [playerThatShot].ToString ();
+			}
+			StartCoroutine ("TimedRespawn", playerThatWasDefeated);
+		}
+
+		//Stock Match Logic
+		if (gameMode == 3) {
+			playerThatWasDefeated = FindPlayerJustDefeated (playerNum);
+			audioSource.PlayOneShot (destroyed);
+			Debug.Log ("Player " + (playerThatWasDefeated + 1).ToString () + " Defeated!");
+			DeactivatePlayerHUD (playerThatWasDefeated);
+			scores [playerThatWasDefeated]--;
+			scoreBoxTexts [playerThatWasDefeated].text = scores [playerThatWasDefeated].ToString ();
+			if (scores [playerThatWasDefeated] <= 0) {
+				numPlayers--;
+			} else {
+				StartCoroutine ("TimedRespawn", playerThatWasDefeated);
+			}
+			if (!roundOver && numPlayers < 2) {
+				roundOver = true;
+				asteroidTime = false;
+
+				asteroids = GameObject.FindGameObjectsWithTag ("Asteroid");
+				for (int i = 0; i < asteroids.Length; i++) {
+					Destroy (asteroids [i]);
+				}
+
+				asteroids = GameObject.FindGameObjectsWithTag ("WeaponFire");		//piggy back off asteroids variable to also destroy all weaponfire
+				for (int i = 0; i < asteroids.Length; i++) {
+					Destroy (asteroids [i]);
+				}
+
+				//walls = GameObject.FindGameObjectsWithTag ("Wall");					//disable all walls
+				for (int i = 0; i < walls.Length; i++) {
+					walls [i].SetActive (false);
+				}
+
+				for (int i = 0; i < players.Length; i++) {
+					if (!players [i].GetComponent<Player> ().defeated) {
+						Debug.Log ("The winner of the round is: Player " + (i + 1).ToString () + " Score: " + scores [i].ToString ());
+
+						//Victory Screen
+						sceneCamera.GetComponent<AudioSource> ().volume = 0;
+						audioSource.PlayOneShot (victoryJingle);
+						victoryIcon.SetActive (true);
+						GameObject playerIcon = (GameObject)Instantiate (players [i], victoryPosition, Quaternion.identity);
+						playerIcon.GetComponent<Player> ().canFire = false;
+						players [i].SetActive (false);
+						StartCoroutine ("ShowVictoryScreens", playerIcon);
+						Debug.Log ("The winner of the GAME is: Player " + (i + 1).ToString () + " Score: " + scores [i].ToString ());
+						gameOver = true;
+					}
 				}
 			}
+		}
+	}
+
+	/// <summary>
+	/// Runs a timer that will eventually end the game.
+	/// </summary>
+	/// <returns>The based game.</returns>
+	/// <param name="timeOfGame">Time of game.</param>
+	IEnumerator TimeBasedGame (float timeOfGame) {
+		int minutes = (int)timeOfGame / 60;
+		int seconds = (int)timeOfGame % 60;
+
+		while (true) {
+			seconds--;
+			if (seconds < 0) {
+				minutes--;
+				if (minutes < 0) {
+					CheckWinner ();
+					break;
+				}
+				seconds = 59;
+			}
+			if (seconds < 10) {
+				timeLeft.text = minutes.ToString () + ":0" + seconds.ToString ();
+			} else {
+				timeLeft.text = minutes.ToString () + ":" + seconds.ToString ();
+			}
+			yield return new WaitForSeconds (1.0f);
+		}
+	}
+
+	/// <summary>
+	/// Used by TimeBasedGame to check who the winner of the game is, based on who has the highest score.
+	/// </summary>
+	void CheckWinner() {
+		int highestScore = 0;
+		int winners = 0;
+
+		for (int i = 0; i < numPlayers; i++) {
+			if (scores [i] > highestScore) {
+				highestScore = scores [i];
+			}
+		}
+		for (int i = 0; i < numPlayers; i++) {
+			if (scores [i] == highestScore) {
+				winners++;
+			} else {
+				players [i].SetActive (false);
+			}
+		}
+		if (winners == 1) {
+			int i = 1;									//used to copy partial code from earlier
+			for (int j = 0; j < numPlayers; j++) {
+				if (scores [j] == highestScore) {
+					i = j;
+				}
+			}
+				
+			Debug.Log ("The winner of the GAME is: Player " + (i + 1).ToString () + " Score: " + scores [i].ToString ());
+			gameOver = true;
+			roundOver = true;
+			asteroidTime = false;
+
+			sceneCamera.GetComponent<AudioSource> ().volume = 0;
+			audioSource.PlayOneShot (victoryJingle);
+			victoryIcon.SetActive (true);
+			GameObject playerIcon = (GameObject)Instantiate (players [i], victoryPosition, Quaternion.identity);
+			playerIcon.GetComponent<Player> ().canFire = false;
+			StartCoroutine ("ShowVictoryScreens", playerIcon);
+
+			GameObject[] asteroids = GameObject.FindGameObjectsWithTag ("Asteroid");
+			for (int j = 0; j < asteroids.Length; j++) {
+				Destroy (asteroids [j]);
+			}
+
+			asteroids = GameObject.FindGameObjectsWithTag ("WeaponFire");		//piggy back off asteroids variable to also destroy all weaponfire
+			for (int j = 0; j < asteroids.Length; j++) {
+				Destroy (asteroids [j]);
+			}
+
+			//walls = GameObject.FindGameObjectsWithTag ("Wall");					//disable all walls
+			for (int j = 0; j < walls.Length; j++) {
+				walls [j].SetActive (false);
+			}
+			players [i].SetActive (false);
+		} else {
+			gameMode = 0;
+			maxScore = highestScore + 1;
 		}
 	}
 
@@ -235,7 +465,7 @@ public class GameController : MonoBehaviour {
 	/// </summary>
 	/// <returns>The next round.</returns>
 	IEnumerator BeginNextRound () {
-		Player tempPlayer;										//temporary instance variable to save memory
+//		Player tempPlayer;										//temporary instance variable to save memory
 
 //		yield return new WaitForSeconds (1.0f);					//moment to breathe and make sure all ships have gone through their destroy sequence
 		Debug.Log ("Next Round Begins in");
@@ -249,22 +479,8 @@ public class GameController : MonoBehaviour {
 		numPlayers = 0;
 		for (int i = 0; i < players.Length; i++) {
 			numPlayers++;
-			players [i].transform.position = spawnPoints [i].transform.position;
-			players [i].transform.rotation = spawnPoints [i].transform.rotation;
-			tempPlayer = players [i].GetComponent<Player> ();
-			tempPlayer.poweredOn = false;
-			tempPlayer.defeated = false;
-			tempPlayer.health = 100;
-			tempPlayer.shield = 20;
-			tempPlayer.canFire = true;
-			tempPlayer.canRecharge = true;
-			tempPlayer.man = 0;
-			tempPlayer.weapons.Clear ();
+			RespawnPlayer (i);
 			players [i].SetActive (true);
-			players [i].GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, 0);
-			healthSliders [i].value = 100;
-			healthSliders [i].GetComponentsInChildren<Image> () [1].color = fullHealthC;
-			shieldSliders [i].value = 20;
 			ActivatePlayerHUD (i);
 		}
 
@@ -329,6 +545,47 @@ public class GameController : MonoBehaviour {
 			gameOverScreen.SetActive (true);
 			gameOverDefault.Select ();
 		}
+	}
+
+	/// <summary>
+	/// Respawns the player.
+	/// </summary>
+	/// <param name="player">Player.</param>
+	void RespawnPlayer (int player) {
+		players [player].transform.position = spawnPoints [player].transform.position;
+		players [player].transform.rotation = spawnPoints [player].transform.rotation;
+		Player tempPlayer = players [player].GetComponent<Player> ();
+		tempPlayer.poweredOn = false;
+		tempPlayer.defeated = false;
+		tempPlayer.health = 100;
+		tempPlayer.shield = 20;
+		tempPlayer.canFire = true;
+		tempPlayer.canRecharge = true;
+		tempPlayer.man = 0;
+		tempPlayer.weapons.Clear ();
+		players [player].GetComponent<Rigidbody2D> ().velocity = new Vector2 (0, 0);
+		healthSliders [player].value = 100;
+		healthSliders [player].GetComponentsInChildren<Image> () [1].color = fullHealthC;
+		shieldSliders [player].value = 20;
+	}
+
+	/// <summary>
+	/// Uses the Respawn Player function after a set amount of time, shows to the user how much time is left till respawn.
+	/// </summary>
+	/// <returns>The respawn.</returns>
+	/// <param name="player">Player.</param>
+	IEnumerator TimedRespawn (int player) {
+		circleImage [player].SetActive (true);
+		circleFill[player].fillAmount = 0;
+		for (int i = 0; i < (int) (timeForRespawn * 10); i++) {
+			yield return new WaitForSeconds (0.1f);
+			circleFill[player].fillAmount += (0.1f / timeForRespawn);
+		}
+		RespawnPlayer (player);
+		players [player].SetActive (true);
+		ActivatePlayerHUD (player);
+		circleImage [player].SetActive (false);
+		players [player].GetComponent<Player> ().poweredOn = true;
 	}
 
 	/// <summary>

@@ -21,7 +21,7 @@ public class StunBolt : WeaponFire {
 		if (hasShot && other.tag == "Player" && other.gameObject != shootingPlayer)
 		{
 					//Debug.Log("in");
-			other.gameObject.GetComponent<Player>().Hurt(damage);
+			other.gameObject.GetComponent<Player>().Hurt(damage, shootingPlayer.GetComponent<Player>().playerNum);
 			Player temp = other.GetComponent<Player>();
 				//only stun the player if they aren't already stunned
 			if (temp.poweredOn)

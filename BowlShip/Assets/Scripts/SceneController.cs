@@ -13,6 +13,7 @@ public class SceneController : MonoBehaviour {
 	public GameObject[] playerShips;							//An array of the ships that the players have selected to use
 	public int[] playerNumArray;								//An array of PlayerNums that correspond to the playerShips array
 
+	public int gameMode = 0;									//A int corresponding to which gamemode is chosen
 	public int score;											//A variable used to transfer a generic maxScore value to a specific gameMode
 
 	/// <summary>

@@ -21,7 +21,7 @@ public class LaserMover : WeaponFire {
 	void OnTriggerEnter2D(Collider2D other)	
 	{
 		if (hasShot && other.tag == "Player" && other.gameObject != shootingPlayer) {
-			other.gameObject.GetComponent<Player> ().Hurt (damage);	//apply damage
+			other.gameObject.GetComponent<Player> ().Hurt (damage, shootingPlayer.GetComponent<Player>().playerNum);	//apply damage
 			Destroy (this.gameObject);
 		}
 	}

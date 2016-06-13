@@ -374,7 +374,56 @@ public class Player : MonoBehaviour {
 					healthSlider.value = health;
 					shieldSlider.value = shield;
 				} else {
-					gc.CheckEnd (playerNum);
+					gc.CheckEnd (playerNum, -1);
+					gameObject.SetActive (false); //put in animation?
+					//destroyed animation
+				}
+				return;
+			} else {
+				//Invincible for a bit?, damage animation
+			}
+			shield = 0;
+			return;
+		}
+		//shield damage animation.
+	}
+
+	/// <summary>
+	/// Hurt the specified damage. Affects shields first, then any remaining damage is done to health. Destroys the player if health drops below 1.
+	/// It will play either a shield damaged animation or a player damaged and/or destroyed animation.
+	/// This method is overloaded, allows weaponFire to use their "player that shot" variable to pass information along to player then game controller for scoring.
+	/// If the gameController is null then must be in menu, thus revive player fully.
+	/// </summary>
+	/// <param name="damage">The amount of damge to be dealt to the player.</param>
+	/// <param name="playerThatShotYou">The other player that fired the weaponFire to Hurt this player.</param>
+	public void Hurt (int damage, int playerThatShotYou) {
+		shield -= damage;
+		shieldSlider.value = shield;
+		audioSource.PlayOneShot (damaged, volume);
+		if (shield <= 0) {
+			shieldSlider.value = 0;
+			health += shield;
+			healthSlider.value = health;
+
+			//change healthbar colors
+			if (health > highHealthThreshhold && health <= startingHealth) {
+				healthSlider.GetComponentsInChildren<Image> () [1].color = fullHealthC;
+			} else if (health > midHealthThreshhold && health <= highHealthThreshhold) {
+				healthSlider.GetComponentsInChildren<Image> () [1].color = midHealthC;
+			} else if (health <= midHealthThreshhold) {
+				healthSlider.GetComponentsInChildren<Image> () [1].color = lowHealthC;
+			}
+			if (health < 1) {
+				healthSlider.value = 0;
+				healthSlider.GetComponentsInChildren<Image> () [1].color = fullHealthC;
+				defeated = true;
+				if (gc == null) {
+					health = 100;
+					shield = maxShield;
+					healthSlider.value = health;
+					shieldSlider.value = shield;
+				} else {
+					gc.CheckEnd (playerNum, playerThatShotYou);
 					gameObject.SetActive (false); //put in animation?
 					//destroyed animation
 				}
@@ -394,7 +443,7 @@ public class Player : MonoBehaviour {
 	/// <param name="coll">The Collision against the player.</param>
 	void OnCollisionEnter2D (Collision2D coll) {
 		if (coll.gameObject.CompareTag ("Player")) { //Change damage based on speed?
-			Hurt (playerCollisionDamage);
+			Hurt (playerCollisionDamage, coll.gameObject.GetComponent<Player>().playerNum);
 		}
 		//provide force between player and object
 		cc.enabled = true;

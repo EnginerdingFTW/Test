@@ -7,7 +7,7 @@ public class BetterCharacterSelection : MonoBehaviour {
 	//Constants
 	private int TOTALPLAYERS = 8;							//The maximum number of players
 
-	// Generic private variables
+	// Generic private variables fucks
 	private GameObject sceneControllerObject;				//The sceneController GameObject
 	private SceneController sceneController;				//The sceneController to assign player ships to
 	private bool[] playerEntered;							//A list of booleans to see if the player has entered
@@ -19,7 +19,7 @@ public class BetterCharacterSelection : MonoBehaviour {
 	private int numPlayers = 0;								//How many players are going to be in the game
 	private int playersSelected = 0;						//the total number of players that have selected their ship
 
-	//Generic public variables
+	//Generic public variables ass
 	public GameObject characterSelection;					//the current menu
 	public GameObject mainMenu;								//the previous menu
 	public GameObject stageSelection;						//the next menu (Stage Selection)
@@ -29,7 +29,7 @@ public class BetterCharacterSelection : MonoBehaviour {
 	public float timeBetweenSelection = 0.5f;				//how much time a player has to wait in between selection
 	public float selectionTolerance = 0.8f;					//how far the joystick must be moved to make a selection
 
-	//UI elements
+	//UI elements tits
 	public GameObject[] spawnPoints;						//a list of gameObjects with positions to spawn players at
 	public Slider[] healthSliders;							//a list of all shieldSliders
 	public Slider[] shieldSliders;							//a list of all healthSliders
@@ -39,7 +39,7 @@ public class BetterCharacterSelection : MonoBehaviour {
 	public Image[] textBackgrounds;							//a list of all textBackgrounds to set false when playerEntered
 	public GameObject[] arrows;								//a list of all the arrows to set true when playerEntered
 
-	// Used for initialization of arrays and SceneController, default values, etc.
+	// Used for initialization of arrays and SceneController, default values, etc. poop
 	void Start () {
 		sceneControllerObject = GameObject.Find ("SceneController");
 		sceneController = sceneControllerObject.GetComponent<SceneController> ();
@@ -67,7 +67,7 @@ public class BetterCharacterSelection : MonoBehaviour {
 	}
 
 	
-	// Update is called once per frame (the main of this script)
+	// Update is called once per frame (the main of this script) dsfdghgffgf
 	void Update () {
 		CheckForPlayerEntering ();
 		PlayerOptions ();
@@ -81,14 +81,12 @@ public class BetterCharacterSelection : MonoBehaviour {
 	void CheckForPlayerEntering () {
 		for (int i = 0; i < TOTALPLAYERS; i++) {
 			if (!playerEntered[i] && (Input.GetAxis(string.Concat(Player.fireButton, (i + 1).ToString())) > selectionTolerance)) {
-				if (Player.fireButton.Equals ("Fire")) {
-					PlayerEnterInstantiation (i);
-				} else {
+				if (!Player.fireButton.Equals ("Fire")) {
 					if (i == 1 || i == 3 || i == 5 || i == 7) {
 						continue;
 					}
-					PlayerEnterInstantiation (i);
 				}
+				PlayerEnterInstantiation (i);
 			}
 		}
 	}
@@ -199,7 +197,7 @@ public class BetterCharacterSelection : MonoBehaviour {
 						playersSelected++;
 					}
 				}
-				if (playersSelected == numPlayers) {
+				if (playersSelected == sceneController.numPlayers) {
 					stageSelection.SetActive (true);
 					defaultSelection.Select();
 					characterSelection.SetActive (false);

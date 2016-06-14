@@ -417,6 +417,7 @@ public class GameController : MonoBehaviour {
 				winners++;
 			} else {
 				players [i].SetActive (false);
+				players [i].GetComponent<Player> ().defeated = true;
 			}
 		}
 		if (winners == 1) {
@@ -457,6 +458,7 @@ public class GameController : MonoBehaviour {
 		} else {
 			gameMode = 0;
 			maxScore = highestScore + 1;
+			numPlayers = winners;
 		}
 	}
 
@@ -581,11 +583,13 @@ public class GameController : MonoBehaviour {
 			yield return new WaitForSeconds (0.1f);
 			circleFill[player].fillAmount += (0.1f / timeForRespawn);
 		}
-		RespawnPlayer (player);
-		players [player].SetActive (true);
-		ActivatePlayerHUD (player);
-		circleImage [player].SetActive (false);
-		players [player].GetComponent<Player> ().poweredOn = true;
+		if (!gameOver) {
+			RespawnPlayer (player);
+			players [player].SetActive (true);
+			ActivatePlayerHUD (player);
+			circleImage [player].SetActive (false);
+			players [player].GetComponent<Player> ().poweredOn = true;
+		}
 	}
 
 	/// <summary>

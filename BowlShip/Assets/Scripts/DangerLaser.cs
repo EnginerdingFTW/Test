@@ -23,6 +23,17 @@ public class DangerLaser : WeaponFire {
 	}
 
 	/// <summary>
+	/// Takes into accound the angle the ship is facing before giving back a point sufficiently in front of the ship.
+	/// </summary>
+	/// <returns>The to point in front.</returns>
+	/// <param name="oldPos">Old position.</param>
+	Vector3 MoveToPointInFront () {
+		float z = currentLaser.transform.rotation.eulerAngles.z;
+		Vector3 returnable = new Vector3 (Mathf.Sin (Mathf.Deg2Rad * z), -Mathf.Cos (Mathf.Deg2Rad * z), 0).normalized;
+		return returnable;
+	}
+
+	/// <summary>
 	/// When the player shoots this massive beam, it instantiates a ton of epic lasers in rapid succession, after finished, it allows the player to move again.
 	/// </summary>
 	/// <returns>The at will.</returns>
@@ -31,6 +42,7 @@ public class DangerLaser : WeaponFire {
 		int numLasers = 0;
 		while (numLasers < totalInstantiations) {
 			currentLaser = (GameObject) Instantiate (epicLaser, new Vector3 (shootingPlayer.transform.position.x, shootingPlayer.transform.position.y, -1.3f), shootingPlayer.transform.rotation);
+			currentLaser.transform.position += MoveToPointInFront ();
 			currentLaser.GetComponent<LaserMover> ().hasShot = true;
 			currentLaser.GetComponent<LaserMover> ().shootingPlayer = shootingPlayer;
 			currentLaser.GetComponent<LaserMover> ().epic = true;

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: add4da82bd6544a4795d5dcfbe4092fd
+timeCreated: 1467075874
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - shootingPlayer: {instanceID: 0}
+  - epicLaser: {fileID: 176934, guid: 6ba18033882cd42a58cd4e031b3edc2c, type: 2}
+  - epicLaserSoundfx: {fileID: 8300000, guid: 27ebc146859de417b8ead1cc5fd2c762, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

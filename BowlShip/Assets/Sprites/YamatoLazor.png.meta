@@ -1,9 +1,10 @@
 fileFormatVersion: 2
 guid: 2e981db3b677f4e1d9b3b5636f1a7f41
-timeCreated: 1458181919
+timeCreated: 1467075105
 licenseType: Free
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: YamatoLazor_0
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -30,7 +31,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     filterMode: -1
-    aniso: -1
+    aniso: 16
     mipBias: -1
     wrapMode: 1
   nPOTScale: 0
@@ -38,7 +39,7 @@ TextureImporter:
   rGBM: 0
   compressionQuality: 50
   allowsAlphaSplitting: 0
-  spriteMode: 1
+  spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -49,7 +50,49 @@ TextureImporter:
   textureType: 8
   buildTargetSettings: []
   spriteSheet:
-    sprites: []
+    sprites:
+    - name: YamatoLazor_0
+      rect:
+        serializedVersion: 2
+        x: 163
+        y: 1
+        width: 259
+        height: 398
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 129.5, y: -113}
+        - {x: 129.5, y: -106}
+        - {x: 110.5, y: -106}
+        - {x: 110.5, y: 84}
+        - {x: 112.5, y: 84}
+        - {x: 124.5, y: 88}
+        - {x: 128.5, y: 91}
+        - {x: 128.5, y: 94}
+        - {x: 126.5, y: 96}
+        - {x: 110.5, y: 96}
+        - {x: 110.5, y: 199}
+        - {x: -97.5, y: 199}
+        - {x: -126.5, y: 180}
+        - {x: -127.5, y: 173}
+        - {x: -125.5, y: 168}
+        - {x: -97.5, y: 150}
+        - {x: -93.5, y: 148}
+        - {x: -93.5, y: 24}
+        - {x: -95.5, y: 24}
+        - {x: -101.5, y: 20}
+        - {x: -121.5, y: 6}
+        - {x: -129.5, y: 1}
+        - {x: -129.5, y: -9}
+        - {x: -127.5, y: -11}
+        - {x: -97.5, y: -31}
+        - {x: -93.5, y: -33}
+        - {x: -93.5, y: -199}
+        - {x: 110.5, y: -199}
+        - {x: 110.5, y: -119}
+        - {x: 118.5, y: -117}
+        - {x: 124.5, y: -115}
     outline: []
   spritePackingTag: 
   userData: 

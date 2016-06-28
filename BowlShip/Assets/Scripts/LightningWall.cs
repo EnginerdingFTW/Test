@@ -20,10 +20,10 @@ public class LightningWall : MonoBehaviour {
 	/// <param name="coll">Coll.</param>
 	void OnCollisionEnter2D (Collision2D coll) {
 		anim.SetTrigger ("Hit");
-		if (!coll.gameObject.tag.Equals ("Player")) {
-			Destroy (coll.gameObject);
-		} else {
+		if (coll.gameObject.tag.Equals ("Player")) {
 			coll.gameObject.GetComponent<Player> ().Hurt (damage);
+		} else {
+			Destroy (coll.gameObject);
 		}
 	}
 

@@ -544,6 +544,7 @@ public class GameController : MonoBehaviour {
 			Instantiate (trophy, new Vector3 (0, 0, 0), Quaternion.identity);
 			victoryIcon.SetActive (false);
 			winner.GetComponent<Player> ().canFire = true;
+			winner.GetComponent<Player> ().poweredOn = true;
 			gameOverScreen.SetActive (true);
 			gameOverDefault.Select ();
 		}

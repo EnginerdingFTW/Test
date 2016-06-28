@@ -19,7 +19,7 @@ public class GameController : MonoBehaviour {
 	public bool paused = false;											//If the game is paused, stop time
 	public int numPlayers; 												//The number of players remaining
 	public bool useAsteroids = true;									//Should Asteroids be spawned?
-	public float asteroidSpawnRate = 3.0f;								//how often the asteroids are spawned
+	public float asteroidSpawnRate = 3.0f;								//how often the asteroids are spawned, smaller spawn rate means more asteroids in a set amount of time
 	public float big_small_asteroidProb = 0.8f;							//the probability to spawn either a big or small asteroid
 	public float AsteroidSpawnSpeed = 5.0f;								//How fast the asteroids move on spawn
 	//public float AsteroidSpawnSpeedRatio = 0.33f;

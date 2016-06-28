@@ -7,7 +7,7 @@ public class Asteroid : MonoBehaviour {
 	public GameObject smallAsteroid;			//smal ".."
 	public GameObject tinyAsteroid;				
 	public GameObject explosion;				//explosion prefab
-	public float powerupChance = 0.5f;			//probability that a big asteroid drops a powerup
+	public float powerupChance = 0.5f;			//probability that a big asteroid drops a powerup, higher number is lower chance
 	public float rotateSpeed = 1.0f;			//rotation speed of the asteroid
 	public float damage = 30.0f;				//damage done to player if hit
 	public float smallAstDamageRatio = 0.33f;	//ratio of small asteroid damage to large

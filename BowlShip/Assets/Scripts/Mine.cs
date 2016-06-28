@@ -8,6 +8,7 @@ public class Mine : WeaponFire {
 	public float startingPoint = 0.1f;			//Where the explosions start
 	public float endingPoint = 0.3f;			//Where the explosions end (radius outward)
 	public float scale = 0.2f;					//How big are the explosions
+	public float volume = 0.05f;				//How loud each of the explosions are
 
 		//the loops themselves are just a nice organization of the explosion, but it's simply instantiating explosions
 	void Kaboom()
@@ -21,6 +22,7 @@ public class Mine : WeaponFire {
 				Vector3 pos = blastRadius.transform.position + i * this.transform.localScale.x * blastRadius.GetComponent<CircleCollider2D>().radius * new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0.0f);
 				GameObject temp = Instantiate(explosion, pos, Quaternion.identity) as GameObject;
 				temp.transform.localScale = temp.transform.localScale / (1 / scale);
+				temp.GetComponent<AudioSource> ().volume = volume;
 			}
 			i += startingPoint;
 		}

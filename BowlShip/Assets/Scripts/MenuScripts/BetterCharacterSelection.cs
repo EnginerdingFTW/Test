@@ -7,7 +7,7 @@ public class BetterCharacterSelection : MonoBehaviour {
 	//Constants
 	private int TOTALPLAYERS = 8;							//The maximum number of players
 
-	// Generic private variables fucks
+	// Generic private variables
 	private GameObject sceneControllerObject;				//The sceneController GameObject
 	private SceneController sceneController;				//The sceneController to assign player ships to
 	private bool[] playerEntered;							//A list of booleans to see if the player has entered
@@ -19,7 +19,7 @@ public class BetterCharacterSelection : MonoBehaviour {
 	private int numPlayers = 0;								//How many players are going to be in the game
 	private int playersSelected = 0;						//the total number of players that have selected their ship
 
-	//Generic public variables ass
+	//Generic public variables
 	public GameObject characterSelection;					//the current menu
 	public GameObject mainMenu;								//the previous menu
 	public GameObject stageSelection;						//the next menu (Stage Selection)
@@ -29,7 +29,7 @@ public class BetterCharacterSelection : MonoBehaviour {
 	public float timeBetweenSelection = 0.5f;				//how much time a player has to wait in between selection
 	public float selectionTolerance = 0.8f;					//how far the joystick must be moved to make a selection
 
-	//UI elements tits
+	//UI elements
 	public GameObject[] spawnPoints;						//a list of gameObjects with positions to spawn players at
 	public Slider[] healthSliders;							//a list of all shieldSliders
 	public Slider[] shieldSliders;							//a list of all healthSliders
@@ -39,7 +39,9 @@ public class BetterCharacterSelection : MonoBehaviour {
 	public Image[] textBackgrounds;							//a list of all textBackgrounds to set false when playerEntered
 	public GameObject[] arrows;								//a list of all the arrows to set true when playerEntered
 
-	// Used for initialization of arrays and SceneController, default values, etc. poop
+	private Animator[] arrowAnims;							//a list of each of the arrows animators
+
+	// Used for initialization of arrays and SceneController, default values, etc.
 	void Start () {
 		sceneControllerObject = GameObject.Find ("SceneController");
 		sceneController = sceneControllerObject.GetComponent<SceneController> ();
@@ -49,6 +51,7 @@ public class BetterCharacterSelection : MonoBehaviour {
 		playerSelected = new bool[TOTALPLAYERS];
 		playerWaiting = new bool[TOTALPLAYERS];
 		playerChoice = new int[TOTALPLAYERS];
+		arrowAnims = new Animator[TOTALPLAYERS];
 		for (int i = 0; i < TOTALPLAYERS; i++) {
 			playerEntered [i] = false;
 			playerSelected [i] = false;
@@ -61,13 +64,14 @@ public class BetterCharacterSelection : MonoBehaviour {
 			weaponIcons [i].SetActive (false);
 			textBackgrounds [i].gameObject.SetActive (true);
 			arrows [i].gameObject.SetActive (false);
+			arrowAnims [i] = arrows [i].GetComponent<Animator> ();
 		}
 		numPlayers = 0;
 		playersSelected = 0;
 	}
 
 	
-	// Update is called once per frame (the main of this script) dsfdghgffgf
+	// Update is called once per frame (the main of this script) 
 	void Update () {
 		CheckForPlayerEntering ();
 		PlayerOptions ();
@@ -125,6 +129,7 @@ public class BetterCharacterSelection : MonoBehaviour {
 	/// <param name="player">Player.</param>
 	void PlayerChoices (int player) {
 		if (!playerWaiting[player] && Input.GetAxis (string.Concat("Horizontal" + (player + 1).ToString())) > selectionTolerance) {
+			arrowAnims [player].SetTrigger ("Right");
 			StartCoroutine ("PlayerWait", player);
 			playerChoice [player]++;
 			if (playerChoice [player] >= spaceShips.Length) {
@@ -133,6 +138,7 @@ public class BetterCharacterSelection : MonoBehaviour {
 			SwitchShip (player);
 		}
 		if (!playerWaiting[player] && Input.GetAxis (string.Concat("Horizontal" + (player + 1).ToString())) < -selectionTolerance) {
+			arrowAnims [player].SetTrigger ("Left");
 			StartCoroutine ("PlayerWait", player);
 			playerChoice [player]--;
 			if (playerChoice [player] < 0) {

@@ -7,6 +7,8 @@ public class Asteroid : MonoBehaviour {
 	public GameObject smallAsteroid;			//smal ".."
 	public GameObject tinyAsteroid;				
 	public GameObject explosion;				//explosion prefab
+
+	public Vector3 explosionSize;				//the size of the explosion caused by an asteroid getting hit
 	public float powerupChance = 0.5f;			//probability that a big asteroid drops a powerup, higher number is lower chance
 	public float rotateSpeed = 1.0f;			//rotation speed of the asteroid
 	public float damage = 30.0f;				//damage done to player if hit
@@ -97,7 +99,8 @@ public class Asteroid : MonoBehaviour {
 			} 
 			else 
 			{
-				Instantiate(explosion, this.transform.position, Quaternion.identity);
+				GameObject thisExplosion = (GameObject) Instantiate(explosion, this.transform.position, Quaternion.identity);
+				thisExplosion.transform.localScale = explosionSize;
 				Destroy(this.gameObject);
 			}
 		}

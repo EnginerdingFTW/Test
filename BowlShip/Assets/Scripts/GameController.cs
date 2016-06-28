@@ -24,6 +24,7 @@ public class GameController : MonoBehaviour {
 	public float AsteroidSpawnSpeed = 5.0f;								//How fast the asteroids move on spawn
 	//public float AsteroidSpawnSpeedRatio = 0.33f;
 
+	private bool[] shipsToStop;											//A list of booleans for each player that show whether or not to power down/up during pause menu
 	private bool canPause = true;										//Can the game be paused
 
 	//Audio Elements
@@ -93,6 +94,7 @@ public class GameController : MonoBehaviour {
 		walls = GameObject.FindGameObjectsWithTag ("Wall");
 		canPause = true;
 		circleFill = new Image[numPlayers];
+		shipsToStop = new bool[numPlayers];
 		for (int i = 0; i < numPlayers; i++) {
 			circleFill[i] = circleImage[i].GetComponent<Image> ();
 			players [i] = Instantiate (sceneController.playerShips [i]);
@@ -539,6 +541,7 @@ public class GameController : MonoBehaviour {
 			Destroy (winner, 5.0f);
 			StartCoroutine ("BeginNextRound");				//if no one has won the game, begin the next round
 		} else {
+			canPause = false;
 			sceneCamera.GetComponent<AudioSource> ().clip = victoryOver;
 			sceneCamera.GetComponent<AudioSource> ().Play();
 			Instantiate (trophy, new Vector3 (0, 0, 0), Quaternion.identity);
@@ -639,6 +642,14 @@ public class GameController : MonoBehaviour {
 	/// </summary>
 	public void Pause () {
 		if (canPause) {
+			for (int i = 0; i < players.Length; i++) {
+				if (players [i].GetComponent<Player> ().poweredOn) {
+					shipsToStop [i] = true;
+					players [i].GetComponent<Player> ().poweredOn = false;
+				} else {
+					shipsToStop [i] = false;
+				}
+			}
 			pauseScreen.SetActive (true);
 			canPause = false;
 			paused = true;
@@ -651,6 +662,12 @@ public class GameController : MonoBehaviour {
 	/// Unpause the game and take down the pause menu
 	/// </summary>
 	public void UnPause () {
+		for (int i = 0; i < players.Length; i++) {
+			if (shipsToStop[i]) {
+				shipsToStop [i] = false;
+				players [i].GetComponent<Player> ().poweredOn = true;
+			}
+		}
 		pauseScreen.SetActive (false);
 		canPause = true;
 		paused = false;

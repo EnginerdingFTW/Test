@@ -41,8 +41,9 @@ public class Player : MonoBehaviour {
 	public GameObject laserInstatiationPoint;			//Where the laser is fired from, in comparison to the player origin
 	public GameObject dualLaserInstatiationPoint1;		//Where the left laser is fired from
 	public GameObject dualLaserInstatiationPoint2;		//Where the right laser is fired from
+	public GameObject explosion;						//Explosion to instantiate when player dies
 
-	//May 23rd Thrust Update, changed to drift
+	//Drifting
 	public float thrust = 1.0f;							//The trigger movement input
 	public static bool useThrust = true;				//Allows us to experiment with and without 2nd trigger as a drift
 	public static bool useShieldRecharge = true;		//Allows us to experiment with shield recharge based on movement
@@ -55,6 +56,9 @@ public class Player : MonoBehaviour {
 	public AudioClip damaged;							//The sound clip to be played when the ship takes damage
 	private AudioSource audioSource;					//The audioSource used to play our soundclips
 	public float volume = 0.5f;							//How loud all SFX from this script is
+
+	//Animations
+	private Animator animator;							//The animator attached to the player
 
 	//HUD
 	public Sprite shipIcon;								//the ship to be assigned to the playerIcon
@@ -89,6 +93,7 @@ public class Player : MonoBehaviour {
 		rb = GetComponent<Rigidbody2D> ();
 		pe = GetComponent<PointEffector2D> ();
 		cc = GetComponent<CircleCollider2D> ();
+		animator = GetComponent<Animator> ();
 		audioSource = GetComponent<AudioSource> ();
 		if (GameObject.FindGameObjectWithTag ("GameController") != null) {
 			gc = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ();
@@ -424,17 +429,19 @@ public class Player : MonoBehaviour {
 					shieldSlider.value = shield;
 				} else {
 					gc.CheckEnd (playerNum, playerThatShotYou);
-					gameObject.SetActive (false); //put in animation?
-					//destroyed animation
+					GameObject explodedAnim = (GameObject)Instantiate (explosion, transform.position, transform.rotation);
+					explodedAnim.transform.localScale = new Vector3 (1f, 1f, 0);
+					gameObject.SetActive (false); 
 				}
 				return;
 			} else {
-				//Invincible for a bit?, damage animation
+				animator.SetTrigger ("HealthHurt");
 			}
 			shield = 0;
 			return;
+		} else {
+			animator.SetTrigger ("ShieldHurt");
 		}
-		//shield damage animation.
 	}
 
 	/// <summary>
@@ -474,13 +481,15 @@ public class Player : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// freezes the player for the set amount of time, called by StunBolt
+	/// freezes the player for the set amount of time, called by StunBolt and EMP
 	/// </summary>
 	/// <param name="stunTime">Stun time.</param>
 	public IEnumerator Stunned (float stunTime) {
+		animator.SetBool ("Stunned", true);
 		chargingIconAnimator.SetBool ("Stunned", true);
 		yield return new WaitForSeconds (stunTime);
 		chargingIconAnimator.SetBool ("Stunned", false);
+		animator.SetBool ("Stunned", false);
 		poweredOn = true;
 	}
 

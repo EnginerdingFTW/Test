@@ -45,7 +45,6 @@ public class Player : MonoBehaviour {
 
 	//Drifting
 	public float thrust = 1.0f;							//The trigger movement input
-	public static bool useThrust = true;				//Allows us to experiment with and without 2nd trigger as a drift
 	public static bool useShieldRecharge = true;		//Allows us to experiment with shield recharge based on movement
 	public int shieldCharge = 1;						//How much the shield charges each cycle
 	public float shieldChargeRate = 1.0f;				//How fast the shield will recharge
@@ -112,14 +111,18 @@ public class Player : MonoBehaviour {
 	void Update () {
 		if (gc != null && gc.paused == false) {
 
-			if (poweredOn) 
+			if (poweredOn ) 
 			{
 				//Linear Movement
-				horiz = Input.GetAxis ("Horizontal" + playerNum.ToString ()) * speed;
-				vert = Input.GetAxis ("Vertical" + playerNum.ToString ()) * speed;
-				if (!useThrust) {
-					movement = new Vector2 (horiz, vert);
-					rb.AddForce (movement);
+				if (enemyAI != null)
+				{
+					horiz = enemyAI.horizontal;
+					vert = enemyAI.vertical;
+				}
+				else
+				{
+					horiz = Input.GetAxis ("Horizontal" + playerNum.ToString ()) * speed;
+					vert = Input.GetAxis ("Vertical" + playerNum.ToString ()) * speed;
 				}
 
 				//Angular Movement
@@ -129,19 +132,28 @@ public class Player : MonoBehaviour {
 				} 
 
 				//New Thrust Adjustment (drift)
-				if (useThrust) {
-					thrust = Input.GetAxis ("Thrust" + playerNum.ToString ());
-					if (thrust <= 0) {
-						man0Drag = 1;
-						man1Drag = 1;
-						man2Drag = 1;
-						movement = new Vector2 (horiz, vert);
-						rb.AddForce (movement);
-					} else {
-						man0Drag = 0;
-						man1Drag = 0;
-						man2Drag = 0;
-					}
+				if (enemyAI != null)
+				{
+					thrust = enemyAI.drift;
+				} 
+				else 
+				{
+					thrust = Input.GetAxis ("Thrust" + playerNum.ToString ());			
+				}
+		
+				if (thrust <= 0) 
+				{
+					man0Drag = 1;
+					man1Drag = 1;
+					man2Drag = 1;
+					movement = new Vector2 (horiz, vert);
+					rb.AddForce (movement);
+				} 
+				else 
+				{
+					man0Drag = 0;
+					man1Drag = 0;
+					man2Drag = 0;
 				}
 
 				//Shield Recharge Adjustment
@@ -150,7 +162,7 @@ public class Player : MonoBehaviour {
 				}
 
 				//Shooting
-				if (canFire && Input.GetAxis (fireButton + playerNum.ToString ()) > 0.3f) {
+				if (canFire && (Input.GetAxis (fireButton + playerNum.ToString ()) > 0.3f || enemyAI != null)) {
 					canFire = false;
 
 					//default weapon
@@ -239,11 +251,15 @@ public class Player : MonoBehaviour {
 
 			if (poweredOn) {
 				//Linear Movement
-				horiz = Input.GetAxis ("Horizontal" + playerNum.ToString ()) * speed;
-				vert = Input.GetAxis ("Vertical" + playerNum.ToString ()) * speed;
-				if (!useThrust) {
-					movement = new Vector2 (horiz, vert);
-					rb.AddForce (movement);
+				if (enemyAI != null)
+				{
+					horiz = enemyAI.horizontal;
+					vert = enemyAI.vertical;
+				}
+				else
+				{
+					horiz = Input.GetAxis ("Horizontal" + playerNum.ToString ()) * speed;
+					vert = Input.GetAxis ("Vertical" + playerNum.ToString ()) * speed;
 				}
 
 				//Angular Movement
@@ -253,23 +269,31 @@ public class Player : MonoBehaviour {
 				} 
 
 				//New Thrust Adjustment (drift)
-				if (useThrust) {
-					thrust = Input.GetAxis ("Thrust" + playerNum.ToString ());
-					if (thrust <= 0) {
-						man0Drag = 1;
-						man1Drag = 1;
-						man2Drag = 1;
-						movement = new Vector2 (horiz, vert);
-						rb.AddForce (movement);
-					} else {
-						man0Drag = 0;
-						man1Drag = 0;
-						man2Drag = 0;
-					}
+				if (enemyAI != null)
+				{
+					thrust = enemyAI.drift;
+				} 
+				else 
+				{
+					thrust = Input.GetAxis ("Thrust" + playerNum.ToString ());			
+				}
+				if (thrust <= 0) 
+				{
+					man0Drag = 1;
+					man1Drag = 1;
+					man2Drag = 1;
+					movement = new Vector2 (horiz, vert);
+					rb.AddForce (movement);
+				} 
+				else 
+				{
+					man0Drag = 0;
+					man1Drag = 0;
+					man2Drag = 0;
 				}
 
 				//Shooting
-				if (canFire && Input.GetAxis (fireButton + playerNum.ToString ()) > 0.3f) {
+				if (canFire && (Input.GetAxis (fireButton + playerNum.ToString ()) > 0.3f || enemyAI != null)) {
 					canFire = false;
 
 					//default weapon
@@ -531,13 +555,6 @@ public class Player : MonoBehaviour {
 		this.playerIcon.GetComponentsInChildren<Image> ()[1].sprite = shipIcon;
 		this.chargingIcon = chargingIcon;
 		chargingIconAnimator = this.chargingIcon.GetComponent<Animator> ();
-	}
-
-	/// <summary>
-	/// Toggles the use of thrust, used by options menu
-	/// </summary>
-	public static void toggleThrust () {
-		useThrust = !useThrust;
 	}
 
 	/// <summary>

@@ -75,7 +75,7 @@ public class GameController : MonoBehaviour {
 	private bool gameOver = false;										//Is the game over? 
 	private bool asteroidTime = true;									//spawn Asteroids
 	public int maxScore;												//the score needed to win the game
-	private GameObject[] players;										//a list of the prefabs each player is controlling
+	public GameObject[] players;										//a list of the prefabs each player is controlling
 	public int[] scores;												//a list of each scores corresponding to each player
 	private SceneController sceneController;							//The script to pass values between scenes
 	

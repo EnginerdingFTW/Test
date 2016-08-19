@@ -102,11 +102,54 @@ public class EnemyAI : MonoBehaviour {
 
 	void MoveTowardsObject(GameObject obj)
 	{
-		//if (Physics2D.Raycast(this.gameObject.transform.position
+		Vector3 movement = new Vector3(this.gameObject.transform.position.x - obj.transform.position.x, obj.transform.position.y - this.gameObject.transform.position.y, 0);
+		movement = movement.normalized;
+
+		RaycastHit hit;
+		Transform leftRay = this.transform;
+		if (Physics.Raycast(leftRay.position, Vector3.down, out hit, 5.0f))
+		{
+			float distance1 = 0;
+			float distance2 = 0;
+			if (Physics.Raycast(leftRay.position, new Vector3(-0.1f, -1, 0), out hit, 5.0f))
+			{
+				distance1 = hit.distance;
+			}
+			if (Physics.Raycast(leftRay.position, new Vector3(0.1f, -1, 0), out hit, 5.0f))
+			{
+				distance2 = hit.distance;
+			}
+
+			if (distance1 < distance2)
+			{
+				//rotate clockwise
+				movement = Quaternion.Euler(0, 0, -1) * movement;
+			} 
+			else 
+			{
+				//rotate counter clockwise	
+				movement = Quaternion.Euler(0, 0, 1) * movement;
+			}
+		}
 	}
 
 	void ShootTowardsObject(GameObject obj)
 	{
 
 	}
+
+	GameObject FindClosestObject(GameObject[] list)
+	{
+		float distance = 1000000;
+		GameObject temp = null;
+		foreach (GameObject obj in list)
+		{
+			if (Vector3.Distance(this.transform.position, obj.transform.position) < distance)
+			{
+				temp = obj;
+			}
+		}
+		return temp;
+	}
+	
 }

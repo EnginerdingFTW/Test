@@ -43,6 +43,12 @@ public class Player : MonoBehaviour {
 	public GameObject dualLaserInstatiationPoint2;		//Where the right laser is fired from
 	public GameObject explosion;						//Explosion to instantiate when player dies
 
+	//Boosting
+	public bool canBoost = true;		//The player can use up it's shield to boost if it has more than half its shield left
+	public float boostMultiplier = 3.0f;				//How much faster does the boost make the ship go
+	public float boostTime = 1.0f;						//The length the boost is in effect
+	private float oldSpeed;								//used to keep track of the old speed before the boost
+
 	//Drifting
 	public float thrust = 1.0f;							//The trigger movement input
 	public static bool useShieldRecharge = true;		//Allows us to experiment with shield recharge based on movement
@@ -86,7 +92,7 @@ public class Player : MonoBehaviour {
 	private CircleCollider2D cc;						//This ship's Larger circleCollider trigger for use with pe
 
 	//AI
-	public EnemyAI enemyAI;
+	public EnemyAI enemyAI;								//Used for computer players
 
 	/// <summary>
 	/// Initialize
@@ -157,8 +163,13 @@ public class Player : MonoBehaviour {
 				}
 
 				//Shield Recharge Adjustment
-				if (useShieldRecharge && canRecharge) {
+				if (useShieldRecharge && canRecharge && canBoost) {
 					StartCoroutine ("ShieldRecharge", shieldChargeRate);
+				}
+
+				//Boosting
+				if (canBoost && shield > 10 && Input.GetAxis ("Boost" + playerNum.ToString ()) > 0.3f) {
+					StartCoroutine("Boost");
 				}
 
 				//Shooting
@@ -230,23 +241,25 @@ public class Player : MonoBehaviour {
 			}
 
 			//Apply Maneuverability
-			switch (man) {
-			case 1:
-				speed = man1Speed;
-				rb.drag = man1Drag;
-				rb.angularDrag = man1Rotation;
-				break;
-			case 2:
-				speed = man2Speed;
-				rb.drag = man2Drag;
-				rb.angularDrag = man2Rotation;
-				break;
-			default:
-				speed = man0Speed;
-				rb.drag = man0Drag;
-				rb.angularDrag = man0Rotation;
-				break;
-			} 
+			if (canBoost) {
+				switch (man) {
+				case 1:
+					speed = man1Speed;
+					rb.drag = man1Drag;
+					rb.angularDrag = man1Rotation;
+					break;
+				case 2:
+					speed = man2Speed;
+					rb.drag = man2Drag;
+					rb.angularDrag = man2Rotation;
+					break;
+				default:
+					speed = man0Speed;
+					rb.drag = man0Drag;
+					rb.angularDrag = man0Rotation;
+					break;
+				} 
+			}
 		} else {		//quick fix for menu, could be cleaned
 
 			if (poweredOn) {
@@ -290,6 +303,12 @@ public class Player : MonoBehaviour {
 					man0Drag = 0;
 					man1Drag = 0;
 					man2Drag = 0;
+				}
+
+				//Boosting
+				if (canBoost && shield > 10 && Input.GetAxis ("Boost" + playerNum.ToString ()) > 0.3f) {
+					canBoost = false;
+					StartCoroutine("Boost");
 				}
 
 				//Shooting
@@ -357,25 +376,43 @@ public class Player : MonoBehaviour {
 		}
 
 		//Apply Maneuverability
-		switch (man) {
-		case 1:
-			speed = man1Speed;
-			rb.drag = man1Drag;
-			rb.angularDrag = man1Rotation;
-			break;
-		case 2:
-			speed = man2Speed;
-			rb.drag = man2Drag;
-			rb.angularDrag = man2Rotation;
-			break;
-		default:
-			speed = man0Speed;
-			rb.drag = man0Drag;
-			rb.angularDrag = man0Rotation;
-			break;
-		} 
+		if (canBoost) {
+			switch (man) {
+			case 1:
+				speed = man1Speed;
+				rb.drag = man1Drag;
+				rb.angularDrag = man1Rotation;
+				break;
+			case 2:
+				speed = man2Speed;
+				rb.drag = man2Drag;
+				rb.angularDrag = man2Rotation;
+				break;
+			default:
+				speed = man0Speed;
+				rb.drag = man0Drag;
+				rb.angularDrag = man0Rotation;
+				break;
+			} 
+		}
 	}
 
+	/// <summary>
+	/// Boost the ship by increasing its speed for a set time. While boosting the ship can not recharge its shield
+	/// </summary>
+	IEnumerator Boost () {
+		canBoost = false;
+		shield -= 10;
+		if (shield <= 0) {
+			shield = 0;
+		}
+		shieldSlider.value = shield;
+		oldSpeed = speed;
+		speed *= boostMultiplier;
+		yield return new WaitForSeconds (boostTime);
+		speed = oldSpeed;
+		canBoost = true;
+	}
 
 	/// <summary>
 	/// Hurt the specified damage. Affects shields first, then any remaining damage is done to health. Destroys the player if health drops below 1.

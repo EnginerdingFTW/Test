@@ -86,6 +86,9 @@ public class Player : MonoBehaviour {
 	private PointEffector2D pe;							//Used to know the ship and other objects back upon collision
 	private CircleCollider2D cc;						//This ship's Larger circleCollider trigger for use with pe
 
+	//AI
+	public EnemyAI enemyAI;
+
 	/// <summary>
 	/// Initialize
 	/// </summary>
@@ -98,6 +101,9 @@ public class Player : MonoBehaviour {
 		if (GameObject.FindGameObjectWithTag ("GameController") != null) {
 			gc = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ();
 		}
+		
+		//checking for AI
+		enemyAI = this.gameObject.GetComponent<EnemyAI>();
 	}
 	
 	/// <summary>
@@ -106,7 +112,8 @@ public class Player : MonoBehaviour {
 	void Update () {
 		if (gc != null && gc.paused == false) {
 
-			if (poweredOn) {
+			if (poweredOn) 
+			{
 				//Linear Movement
 				horiz = Input.GetAxis ("Horizontal" + playerNum.ToString ()) * speed;
 				vert = Input.GetAxis ("Vertical" + playerNum.ToString ()) * speed;

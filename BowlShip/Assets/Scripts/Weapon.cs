@@ -27,6 +27,7 @@ public class Weapon : Collectable {
 			if (isTimer) {
 				StartCoroutine ("KeepTrackOfTime");
 			}
+			this.gamecontroller.RemoveCollectableFromList(this.gameObject);
 		}
 	}
 

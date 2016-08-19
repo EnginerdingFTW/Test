@@ -3,14 +3,21 @@ using System.Collections;
 
 public class Collectable : MonoBehaviour {
 	
+	public GameController gamecontroller;	//adds the collectable to the gamecontroller's list of collectables for use in AI
 	public bool pickedUp = false;			//boolean indicating if a player has picked up this collectible
 	public float despawnTime = 30.0f;		//time before item despawns off map.
+	
 
 	// Use this for initialization
 	void Start () 
 	{
 		StartCoroutine(checkDespawn());
+			//adding this collectable to the list of collectables
+		gamecontroller = GameObject.Find("GameController").GetComponent<GameController>();
+		gamecontroller.CollectableList.Add(this.gameObject);
 	}
+
+	
 
 /// <summary>
 /// Checks the despawn.

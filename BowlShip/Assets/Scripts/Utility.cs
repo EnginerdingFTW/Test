@@ -28,6 +28,7 @@ public class Utility : Collectable {
 			this.GetComponent<Collider2D>().enabled = false;
 			this.GetComponent<SpriteRenderer>().enabled = false;
 			AudioSource.PlayClipAtPoint (sound, new Vector3(0,0,0));
+			this.gamecontroller.RemoveCollectableFromList(this.gameObject);
 		}
 	}
 }

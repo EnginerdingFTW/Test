@@ -2,9 +2,11 @@
 using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 public class GameController : MonoBehaviour {
 
+	public List<GameObject> CollectableList;							//List of all the Collectables tht have spawned
 	public GameObject sceneCamera;										//The camera of the scene, used to set the final audio
 	public GameObject trophy;											//The trophy to spawn for the winner to play with
 	public GameObject[] powerups;										//the total list of spawnable powerups
@@ -690,5 +692,25 @@ public class GameController : MonoBehaviour {
 		sceneController.numPlayers = 0;
 		UnPause ();
 		SceneManager.LoadScene ("Menu");
+	}
+	
+	public void RemoveCollectableFromList(GameObject collectable)
+	{
+		int list_index = 0;
+		bool index_found = false;
+		foreach (GameObject obj in this.CollectableList)
+		{
+			if (obj == collectable)
+			{
+				index_found = true;
+				break;
+			}
+			list_index++;
+		}
+		if (index_found)
+		{
+			this.CollectableList.RemoveAt(list_index);
+		}
+		
 	}
 }

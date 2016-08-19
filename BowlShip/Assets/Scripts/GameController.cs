@@ -109,7 +109,7 @@ public class GameController : MonoBehaviour {
 			scoreBoxTexts [i] = scoreBoxs [i].GetComponentInChildren<Text> ();
 		}
 		if (gameMode == 2) {
-			timeOfTimedMatch = maxScore * 60 + 7;
+			timeOfTimedMatch = maxScore * 60 + 5;
 			timeLeft.gameObject.SetActive (true);
 			StartCoroutine ("TimeBasedGame", timeOfTimedMatch);
 		}
@@ -489,14 +489,7 @@ public class GameController : MonoBehaviour {
 			players [i].SetActive (true);
 			ActivatePlayerHUD (i);
 		}
-
-		yield return new WaitForSeconds (1.0f);
-		Debug.Log ("5");
-		roundNumberText.text = "5";
-		yield return new WaitForSeconds (1.0f);
-		Debug.Log ("4");
-		roundNumberText.text = "4";
-		yield return new WaitForSeconds (1.0f);
+			
 		Debug.Log ("3");
 		roundNumberText.text = "3";
 		yield return new WaitForSeconds (1.0f);

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class EnemyAI : MonoBehaviour {
 	
@@ -14,6 +15,7 @@ public class EnemyAI : MonoBehaviour {
 	#endregion
 	
 	private GameController gamecontroller;
+	private List<Vector2> waypoints;
 	private int stateMachine = 1;
 
 	public float horizontal;
@@ -30,6 +32,7 @@ public class EnemyAI : MonoBehaviour {
 
 	void Update()
 	{
+		MoveTowardsObject(GameObject.Find("TayShip"));
 		switch (stateMachine)
 		{
 			case COLLECT:
@@ -102,20 +105,42 @@ public class EnemyAI : MonoBehaviour {
 
 	void MoveTowardsObject(GameObject obj)
 	{
-		Vector3 movement = new Vector3(this.gameObject.transform.position.x - obj.transform.position.x, obj.transform.position.y - this.gameObject.transform.position.y, 0);
+		waypoints.Clear();
+		waypoints.Add(new Vector2(obj.transform.position.x, obj.transform.position.y));
+		Vector2 movement = new Vector2(waypoints[0].x - this.transform.position.x, this.transform.position.y - waypoints[0].y) * -1;
 		movement = movement.normalized;
 
-		RaycastHit hit;
-		Transform leftRay = this.transform;
-		if (Physics.Raycast(leftRay.position, Vector3.down, out hit, 5.0f))
+		Vector2 pos = new Vector2(this.transform.position.x, this.transform.position.y);
+		RaycastHit2D hit;
+		if (DetectRaycastWithinRange(pos, movement, hit, 10.0f))
+		{
+			//waypoints.Insert(0, item)
+			for (int angle = 5; angle < 360; angle += 5)
+			{
+				Vector2 temp = Quaternion.AngleAxis(angle, Vector3.forward) * movement;
+				if (!DetectRaycastWithinRange(pos, temp, hit, 10.0f))
+				{
+					movement = temp;
+					break;
+				}
+			}		
+			
+		}
+		
+		
+
+
+
+/*		
+		if (DetectRaycastWithingRange(leftRay, Vector2.down, out hit, 10.0f) && hit.transform.tag == "Wall")
 		{
 			float distance1 = 0;
 			float distance2 = 0;
-			if (Physics.Raycast(leftRay.position, new Vector3(-0.1f, -1, 0), out hit, 5.0f))
+			if (DetectRaycastWithingRange(leftRay, (new Vector2(-0.1f, -1)).normalized, out hit, 10.0f) && hit.transform.tag == "Wall")
 			{
 				distance1 = hit.distance;
 			}
-			if (Physics.Raycast(leftRay.position, new Vector3(0.1f, -1, 0), out hit, 5.0f))
+			if (DetectRaycastWithingRange(leftRay, (new Vector2(0.1f, -1)).normalized, out hit, 10.0f) && hit.transform.tag == "Wall")
 			{
 				distance2 = hit.distance;
 			}
@@ -123,14 +148,19 @@ public class EnemyAI : MonoBehaviour {
 			if (distance1 < distance2)
 			{
 				//rotate clockwise
-				movement = Quaternion.Euler(0, 0, -1) * movement;
+				movement = Quaternion.Euler(0, 0, -60) * movement;
 			} 
 			else 
 			{
 				//rotate counter clockwise	
-				movement = Quaternion.Euler(0, 0, 1) * movement;
+				movement = Quaternion.Euler(0, 0, 60) * movement;
 			}
 		}
+		this.vertical = movement.y;
+		this.horizontal = movement.x;
+		Debug.Log("final: " + movement.ToString());
+
+*/
 	}
 
 	void ShootTowardsObject(GameObject obj)
@@ -150,6 +180,19 @@ public class EnemyAI : MonoBehaviour {
 			}
 		}
 		return temp;
+	}
+
+	bool DetectRaycastWithinRange(Vector2 point, Vector2 direction, out RaycastHit2D hit, float limit)
+	{
+		hit = Physics2D.Raycast(point, direction);
+		if (hit != null)
+		{
+			if (hit.distance > limit)
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 	
 }

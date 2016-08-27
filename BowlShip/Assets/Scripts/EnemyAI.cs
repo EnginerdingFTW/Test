@@ -110,6 +110,7 @@ public class EnemyAI : MonoBehaviour {
 		Vector2 movement = new Vector2(waypoints[0].x - this.transform.position.x, this.transform.position.y - waypoints[0].y) * -1;
 		movement = movement.normalized;
 
+		/*
 		Vector2 pos = new Vector2(this.transform.position.x, this.transform.position.y);
 		RaycastHit2D hit;
 		if (DetectRaycastWithinRange(pos, movement, hit, 10.0f))
@@ -126,6 +127,7 @@ public class EnemyAI : MonoBehaviour {
 			}		
 			
 		}
+		*/
 		
 		
 

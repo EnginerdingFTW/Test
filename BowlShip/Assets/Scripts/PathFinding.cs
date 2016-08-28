@@ -28,7 +28,8 @@ public static class PathFinding {
 		}
 		else 
 		{
-				return new List<GameObject> { goal };
+			Debug.Log("next");
+			return new List<GameObject> { goal };
 		}
 	}
 		

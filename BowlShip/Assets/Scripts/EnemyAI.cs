@@ -18,10 +18,10 @@ public class EnemyAI : MonoBehaviour {
 	private List<Vector2> waypoints;
 	private int stateMachine = 1;
 
-	public float horizontal;
-	public float vertical;
-	public int drift;
-	public bool fire;
+	[HideInInspector] public float horizontal;
+	[HideInInspector] public float vertical;
+	[HideInInspector] public int drift;
+	[HideInInspector] public bool fire;
 	public int difficulty = 2;
 		
 
@@ -106,7 +106,17 @@ public class EnemyAI : MonoBehaviour {
 	void MoveTowardsObject(GameObject obj)
 	{
 		List<GameObject> path = PathFinding.ReturnAStarPath(this.gameObject, obj);
-		
+		Debug.Log("count = " + path.Count.ToString());
+		for (int k = 0; k < path.Count; k++)
+		{
+			this.horizontal = this.transform.position.x - path[k].transform.position.x;
+			this.vertical = path[k].transform.position.y - this.transform.position.y;
+			int i = 0;
+			while (i < 100000)
+			{
+				i++;
+			}
+		}
 	}
 
 	void ShootTowardsObject(GameObject obj)

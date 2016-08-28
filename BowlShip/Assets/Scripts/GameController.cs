@@ -16,12 +16,13 @@ public class GameController : MonoBehaviour {
 	public GameObject bigAsteroid;										//the big Asteroid to be instantiated
 	public GameObject smallAsteroid;									//the small Asteroid to be instantiated
 	public int gameMode;												//The int number corresponding to each gameMode
-	public float timeOfTimedMatch = 187.0f;								//The time used in a Time Attack match
+	public float timeOfTimedMatch = 185.0f;								//The time used in a Time Attack match
 	public float timeForRespawn = 3.0f;									//How much time until a player comes back to life
 	public bool paused = false;											//If the game is paused, stop time
 	public int numPlayers; 												//The number of players remaining
 	public bool useAsteroids = true;									//Should Asteroids be spawned?
 	public float asteroidSpawnRate = 3.0f;								//how often the asteroids are spawned, smaller spawn rate means more asteroids in a set amount of time
+	public float asteroidSpawnRateFaster = 2.0f;						//how often the asteroids are spawned in a game with 5 or more players.
 	public float big_small_asteroidProb = 0.8f;							//the probability to spawn either a big or small asteroid
 	public float AsteroidSpawnSpeed = 5.0f;								//How fast the asteroids move on spawn
 	//public float AsteroidSpawnSpeedRatio = 0.33f;
@@ -88,6 +89,9 @@ public class GameController : MonoBehaviour {
 		gameMode = sceneController.gameMode;
 		audioSource = GetComponent<AudioSource> ();
 		numPlayers = sceneController.numPlayers;
+		if (numPlayers > 4) {
+			asteroidSpawnRate = asteroidSpawnRateFaster;			//bigger games on Asteroids spawn even more asteroids.
+		}
 		players = new GameObject[numPlayers];
 		maxScore = sceneController.score;
 		roundStarterRB = roundStarter.GetComponent<Rigidbody2D> ();
@@ -533,7 +537,7 @@ public class GameController : MonoBehaviour {
 		roundOver = false;
 		sceneCamera.GetComponent<AudioSource>().volume = sceneController.musicLevel;
 		if (!gameOver) {
-			Destroy (winner, 5.0f);
+			Destroy (winner, 3.0f);
 			StartCoroutine ("BeginNextRound");				//if no one has won the game, begin the next round
 		} else {
 			canPause = false;
@@ -686,7 +690,11 @@ public class GameController : MonoBehaviour {
 		UnPause ();
 		SceneManager.LoadScene ("Menu");
 	}
-	
+
+	/// <summary>
+	/// Removes the collectable from list whenever a player picks it up to keep scene clean.
+	/// </summary>
+	/// <param name="collectable">Collectable.</param>
 	public void RemoveCollectableFromList(GameObject collectable)
 	{
 		int list_index = 0;

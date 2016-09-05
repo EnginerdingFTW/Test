@@ -26,8 +26,6 @@ public static class PathFinding {
 				waypoints.Add(nodelist[i]);
 			}
 			return AStarPathFinding(start, waypoints, goal, tagExc);	
-		
-			return new List<GameObject>();
 		}
 		else 
 		{
@@ -71,22 +69,26 @@ public static class PathFinding {
 		List<GameObject> current = new List<GameObject>();
 		int nextInd = 0;
 		
+		waypoints.Add(goal);
 		while (openSet.Count > 0)
 		{
-			current.Add(FindLowestHeuristicCost(openSet, goal));
-			Debug.Log("current obj name = " + current[0].name);
+			GameObject tempGame = null;
+			if (FindLowestHeuristicCost(openSet, goal) != null)
+			{
+				current.Add(FindLowestHeuristicCost(openSet, goal));
+			}
+	
 			nextInd++;
 			if (current[nextInd - 1] == goal)
 			{
 				return ReconstructPath(cameFrom, start, goal);
 			}
 			openSet.Remove(current[nextInd - 1]);
+			closedSet.Add(current[nextInd - 1]);
 
-			List<GameObject> neighboors = DetermineNeighboors(waypoints, start, tagExc);
-			
+			List<GameObject> neighboors = DetermineNeighboors(waypoints, current[nextInd - 1], tagExc);
 			foreach (GameObject neighboor in neighboors)
 			{
-				Debug.Log("neighboor = " + neighboor.name);
 				if (closedSet.Contains(neighboor))
 				{
 					continue;		//neighboor has already been evaluated, ignore it
@@ -95,22 +97,16 @@ public static class PathFinding {
 				if (!openSet.Contains(neighboor))
 				{
 					openSet.Add(neighboor);
-					Debug.Log("neighboor added");
 				}
 				else if (tentative_gScore >= gScore[neighboor])
 				{
-					Debug.Log("this is not a better path");
 					continue;	 	//this is not a better path
 				}
 				cameFrom[neighboor] = current[nextInd - 1];
 				gScore[neighboor] = tentative_gScore;
 				fScore[neighboor] = gScore[neighboor] + heuristic_cost_estimate(neighboor, goal);
 			}
-			break;
 		}
-
-
-
 		return openSet;
 	}
 
@@ -144,6 +140,10 @@ public static class PathFinding {
 	{
 		float cost = 100000000f;
 		int lowestInd = 0;
+		if (nodeList.Count == 0)
+		{
+			return null;	
+		}
 		for (int count = 0; count < nodeList.Count; count++)
 		{
 			float temp = heuristic_cost_estimate(nodeList[count], goal);
@@ -178,10 +178,11 @@ public static class PathFinding {
 	{
 		List<GameObject> path = new List<GameObject>();
 		path.Add(goal);
-		GameObject temp = null;
+		GameObject temp = goal;
+		int counting = 0;
 		while (temp != start)
 		{
-			temp = cameFrom[goal];
+			temp = cameFrom[temp];
 			path.Add(temp);
 		}
 		path.Reverse();
@@ -198,19 +199,28 @@ public static class PathFinding {
 		bool hitObj = false;
 		foreach (RaycastHit2D hit in tempArr)
 		{
-			bool isTag = false;
+			bool hitAnExeption = false;
 			foreach (string tag in tags)
 			{
 				if (hit.transform.tag == tag)
 				{
-					isTag = true;
+					hitAnExeption = true;
 				}
 			}
-			if (hit.transform != start.transform && hit.transform != goal.transform && isTag == false)
+			if (hit.transform == goal.transform)
+			{
+				hitAnExeption = true;
+			}
+			if (hit.transform == start.transform)
+			{
+				hitAnExeption = true;
+			}
+			//can't hit the start, tags are exceptions, and if you can hit the goal, ignore that collision
+			if (hitAnExeption == false)
 			{
 				temp = hit;
 				hitObj = true;
-				Debug.Log(hit.transform.ToString());
+				Debug.Log("raycast from: start = " + start.name + " to " + goal.name + " .... hit: " + hit.transform.name);
 			}
 		}
 		if (hitObj == true && temp != null && temp.distance < Mathf.Abs(Vector2.Distance(left, right)))

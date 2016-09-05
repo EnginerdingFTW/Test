@@ -23,6 +23,8 @@ public class EnemyAI : MonoBehaviour {
 	[HideInInspector] public int drift;
 	[HideInInspector] public bool fire;
 	public int difficulty = 2;
+
+	bool testing = false;
 		
 
 	void Start()
@@ -104,15 +106,19 @@ public class EnemyAI : MonoBehaviour {
 	}
 
 	void MoveTowardsObject(GameObject obj)
-	{
-		List<string> tagExc = new List<string> {"Boundary"};
-		List<GameObject> path = PathFinding.ReturnAStarPath(this.gameObject, obj, tagExc);
-		Debug.Log("count = " + path.Count.ToString());
-		for (int k = 0; k < path.Count; k++)
+	{	
+		if (testing == false)
 		{
-			Debug.Log("Path[k] = Path[" + k.ToString() + "] = " + path[k].tag);
-			//this.horizontal = path[k].transform.position.x - this.transform.position.x;
-			//this.vertical = path[k].transform.position.y - this.transform.position.y;
+			testing = true;
+			List<string> tagExc = new List<string> {"Boundary", "WeaponFire"};
+			List<GameObject> path = PathFinding.ReturnAStarPath(this.gameObject, obj, tagExc);
+			Debug.Log("count = " + path.Count.ToString());
+			for (int k = 0; k < path.Count; k++)
+			{
+				Debug.Log("Path[k] = Path[" + k.ToString() + "] = " + path[k].name);
+				//this.horizontal = path[k].transform.position.x - this.transform.position.x;
+				//this.vertical = path[k].transform.position.y - this.transform.position.y;
+			}
 		}
 	}
 

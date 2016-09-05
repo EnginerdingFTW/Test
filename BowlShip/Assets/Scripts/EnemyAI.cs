@@ -105,17 +105,14 @@ public class EnemyAI : MonoBehaviour {
 
 	void MoveTowardsObject(GameObject obj)
 	{
-		List<GameObject> path = PathFinding.ReturnAStarPath(this.gameObject, obj);
+		List<string> tagExc = new List<string> {"Boundary"};
+		List<GameObject> path = PathFinding.ReturnAStarPath(this.gameObject, obj, tagExc);
 		Debug.Log("count = " + path.Count.ToString());
 		for (int k = 0; k < path.Count; k++)
 		{
-			this.horizontal = this.transform.position.x - path[k].transform.position.x;
-			this.vertical = path[k].transform.position.y - this.transform.position.y;
-			int i = 0;
-			while (i < 100000)
-			{
-				i++;
-			}
+			Debug.Log("Path[k] = Path[" + k.ToString() + "] = " + path[k].tag);
+			//this.horizontal = path[k].transform.position.x - this.transform.position.x;
+			//this.vertical = path[k].transform.position.y - this.transform.position.y;
 		}
 	}
 

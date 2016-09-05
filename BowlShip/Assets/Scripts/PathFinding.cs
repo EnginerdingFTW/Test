@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 public static class PathFinding {
-
+	
+	
 	/// <summary>
 	/// first checks to see if the AI can move straight to the goal
 	/// Returns the optimal path for an AI to navigate to it's goal form it's start. 
@@ -12,19 +13,21 @@ public static class PathFinding {
 	/// <returns>The A star path.</returns>
 	/// <param name="start">Start.</param>
 	/// <param name="goal">Goal.</param>
-	public static List<GameObject> ReturnAStarPath(GameObject start, GameObject goal)
-	{
-		Vector2 left = new Vector2(start.transform.position.x, start.transform.position.y);
-		Vector2 right = new Vector2(goal.transform.position.x, goal.transform.position.y);
-		if (Physics2D.Raycast(left, right, Vector2.Distance(left, right)))
+	public static List<GameObject> ReturnAStarPath(GameObject start, GameObject goal, List<string> tagExc)
+	{		
+		if (RaycastAllWithExeptions(start, goal, tagExc))
 		{
+			Debug.Log("there's some crap in the way");
+		
 			GameObject[] nodelist = GameObject.FindGameObjectsWithTag("Waypoint");
 			List<GameObject> waypoints = new List<GameObject>();
 			for (int i = 0; i < nodelist.Length; i++)
 			{
 				waypoints.Add(nodelist[i]);
 			}
-			return AStarPathFinding(start, waypoints, goal);	
+			return AStarPathFinding(start, waypoints, goal, tagExc);	
+		
+			return new List<GameObject>();
 		}
 		else 
 		{
@@ -40,7 +43,7 @@ public static class PathFinding {
 	/// <param name="start">Start.</param>
 	/// <param name="waypoints">Waypoints.</param>
 	/// <param name="goal">Goal.</param>
-	public static List<GameObject> AStarPathFinding(GameObject start, List<GameObject> waypoints, GameObject goal)
+	public static List<GameObject> AStarPathFinding(GameObject start, List<GameObject> waypoints, GameObject goal, List<string> tagExc)
 	{
 		//initiallizing for run of Astar	
 		List<GameObject> closedSet = new List<GameObject>();
@@ -67,9 +70,11 @@ public static class PathFinding {
 
 		List<GameObject> current = new List<GameObject>();
 		int nextInd = 0;
+		
 		while (openSet.Count > 0)
 		{
 			current.Add(FindLowestHeuristicCost(openSet, goal));
+			Debug.Log("current obj name = " + current[0].name);
 			nextInd++;
 			if (current[nextInd - 1] == goal)
 			{
@@ -77,9 +82,11 @@ public static class PathFinding {
 			}
 			openSet.Remove(current[nextInd - 1]);
 
-			List<GameObject> neighboors = DetermineNeighboors(waypoints, start);
+			List<GameObject> neighboors = DetermineNeighboors(waypoints, start, tagExc);
+			
 			foreach (GameObject neighboor in neighboors)
 			{
+				Debug.Log("neighboor = " + neighboor.name);
 				if (closedSet.Contains(neighboor))
 				{
 					continue;		//neighboor has already been evaluated, ignore it
@@ -88,15 +95,18 @@ public static class PathFinding {
 				if (!openSet.Contains(neighboor))
 				{
 					openSet.Add(neighboor);
+					Debug.Log("neighboor added");
 				}
 				else if (tentative_gScore >= gScore[neighboor])
 				{
+					Debug.Log("this is not a better path");
 					continue;	 	//this is not a better path
 				}
 				cameFrom[neighboor] = current[nextInd - 1];
 				gScore[neighboor] = tentative_gScore;
 				fScore[neighboor] = gScore[neighboor] + heuristic_cost_estimate(neighboor, goal);
 			}
+			break;
 		}
 
 
@@ -111,15 +121,12 @@ public static class PathFinding {
 	/// <returns>The neighboors.</returns>
 	/// <param name="nodeList">Node list.</param>
 	/// <param name="start">Start.</param>
-	static List<GameObject> DetermineNeighboors(List<GameObject> nodeList, GameObject start)
+	static List<GameObject> DetermineNeighboors(List<GameObject> nodeList, GameObject start, List<string> tagExc)
 	{
 		List<GameObject> neighboors = new List<GameObject>();
 		foreach (GameObject node in nodeList)
 		{
-			Vector2 left = new Vector2(start.transform.position.x, start.transform.position.y);
-			Vector2 right = new Vector2(node.transform.position.x, node.transform.position.y);
-
-			if (!Physics2D.Raycast(left, right, heuristic_cost_estimate(start, node)))
+			if (!RaycastAllWithExeptions(start, node, tagExc))
 			{
 				neighboors.Add(node);		//node is a neighboor because we can move start to the node
 			}
@@ -179,5 +186,37 @@ public static class PathFinding {
 		}
 		path.Reverse();
 		return path;
+	}
+
+	static bool RaycastAllWithExeptions(GameObject start, GameObject goal, List<string> tags)
+	{
+		Vector2 left = new Vector2(start.transform.position.x, start.transform.position.y);
+		Vector2 right = new Vector2(goal.transform.position.x, goal.transform.position.y);
+		Vector2 dir = (right - left).normalized;
+		RaycastHit2D[] tempArr = Physics2D.RaycastAll(left, dir, Mathf.Abs(Vector2.Distance(left, right)));
+		RaycastHit2D temp = tempArr[0];
+		bool hitObj = false;
+		foreach (RaycastHit2D hit in tempArr)
+		{
+			bool isTag = false;
+			foreach (string tag in tags)
+			{
+				if (hit.transform.tag == tag)
+				{
+					isTag = true;
+				}
+			}
+			if (hit.transform != start.transform && hit.transform != goal.transform && isTag == false)
+			{
+				temp = hit;
+				hitObj = true;
+				Debug.Log(hit.transform.ToString());
+			}
+		}
+		if (hitObj == true && temp != null && temp.distance < Mathf.Abs(Vector2.Distance(left, right)))
+		{
+			return true;
+		} 
+		return false;
 	}
 }

@@ -206,7 +206,7 @@ public class GameController : MonoBehaviour {
 			//Instance Variables to save memory
 			bool isDraw = true;								//was this round a draw?
 
-
+			//Debug.Log ("Player " + playerNum.ToString () + " Died");
 			playerThatWasDefeated = FindPlayerJustDefeated (playerNum);
 			audioSource.PlayOneShot (destroyed);
 			DeactivatePlayerHUD (playerThatWasDefeated);

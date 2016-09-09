@@ -175,7 +175,6 @@ public class Player : MonoBehaviour {
 				//Shooting
 				if (canFire && ((Input.GetAxis (fireButton + playerNum.ToString ()) > 0.3f) || (enemyAI != null && enemyAI.fire))) 
 				{
-					Debug.Log("ATTEMPTING FIRE");
 					canFire = false;
 
 					//default weapon
@@ -427,7 +426,9 @@ public class Player : MonoBehaviour {
 	public void Hurt (int damage) {
 		shield -= damage;
 		shieldSlider.value = shield;
-		audioSource.PlayOneShot (damaged, volume);
+		if (!defeated) {
+			audioSource.PlayOneShot (damaged, volume);
+		}
 		if (shield <= 0) {
 			shieldSlider.value = 0;
 			health += shield;
@@ -451,6 +452,7 @@ public class Player : MonoBehaviour {
 					healthSlider.value = health;
 					shieldSlider.value = shield;
 				} else {
+					//Debug.Log ("Player" + playerNum.ToString() + "Just Died");
 					gc.CheckEnd (playerNum, -1);
 					gameObject.SetActive (false); //put in animation?
 					//destroyed animation
@@ -501,6 +503,7 @@ public class Player : MonoBehaviour {
 					shieldSlider.value = shield;
 				} else {
 					gc.CheckEnd (playerNum, playerThatShotYou);
+					Debug.Log ("Player " + playerNum.ToString () + " Died");
 					GameObject explodedAnim = (GameObject)Instantiate (explosion, transform.position, transform.rotation);
 					explodedAnim.transform.localScale = new Vector3 (1f, 1f, 0);
 					gameObject.SetActive (false); 

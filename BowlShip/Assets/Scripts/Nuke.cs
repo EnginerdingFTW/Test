@@ -5,11 +5,12 @@ public class Nuke : WeaponFire {
 
 	public GameObject explosion;
 	public int damage;
+	private GameObject temp;
 	
 		//instantiate giant explosion
 	void Kaboom()
 	{
-		GameObject temp = Instantiate(explosion, this.transform.position, Quaternion.identity) as GameObject;
+		temp = Instantiate(explosion, this.transform.position, Quaternion.identity) as GameObject;
 		temp.transform.localScale = temp.transform.localScale * 4;
 	}
 
@@ -19,8 +20,8 @@ public class Nuke : WeaponFire {
 		if (hasShot && other.gameObject != shootingPlayer && (other.tag == "Player" || other.tag == "Asteroid"))
 		{
 			Kaboom();
-			GetComponentInParent<ExplosionHelper> ().Explode ();
-			Destroy(this.gameObject, 0.1f);
+			temp.GetComponent<ExplosionHelper> ().Explode ();
+			Destroy(this.gameObject);
 		}
 	}
 }

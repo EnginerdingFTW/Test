@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 public static class PathFinding {
-
+	
+	
 	/// <summary>
 	/// first checks to see if the AI can move straight to the goal
 	/// Returns the optimal path for an AI to navigate to it's goal form it's start. 
@@ -12,19 +13,17 @@ public static class PathFinding {
 	/// <returns>The A star path.</returns>
 	/// <param name="start">Start.</param>
 	/// <param name="goal">Goal.</param>
-	public static List<GameObject> ReturnAStarPath(GameObject start, GameObject goal)
-	{
-		Vector2 left = new Vector2(start.transform.position.x, start.transform.position.y);
-		Vector2 right = new Vector2(goal.transform.position.x, goal.transform.position.y);
-		if (Physics2D.Raycast(left, right, Vector2.Distance(left, right)))
-		{
+	public static List<GameObject> ReturnAStarPath(GameObject start, GameObject goal, List<string> tagExc)
+	{		
+		if (RaycastAllWithExeptions(start, goal, tagExc))
+		{		
 			GameObject[] nodelist = GameObject.FindGameObjectsWithTag("Waypoint");
 			List<GameObject> waypoints = new List<GameObject>();
 			for (int i = 0; i < nodelist.Length; i++)
 			{
 				waypoints.Add(nodelist[i]);
 			}
-			return AStarPathFinding(start, waypoints, goal);	
+			return AStarPathFinding(start, waypoints, goal, tagExc);	
 		}
 		else 
 		{
@@ -40,7 +39,7 @@ public static class PathFinding {
 	/// <param name="start">Start.</param>
 	/// <param name="waypoints">Waypoints.</param>
 	/// <param name="goal">Goal.</param>
-	public static List<GameObject> AStarPathFinding(GameObject start, List<GameObject> waypoints, GameObject goal)
+	public static List<GameObject> AStarPathFinding(GameObject start, List<GameObject> waypoints, GameObject goal, List<string> tagExc)
 	{
 		//initiallizing for run of Astar	
 		List<GameObject> closedSet = new List<GameObject>();
@@ -67,17 +66,25 @@ public static class PathFinding {
 
 		List<GameObject> current = new List<GameObject>();
 		int nextInd = 0;
+		
+		waypoints.Add(goal);
 		while (openSet.Count > 0)
 		{
-			current.Add(FindLowestHeuristicCost(openSet, goal));
+			GameObject tempGame = null;
+			if (FindLowestHeuristicCost(openSet, goal) != null)
+			{
+				current.Add(FindLowestHeuristicCost(openSet, goal));
+			}
+	
 			nextInd++;
 			if (current[nextInd - 1] == goal)
 			{
 				return ReconstructPath(cameFrom, start, goal);
 			}
 			openSet.Remove(current[nextInd - 1]);
+			closedSet.Add(current[nextInd - 1]);
 
-			List<GameObject> neighboors = DetermineNeighboors(waypoints, start);
+			List<GameObject> neighboors = DetermineNeighboors(waypoints, current[nextInd - 1], tagExc);
 			foreach (GameObject neighboor in neighboors)
 			{
 				if (closedSet.Contains(neighboor))
@@ -98,9 +105,6 @@ public static class PathFinding {
 				fScore[neighboor] = gScore[neighboor] + heuristic_cost_estimate(neighboor, goal);
 			}
 		}
-
-
-
 		return openSet;
 	}
 
@@ -111,15 +115,12 @@ public static class PathFinding {
 	/// <returns>The neighboors.</returns>
 	/// <param name="nodeList">Node list.</param>
 	/// <param name="start">Start.</param>
-	static List<GameObject> DetermineNeighboors(List<GameObject> nodeList, GameObject start)
+	static List<GameObject> DetermineNeighboors(List<GameObject> nodeList, GameObject start, List<string> tagExc)
 	{
 		List<GameObject> neighboors = new List<GameObject>();
 		foreach (GameObject node in nodeList)
 		{
-			Vector2 left = new Vector2(start.transform.position.x, start.transform.position.y);
-			Vector2 right = new Vector2(node.transform.position.x, node.transform.position.y);
-
-			if (!Physics2D.Raycast(left, right, heuristic_cost_estimate(start, node)))
+			if (!RaycastAllWithExeptions(start, node, tagExc))
 			{
 				neighboors.Add(node);		//node is a neighboor because we can move start to the node
 			}
@@ -137,6 +138,10 @@ public static class PathFinding {
 	{
 		float cost = 100000000f;
 		int lowestInd = 0;
+		if (nodeList.Count == 0)
+		{
+			return null;	
+		}
 		for (int count = 0; count < nodeList.Count; count++)
 		{
 			float temp = heuristic_cost_estimate(nodeList[count], goal);
@@ -171,13 +176,62 @@ public static class PathFinding {
 	{
 		List<GameObject> path = new List<GameObject>();
 		path.Add(goal);
-		GameObject temp = null;
+		GameObject temp = goal;
+		int counting = 0;
 		while (temp != start)
 		{
-			temp = cameFrom[goal];
+			temp = cameFrom[temp];
 			path.Add(temp);
 		}
 		path.Reverse();
 		return path;
+	}
+
+/// <summary>
+/// Sends a Raycast all from the start gameobject to the end Gameobject. Returns True if it hit anything not in the exception list.
+/// </summary>
+/// <returns><c>true</c>, otherwise, <c>false</c> an object not on the exception list is hit</returns>
+/// <param name="start">Start. - point beginning the raycast </param>
+/// <param name="goal">Goal. - point ending the raycast</param>
+/// <param name="tags">Tags - list of tags that are the exception list</param>
+	public static bool RaycastAllWithExeptions(GameObject start, GameObject goal, List<string> tags)
+	{
+		Vector2 left = new Vector2(start.transform.position.x, start.transform.position.y);
+		Vector2 right = new Vector2(goal.transform.position.x, goal.transform.position.y);
+		Vector2 dir = (right - left).normalized;
+		RaycastHit2D[] tempArr = Physics2D.RaycastAll(left, dir, Mathf.Abs(Vector2.Distance(left, right)));
+		RaycastHit2D temp = tempArr[0];
+		bool hitObj = false;
+		foreach (RaycastHit2D hit in tempArr)
+		{
+			bool hitAnExeption = false;
+			foreach (string tag in tags)
+			{
+				if (hit.transform.tag == tag)
+				{
+					hitAnExeption = true;
+				}
+			}
+			if (hit.transform == goal.transform)
+			{
+				hitAnExeption = true;
+			}
+			if (hit.transform == start.transform)
+			{
+				hitAnExeption = true;
+			}
+			//can't hit the start, tags are exceptions, and if you can hit the goal, ignore that collision
+			if (hitAnExeption == false)
+			{
+				temp = hit;
+				hitObj = true;
+				//Debug.Log("raycast from: start = " + start.name + " to " + goal.name + " .... hit: " + hit.transform.name);
+			}
+		}
+		if (hitObj == true && temp != null && temp.distance < Mathf.Abs(Vector2.Distance(left, right)))
+		{
+			return true;
+		} 
+		return false;
 	}
 }

@@ -173,18 +173,23 @@ public class Player : MonoBehaviour {
 				}
 
 				//Shooting
-				if (canFire && (Input.GetAxis (fireButton + playerNum.ToString ()) > 0.3f || enemyAI != null)) {
+				Debug.Log("1: canFire = " + canFire.ToString() + "    enemyAi.fire = " + enemyAI.fire.ToString());
+				if (canFire && ((Input.GetAxis (fireButton + playerNum.ToString ()) > 0.3f) || (enemyAI != null && enemyAI.fire))) 
+				{
+					Debug.Log("ATTEMPTING FIRE");
 					canFire = false;
 
 					//default weapon
-					if (weapons.Count == 0) {
+					if (weapons.Count == 0) 
+					{
 						fireRate = defaultFireRate;
 						laserObject = (GameObject)Instantiate (defaultLaser, laserInstatiationPoint.transform.position, transform.rotation);
 						weaponIconImage.sprite = defaultWeaponIcon;
 						laserObject.GetComponent<WeaponFire> ().AttachPlayer (this.gameObject);
 						StartCoroutine ("RegulateWeaponFire");
-					} else {
-				
+					} 
+					else 
+					{
 						//power up weapon
 						currentWeapon = weapons [weapons.Count - 1];
 						weaponIconImage.sprite = currentWeapon.GetComponent<SpriteRenderer> ().sprite;
@@ -312,7 +317,7 @@ public class Player : MonoBehaviour {
 				}
 
 				//Shooting
-				if (canFire && (Input.GetAxis (fireButton + playerNum.ToString ()) > 0.3f || enemyAI != null)) {
+				if (canFire && (Input.GetAxis (fireButton + playerNum.ToString ()) > 0.3f || enemyAI != null && enemyAI.fire)) {
 					canFire = false;
 
 					//default weapon
@@ -534,8 +539,10 @@ public class Player : MonoBehaviour {
 	/// </summary>
 	/// <returns>The time between firing.</returns>
 	IEnumerator RegulateWeaponFire () {
+		Debug.Log("can fire reseting1");
 		yield return new WaitForSeconds (1.0f / fireRate);
 		canFire = true;
+		Debug.Log("can fire reseting2");
 	}
 
 	/// <summary>

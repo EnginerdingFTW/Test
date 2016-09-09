@@ -317,7 +317,7 @@ public class Player : MonoBehaviour {
 				}
 
 				//Shooting
-				if (canFire && (Input.GetAxis (fireButton + playerNum.ToString ()) > 0.3f || enemyAI != null && enemyAI.fire)) {
+				if (canFire && (Input.GetAxis (fireButton + playerNum.ToString ()) > 0.3f || (enemyAI != null && enemyAI.fire))) {
 					canFire = false;
 
 					//default weapon
@@ -539,10 +539,10 @@ public class Player : MonoBehaviour {
 	/// </summary>
 	/// <returns>The time between firing.</returns>
 	IEnumerator RegulateWeaponFire () {
-		Debug.Log("can fire reseting1");
+		//Debug.Log("can fire reseting1");
 		yield return new WaitForSeconds (1.0f / fireRate);
 		canFire = true;
-		Debug.Log("can fire reseting2");
+		//Debug.Log("can fire reseting2");
 	}
 
 	/// <summary>

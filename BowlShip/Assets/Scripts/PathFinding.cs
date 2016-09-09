@@ -16,9 +16,7 @@ public static class PathFinding {
 	public static List<GameObject> ReturnAStarPath(GameObject start, GameObject goal, List<string> tagExc)
 	{		
 		if (RaycastAllWithExeptions(start, goal, tagExc))
-		{
-			Debug.Log("there's some crap in the way");
-		
+		{		
 			GameObject[] nodelist = GameObject.FindGameObjectsWithTag("Waypoint");
 			List<GameObject> waypoints = new List<GameObject>();
 			for (int i = 0; i < nodelist.Length; i++)
@@ -189,7 +187,14 @@ public static class PathFinding {
 		return path;
 	}
 
-	static bool RaycastAllWithExeptions(GameObject start, GameObject goal, List<string> tags)
+/// <summary>
+/// Sends a Raycast all from the start gameobject to the end Gameobject. Returns True if it hit anything not in the exception list.
+/// </summary>
+/// <returns><c>true</c>, otherwise, <c>false</c> an object not on the exception list is hit</returns>
+/// <param name="start">Start. - point beginning the raycast </param>
+/// <param name="goal">Goal. - point ending the raycast</param>
+/// <param name="tags">Tags - list of tags that are the exception list</param>
+	public static bool RaycastAllWithExeptions(GameObject start, GameObject goal, List<string> tags)
 	{
 		Vector2 left = new Vector2(start.transform.position.x, start.transform.position.y);
 		Vector2 right = new Vector2(goal.transform.position.x, goal.transform.position.y);
@@ -220,7 +225,7 @@ public static class PathFinding {
 			{
 				temp = hit;
 				hitObj = true;
-				Debug.Log("raycast from: start = " + start.name + " to " + goal.name + " .... hit: " + hit.transform.name);
+				//Debug.Log("raycast from: start = " + start.name + " to " + goal.name + " .... hit: " + hit.transform.name);
 			}
 		}
 		if (hitObj == true && temp != null && temp.distance < Mathf.Abs(Vector2.Distance(left, right)))

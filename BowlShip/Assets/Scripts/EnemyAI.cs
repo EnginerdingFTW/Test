@@ -15,8 +15,11 @@ public class EnemyAI : MonoBehaviour {
 	#endregion
 	
 	private GameController gamecontroller;
-	private List<Vector2> waypoints;
 	private int stateMachine = 1;
+	private float reactionTime = 0.2f;
+	private bool aiPathSetRecent = false;
+	private List<GameObject> pathFindingWaypoints = null;
+	private float speed = 1.0f;
 
 	[HideInInspector] public float horizontal;
 	[HideInInspector] public float vertical;
@@ -24,16 +27,18 @@ public class EnemyAI : MonoBehaviour {
 	[HideInInspector] public bool fire;
 	public int difficulty = 2;
 
-	bool testing = false;
 		
 
 	void Start()
 	{
 		gamecontroller = GameObject.Find("GameController").GetComponent<GameController>();
+		StartCoroutine("MoveTowardsObjectThread");
+		this.stateMachine = OFFENSIVE;
 	}
 
 	void Update()
 	{
+		this.fire = true;
 		MoveTowardsObject(GameObject.Find("TayShip"));
 		switch (stateMachine)
 		{
@@ -72,6 +77,7 @@ public class EnemyAI : MonoBehaviour {
 
 	void StateOffensive()
 	{
+		//ShootTowardsObject(GameObject.Find("TayShip"));
 		switch (difficulty)
 		{
 			case NOOBS:
@@ -107,24 +113,58 @@ public class EnemyAI : MonoBehaviour {
 
 	void MoveTowardsObject(GameObject obj)
 	{	
-		if (testing == false)
+		if (aiPathSetRecent == false)
 		{
-			testing = true;
+			aiPathSetRecent = true;
 			List<string> tagExc = new List<string> {"Boundary", "WeaponFire"};
-			List<GameObject> path = PathFinding.ReturnAStarPath(this.gameObject, obj, tagExc);
-			Debug.Log("count = " + path.Count.ToString());
-			for (int k = 0; k < path.Count; k++)
+			pathFindingWaypoints = PathFinding.ReturnAStarPath(this.gameObject, obj, tagExc);	//path is the List of Waypoints to get to the goal.
+			//for (int k = 0; k < pathFindingWaypoints.Count; k++)
+			//{
+				//Debug.Log("Path[k] = Path[" + k.ToString() + "] = " + pathFindingWaypoints[k].name);
+			//}
+		}
+	}
+
+	IEnumerator MoveTowardsObjectThread()
+	{	
+		
+		Vector2 posThere = new Vector2(0, 0);
+		Vector2 posHere = new Vector2(0, 0);
+		while (true)
+		{
+			yield return new WaitForSeconds(reactionTime);
+			if (pathFindingWaypoints != null)
 			{
-				Debug.Log("Path[k] = Path[" + k.ToString() + "] = " + path[k].name);
-				//this.horizontal = path[k].transform.position.x - this.transform.position.x;
-				//this.vertical = path[k].transform.position.y - this.transform.position.y;
+				
+				while (pathFindingWaypoints.Count > 0)
+				{	
+					posThere = new Vector2(pathFindingWaypoints[0].transform.position.x, pathFindingWaypoints[0].transform.position.y);
+					posHere = new Vector2(this.gameObject.transform.position.x, this.gameObject.transform.position.y);
+					if (Vector2.Distance(posHere, posThere) < 0.5f)
+					{
+						pathFindingWaypoints.Remove(pathFindingWaypoints[0]);
+					}
+					posThere = new Vector2(pathFindingWaypoints[0].transform.position.x, pathFindingWaypoints[0].transform.position.y);
+					//Debug.Log("posThere = " + posThere.ToString());
+					this.horizontal = (posThere.x - posHere.x) * speed;  
+					this.vertical = (posThere.y - posHere.y) * speed;
+					yield return new WaitForSeconds(reactionTime);
+					aiPathSetRecent = false;
+				}
 			}
 		}
 	}
 
-	void ShootTowardsObject(GameObject obj)
-	{
+	
 
+	void ShootTowardsObject(GameObject obj)
+	{	
+		this.fire = false;
+		List<string> tagExc = new List<string> {"Boundary", "WeaponFire"};
+		if (!PathFinding.RaycastAllWithExeptions(this.gameObject, obj, tagExc))	
+		{
+			this.fire = true;
+		}
 	}
 
 	GameObject FindClosestObject(GameObject[] list)

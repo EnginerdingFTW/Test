@@ -173,7 +173,6 @@ public class Player : MonoBehaviour {
 				}
 
 				//Shooting
-				Debug.Log("1: canFire = " + canFire.ToString() + "    enemyAi.fire = " + enemyAI.fire.ToString());
 				if (canFire && ((Input.GetAxis (fireButton + playerNum.ToString ()) > 0.3f) || (enemyAI != null && enemyAI.fire))) 
 				{
 					Debug.Log("ATTEMPTING FIRE");

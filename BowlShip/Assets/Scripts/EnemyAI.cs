@@ -25,6 +25,7 @@ public class EnemyAI : MonoBehaviour {
 	[HideInInspector] public float vertical;
 	[HideInInspector] public int drift;
 	[HideInInspector] public bool fire;
+	[HideInInspector] public bool boost;
 	public int difficulty = 2;
 
 		
@@ -38,8 +39,7 @@ public class EnemyAI : MonoBehaviour {
 
 	void Update()
 	{
-		this.fire = true;
-		MoveTowardsObject(GameObject.Find("TayShip"));
+		MoveTowardsObject(GameObject.Find("TayShip(Clone)"));
 		switch (stateMachine)
 		{
 			case COLLECT:
@@ -77,7 +77,7 @@ public class EnemyAI : MonoBehaviour {
 
 	void StateOffensive()
 	{
-		//ShootTowardsObject(GameObject.Find("TayShip"));
+		ShootTowardsObject(GameObject.Find("TayShip(Clone)"));
 		switch (difficulty)
 		{
 			case NOOBS:
@@ -118,10 +118,6 @@ public class EnemyAI : MonoBehaviour {
 			aiPathSetRecent = true;
 			List<string> tagExc = new List<string> {"Boundary", "WeaponFire"};
 			pathFindingWaypoints = PathFinding.ReturnAStarPath(this.gameObject, obj, tagExc);	//path is the List of Waypoints to get to the goal.
-			//for (int k = 0; k < pathFindingWaypoints.Count; k++)
-			//{
-				//Debug.Log("Path[k] = Path[" + k.ToString() + "] = " + pathFindingWaypoints[k].name);
-			//}
 		}
 	}
 
@@ -149,9 +145,9 @@ public class EnemyAI : MonoBehaviour {
 					this.horizontal = (posThere.x - posHere.x) * speed;  
 					this.vertical = (posThere.y - posHere.y) * speed;
 					yield return new WaitForSeconds(reactionTime);
-					aiPathSetRecent = false;
 				}
 			}
+			aiPathSetRecent = false;
 		}
 	}
 
@@ -159,11 +155,19 @@ public class EnemyAI : MonoBehaviour {
 
 	void ShootTowardsObject(GameObject obj)
 	{	
+		if (obj == null)
+		{
+			Debug.Log("obj is null");
+			return;
+		}
+
+
 		this.fire = false;
 		List<string> tagExc = new List<string> {"Boundary", "WeaponFire"};
 		if (!PathFinding.RaycastAllWithExeptions(this.gameObject, obj, tagExc))	
 		{
 			this.fire = true;
+			this.boost = true;
 		}
 	}
 

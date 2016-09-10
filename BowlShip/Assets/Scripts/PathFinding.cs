@@ -28,7 +28,14 @@ public static class PathFinding {
 		else 
 		{
 			Debug.Log("next");
-			return new List<GameObject> { goal };
+			if (goal == null)
+			{
+				return null;
+			}
+			else
+			{
+				return new List<GameObject> { goal };
+			}
 		}
 	}
 		
@@ -196,6 +203,11 @@ public static class PathFinding {
 /// <param name="tags">Tags - list of tags that are the exception list</param>
 	public static bool RaycastAllWithExeptions(GameObject start, GameObject goal, List<string> tags)
 	{
+		if (goal == null)
+		{
+			return false;
+		}
+
 		Vector2 left = new Vector2(start.transform.position.x, start.transform.position.y);
 		Vector2 right = new Vector2(goal.transform.position.x, goal.transform.position.y);
 		Vector2 dir = (right - left).normalized;

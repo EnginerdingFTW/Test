@@ -322,7 +322,6 @@ public class Player : MonoBehaviour {
 				if (enemyAI != null)
 				{
 					playerInputBoost = enemyAI.boost;
-					Debug.Log("boost set");
 				}
 				else if (Input.GetAxis ("Boost" + playerNum.ToString ()) > 0.3f)
 				{

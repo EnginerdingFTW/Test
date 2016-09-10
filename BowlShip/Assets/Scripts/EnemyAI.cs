@@ -167,7 +167,6 @@ public class EnemyAI : MonoBehaviour {
 		if (!PathFinding.RaycastAllWithExeptions(this.gameObject, obj, tagExc))	
 		{
 			this.fire = true;
-			this.boost = true;
 		}
 	}
 

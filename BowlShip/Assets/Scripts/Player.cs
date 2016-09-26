@@ -44,10 +44,12 @@ public class Player : MonoBehaviour {
 	public GameObject explosion;						//Explosion to instantiate when player dies
 
 	//Boosting
-	public bool canBoost = true;		//The player can use up it's shield to boost if it has more than half its shield left
-	public float boostMultiplier = 3.0f;				//How much faster does the boost make the ship go
+	public bool canBoost = true;						//The player can use up it's shield to boost if it has more than half its shield left
+	public float boostMultiplier = 2.5f;				//How much faster does the boost make the ship go
 	public float boostTime = 1.0f;						//The length the boost is in effect
-	private float oldSpeed;								//used to keep track of the old speed before the boost
+	public int minShieldForBoost = 10;					//How much shield the player must have to boost
+	public float originalScale;							//The original y scale proportion of the ship
+	public float boostScaleChange = 1.5f;				//How much longer the ship looks while boosting (same animation for multiple scaled ships)
 
 	//Drifting
 	public float thrust = 1.0f;							//The trigger movement input
@@ -112,7 +114,7 @@ public class Player : MonoBehaviour {
 	}
 	
 	/// <summary>
-	/// Sets the Movement of the Player, allows it to fire.
+	/// Sets the Movement of the Player, allows it to fire, drift, and boost.
 	/// </summary>
 	void Update () {
 		if (gc != null && gc.paused == false) {
@@ -168,7 +170,8 @@ public class Player : MonoBehaviour {
 				}
 
 				//Boosting
-				if (canBoost && shield > 10 && Input.GetAxis ("Boost" + playerNum.ToString ()) > 0.3f) {
+				if (canBoost && thrust <= 0 && shield > minShieldForBoost && Input.GetAxis ("Boost" + playerNum.ToString ()) > 0.3f) {
+					canBoost = false;
 					StartCoroutine("Boost");
 				}
 
@@ -309,7 +312,7 @@ public class Player : MonoBehaviour {
 				}
 
 				//Boosting
-				if (canBoost && shield > 10 && Input.GetAxis ("Boost" + playerNum.ToString ()) > 0.3f) {
+				if (canBoost && thrust <= 0 && shield > minShieldForBoost && Input.GetAxis ("Boost" + playerNum.ToString ()) > 0.3f) {
 					canBoost = false;
 					StartCoroutine("Boost");
 				}
@@ -401,19 +404,16 @@ public class Player : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Boost the ship by increasing its speed for a set time. While boosting the ship can not recharge its shield
+	/// Boost the ship by increasing its speed for a set time. While boosting the ship loses its shield.
 	/// </summary>
 	IEnumerator Boost () {
 		canBoost = false;
-		shield -= 10;
-		if (shield <= 0) {
-			shield = 0;
-		}
+		transform.localScale = new Vector3(originalScale, transform.localScale.y * boostScaleChange, 1);
+		shield = 0;
 		shieldSlider.value = shield;
-		oldSpeed = speed;
 		speed *= boostMultiplier;
 		yield return new WaitForSeconds (boostTime);
-		speed = oldSpeed;
+		transform.localScale = new Vector3 (originalScale, originalScale, 1);
 		canBoost = true;
 	}
 
@@ -454,6 +454,8 @@ public class Player : MonoBehaviour {
 				} else {
 					//Debug.Log ("Player" + playerNum.ToString() + "Just Died");
 					gc.CheckEnd (playerNum, -1);
+					canBoost = true;
+					transform.localScale = new Vector3 (originalScale, originalScale, 1);
 					gameObject.SetActive (false); //put in animation?
 					//destroyed animation
 				}
@@ -506,6 +508,8 @@ public class Player : MonoBehaviour {
 					Debug.Log ("Player " + playerNum.ToString () + " Died");
 					GameObject explodedAnim = (GameObject)Instantiate (explosion, transform.position, transform.rotation);
 					explodedAnim.transform.localScale = new Vector3 (1f, 1f, 0);
+					canBoost = true;
+					transform.localScale = new Vector3 (originalScale, originalScale, 1);
 					gameObject.SetActive (false); 
 				}
 				return;

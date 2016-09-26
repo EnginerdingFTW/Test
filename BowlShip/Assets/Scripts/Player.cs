@@ -119,8 +119,7 @@ public class Player : MonoBehaviour {
 	void Update () {
 		if (gc != null && gc.paused == false) {
 
-			if (poweredOn ) 
-			{
+			if (poweredOn) {
 				//Linear Movement
 				if (enemyAI != null)
 				{
@@ -170,22 +169,20 @@ public class Player : MonoBehaviour {
 				}
 
 				//Boosting
-<<<<<<< HEAD
 				if (canBoost && thrust <= 0 && shield > minShieldForBoost && Input.GetAxis ("Boost" + playerNum.ToString ()) > 0.3f) {
 					canBoost = false;
-=======
-				bool playerInputBoost = false;
-				if (enemyAI != null)
-				{
-					playerInputBoost = enemyAI.boost;
-				}
-				else if (Input.GetAxis ("Boost" + playerNum.ToString ()) > 0.3f)
-				{
-					playerInputBoost = true;
-				}
-				if (canBoost && shield > 10 && playerInputBoost) {
->>>>>>> origin/master
-					StartCoroutine("Boost");
+					bool playerInputBoost = false;
+					if (enemyAI != null)
+					{
+						playerInputBoost = enemyAI.boost;
+					}
+					else if (Input.GetAxis ("Boost" + playerNum.ToString ()) > 0.3f)
+					{
+						playerInputBoost = true;
+					}
+					if (canBoost && thrust <= 0 && shield > 10 && playerInputBoost) {
+						StartCoroutine("Boost");
+					}
 				}
 
 				//Shooting
@@ -325,23 +322,21 @@ public class Player : MonoBehaviour {
 				}
 
 				//Boosting
-<<<<<<< HEAD
 				if (canBoost && thrust <= 0 && shield > minShieldForBoost && Input.GetAxis ("Boost" + playerNum.ToString ()) > 0.3f) {
-=======
-				bool playerInputBoost = false;
-				if (enemyAI != null)
-				{
-					playerInputBoost = enemyAI.boost;
-				}
-				else if (Input.GetAxis ("Boost" + playerNum.ToString ()) > 0.3f)
-				{
-					playerInputBoost = true;
-				}
+					bool playerInputBoost = false;
+					if (enemyAI != null)
+					{
+						playerInputBoost = enemyAI.boost;
+					}
+					else if (Input.GetAxis ("Boost" + playerNum.ToString ()) > 0.3f)
+					{
+						playerInputBoost = true;
+					}
 				
-				if (canBoost && shield > 10 && playerInputBoost) {
->>>>>>> origin/master
-					canBoost = false;
-					StartCoroutine("Boost");
+					if (canBoost && thrust <= 0 && shield > minShieldForBoost && playerInputBoost) {
+						canBoost = false;
+						StartCoroutine("Boost");
+					}
 				}
 
 				//Shooting

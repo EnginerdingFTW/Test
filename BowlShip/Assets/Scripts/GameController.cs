@@ -269,7 +269,7 @@ public class GameController : MonoBehaviour {
 			audioSource.PlayOneShot (destroyed);
 			Debug.Log ("Player " + (playerThatWasDefeated + 1).ToString () + " Defeated!");
 			DeactivatePlayerHUD (playerThatWasDefeated);
-			if (playerThatShot != -1) {
+			if (playerThatShot != -1 && playerThatShot != playerThatWasDefeated) {
 				scores [playerThatShot]++;
 				scoreBoxTexts [playerThatShot].text = scores [playerThatShot].ToString ();
 			}
@@ -321,7 +321,7 @@ public class GameController : MonoBehaviour {
 			audioSource.PlayOneShot (destroyed);
 			Debug.Log ("Player " + (playerThatWasDefeated + 1).ToString () + " Defeated!");
 			DeactivatePlayerHUD (playerThatWasDefeated);
-			if (playerThatShot != -1) {
+			if (playerThatShot != -1 && playerThatShot != playerThatWasDefeated) {
 				scores [playerThatShot]++;
 				scoreBoxTexts [playerThatShot].text = scores [playerThatShot].ToString ();
 			}

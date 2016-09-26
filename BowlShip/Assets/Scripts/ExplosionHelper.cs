@@ -4,7 +4,7 @@ using System.Collections;
 public class ExplosionHelper : MonoBehaviour {
 		//this script damages anything within a collider, used for explosion radius's
 
-
+	[HideInInspector] public GameObject shootingPlayer;				//the player that shot the weapon
 	public bool exploded = false;
 	public int damage;
 
@@ -21,7 +21,7 @@ public class ExplosionHelper : MonoBehaviour {
 	{
 		if (exploded && other.tag == "Player")
 		{
-			other.GetComponent<Player>().Hurt(damage);
+			other.GetComponent<Player>().Hurt(damage, shootingPlayer.GetComponent<Player>().playerNum);
 		}
 	}
 }

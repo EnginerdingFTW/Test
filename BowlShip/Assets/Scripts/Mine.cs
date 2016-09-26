@@ -33,6 +33,7 @@ public class Mine : WeaponFire {
 	{
 		if (hasShot && other.gameObject != shootingPlayer && other.tag == "Player")
 		{
+			blastRadius.GetComponent<ExplosionHelper> ().shootingPlayer = this.shootingPlayer;
 			Kaboom();
 			GetComponentInChildren<ExplosionHelper>().exploded = true;
 			//other.GetComponent<Player>().Hurt(damage);

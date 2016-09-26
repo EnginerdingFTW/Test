@@ -118,276 +118,127 @@ public class Player : MonoBehaviour {
 	/// Sets the Movement of the Player, allows it to fire, drift, and boost.
 	/// </summary>
 	void Update () {
-		if (gc != null && gc.paused == false) {
+		if (poweredOn) {
+			//Linear Movement
+			if (enemyAI != null)
+			{
+				horiz = enemyAI.horizontal;
+				vert = enemyAI.vertical;
+			}
+			else
+			{
+				horiz = Input.GetAxis ("Horizontal" + playerNum.ToString ()) * speed;
+				vert = Input.GetAxis ("Vertical" + playerNum.ToString ()) * speed;
+			}
 
-			if (poweredOn) {
-				//Linear Movement
+			//Angular Movement
+			if (Mathf.Abs (horiz) > minInput || Mathf.Abs (vert) > minInput) {
+				float angle = Mathf.Atan2 (vert, horiz) * Mathf.Rad2Deg + 90;
+				transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.AngleAxis (angle, Vector3.forward), Time.deltaTime * rotationSpeed);
+			} 
+
+			//New Thrust Adjustment (drift)
+			if (enemyAI != null)
+			{
+				thrust = enemyAI.drift;
+			} 
+			else 
+			{
+				thrust = Input.GetAxis ("Thrust" + playerNum.ToString ());			
+			}
+	
+			if (thrust <= 0) 
+			{
+				man0Drag = 1;
+				man1Drag = 1;
+				man2Drag = 1;
+				movement = new Vector2 (horiz, vert);
+				rb.AddForce (movement);
+			} 
+			else 
+			{
+				man0Drag = 0;
+				man1Drag = 0;
+				man2Drag = 0;
+			}
+
+			//Shield Recharge Adjustment
+			if (useShieldRecharge && canRecharge && canBoost) {
+				StartCoroutine ("ShieldRecharge", shieldChargeRate);
+			}
+
+			//Boosting
+			if (canBoost && thrust <= 0 && shield > minShieldForBoost) {
+				playerInputBoost = false;
 				if (enemyAI != null)
 				{
-					horiz = enemyAI.horizontal;
-					vert = enemyAI.vertical;
+					playerInputBoost = enemyAI.boost;
 				}
-				else
+				else if (Input.GetAxis ("Boost" + playerNum.ToString ()) > 0.3f)
 				{
-					horiz = Input.GetAxis ("Horizontal" + playerNum.ToString ()) * speed;
-					vert = Input.GetAxis ("Vertical" + playerNum.ToString ()) * speed;
+					playerInputBoost = true;
 				}
+				if (playerInputBoost) {
+					canBoost = false;
+					StartCoroutine("Boost");
+				}
+			}
 
-				//Angular Movement
-				if (Mathf.Abs (horiz) > minInput || Mathf.Abs (vert) > minInput) {
-					float angle = Mathf.Atan2 (vert, horiz) * Mathf.Rad2Deg + 90;
-					transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.AngleAxis (angle, Vector3.forward), Time.deltaTime * rotationSpeed);
-				} 
+			//Shooting
+			if (canFire && ((Input.GetAxis (fireButton + playerNum.ToString ()) > 0.3f) || (enemyAI != null && enemyAI.fire))) 
+			{
+				canFire = false;
 
-				//New Thrust Adjustment (drift)
-				if (enemyAI != null)
+				//default weapon
+				if (weapons.Count == 0) 
 				{
-					thrust = enemyAI.drift;
+					fireRate = defaultFireRate;
+					laserObject = (GameObject)Instantiate (defaultLaser, laserInstatiationPoint.transform.position, transform.rotation);
+					weaponIconImage.sprite = defaultWeaponIcon;
+					laserObject.GetComponent<WeaponFire> ().AttachPlayer (this.gameObject);
+					StartCoroutine ("RegulateWeaponFire");
 				} 
 				else 
 				{
-					thrust = Input.GetAxis ("Thrust" + playerNum.ToString ());			
-				}
-		
-				if (thrust <= 0) 
-				{
-					man0Drag = 1;
-					man1Drag = 1;
-					man2Drag = 1;
-					movement = new Vector2 (horiz, vert);
-					rb.AddForce (movement);
-				} 
-				else 
-				{
-					man0Drag = 0;
-					man1Drag = 0;
-					man2Drag = 0;
-				}
-
-				//Shield Recharge Adjustment
-				if (useShieldRecharge && canRecharge && canBoost) {
-					StartCoroutine ("ShieldRecharge", shieldChargeRate);
-				}
-
-				//Boosting
-				if (canBoost && thrust <= 0 && shield > minShieldForBoost) {
-					playerInputBoost = false;
-					if (enemyAI != null)
-					{
-						playerInputBoost = enemyAI.boost;
-					}
-					else if (Input.GetAxis ("Boost" + playerNum.ToString ()) > 0.3f)
-					{
-						playerInputBoost = true;
-					}
-					if (playerInputBoost) {
-						canBoost = false;
-						StartCoroutine("Boost");
-					}
-				}
-
-				//Shooting
-				if (canFire && ((Input.GetAxis (fireButton + playerNum.ToString ()) > 0.3f) || (enemyAI != null && enemyAI.fire))) 
-				{
-					canFire = false;
-
-					//default weapon
-					if (weapons.Count == 0) 
-					{
-						fireRate = defaultFireRate;
-						laserObject = (GameObject)Instantiate (defaultLaser, laserInstatiationPoint.transform.position, transform.rotation);
-						weaponIconImage.sprite = defaultWeaponIcon;
-						laserObject.GetComponent<WeaponFire> ().AttachPlayer (this.gameObject);
-						StartCoroutine ("RegulateWeaponFire");
-					} 
-					else 
-					{
-						//power up weapon
-						currentWeapon = weapons [weapons.Count - 1];
-						weaponIconImage.sprite = currentWeapon.GetComponent<SpriteRenderer> ().sprite;
-						fireRate = currentWeapon.fireRate;
-						if (currentWeapon.isDual) {
-							laserObject = (GameObject)Instantiate (currentWeapon.laserType, dualLaserInstatiationPoint1.transform.position, transform.rotation);
-							if (laserObject.GetComponent<WeaponFire> () == null) {
-								laserObject.GetComponentInChildren<WeaponFire> ().AttachPlayer (this.gameObject);
-							} else {
-								laserObject.GetComponent<WeaponFire> ().AttachPlayer (this.gameObject);
-							}
-							laserObject = (GameObject)Instantiate (currentWeapon.laserType, dualLaserInstatiationPoint2.transform.position, transform.rotation);
-							if (laserObject.GetComponent<WeaponFire> () == null) {
-								laserObject.GetComponentInChildren<WeaponFire> ().AttachPlayer (this.gameObject);
-							} else {
-								laserObject.GetComponent<WeaponFire> ().AttachPlayer (this.gameObject);
-							}
+					//power up weapon
+					currentWeapon = weapons [weapons.Count - 1];
+					weaponIconImage.sprite = currentWeapon.GetComponent<SpriteRenderer> ().sprite;
+					fireRate = currentWeapon.fireRate;
+					if (currentWeapon.isDual) {
+						laserObject = (GameObject)Instantiate (currentWeapon.laserType, dualLaserInstatiationPoint1.transform.position, transform.rotation);
+						if (laserObject.GetComponent<WeaponFire> () == null) {
+							laserObject.GetComponentInChildren<WeaponFire> ().AttachPlayer (this.gameObject);
 						} else {
-							laserObject = (GameObject)Instantiate (currentWeapon.laserType, laserInstatiationPoint.transform.position, transform.rotation);
-							if (laserObject.GetComponent<WeaponFire> () == null) {
-								laserObject.GetComponentInChildren<WeaponFire> ().AttachPlayer (this.gameObject);
-							} else {
-								laserObject.GetComponent<WeaponFire> ().AttachPlayer (this.gameObject);
-							}
+							laserObject.GetComponent<WeaponFire> ().AttachPlayer (this.gameObject);
 						}
-						StartCoroutine ("RegulateWeaponFire");
-						if (!currentWeapon.isTimer) {
-							currentWeapon.timer--;
+						laserObject = (GameObject)Instantiate (currentWeapon.laserType, dualLaserInstatiationPoint2.transform.position, transform.rotation);
+						if (laserObject.GetComponent<WeaponFire> () == null) {
+							laserObject.GetComponentInChildren<WeaponFire> ().AttachPlayer (this.gameObject);
+						} else {
+							laserObject.GetComponent<WeaponFire> ().AttachPlayer (this.gameObject);
 						}
-						if (currentWeapon.timer <= 0.0f) {
-							weapons.Remove (currentWeapon);		//destroy weapon if it runs out of ammo
-						}
-					}
-				}
-			}
-
-			//Pause Menu
-			if (gc != null && Input.GetButton ("Pause")) {
-				gc.Pause ();
-			}
-
-			//Maintain MaxValues
-			if (shield > maxShield) {
-				shield = maxShield;
-			}
-			//		if (rb.velocity.magnitude > maxVelocity) {
-			//			//might want to set this, should already be done by linear drag
-			//		}
-			if (man > maxMan) {
-				man = maxMan;
-			}
-			if (man < 0) {
-				man = 0;
-			}
-
-			//Apply Maneuverability
-			if (canBoost) {
-				switch (man) {
-				case 1:
-					speed = man1Speed;
-					rb.drag = man1Drag;
-					rb.angularDrag = man1Rotation;
-					break;
-				case 2:
-					speed = man2Speed;
-					rb.drag = man2Drag;
-					rb.angularDrag = man2Rotation;
-					break;
-				default:
-					speed = man0Speed;
-					rb.drag = man0Drag;
-					rb.angularDrag = man0Rotation;
-					break;
-				} 
-			}
-		} else {		//quick fix for menu, could be cleaned
-
-			if (poweredOn) {
-				//Linear Movement
-				if (enemyAI != null)
-				{
-					horiz = enemyAI.horizontal;
-					vert = enemyAI.vertical;
-				}
-				else
-				{
-					horiz = Input.GetAxis ("Horizontal" + playerNum.ToString ()) * speed;
-					vert = Input.GetAxis ("Vertical" + playerNum.ToString ()) * speed;
-				}
-
-				//Angular Movement
-				if (Mathf.Abs (horiz) > minInput || Mathf.Abs (vert) > minInput) {
-					float angle = Mathf.Atan2 (vert, horiz) * Mathf.Rad2Deg + 90;
-					transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.AngleAxis (angle, Vector3.forward), Time.deltaTime * rotationSpeed);
-				} 
-
-				//New Thrust Adjustment (drift)
-				if (enemyAI != null)
-				{
-					thrust = enemyAI.drift;
-				} 
-				else 
-				{
-					thrust = Input.GetAxis ("Thrust" + playerNum.ToString ());			
-				}
-				if (thrust <= 0) 
-				{
-					man0Drag = 1;
-					man1Drag = 1;
-					man2Drag = 1;
-					movement = new Vector2 (horiz, vert);
-					rb.AddForce (movement);
-				} 
-				else 
-				{
-					man0Drag = 0;
-					man1Drag = 0;
-					man2Drag = 0;
-				}
-
-				//Boosting
-				if (canBoost && thrust <= 0 && shield > minShieldForBoost) {
-					playerInputBoost = false;
-					if (enemyAI != null)
-					{
-						playerInputBoost = enemyAI.boost;
-					}
-					else if (Input.GetAxis ("Boost" + playerNum.ToString ()) > 0.3f)
-					{
-						playerInputBoost = true;
-					}
-				
-					if (playerInputBoost) {
-						canBoost = false;
-						StartCoroutine("Boost");
-					}
-				}
-
-				//Shooting
-				if (canFire && (Input.GetAxis (fireButton + playerNum.ToString ()) > 0.3f || (enemyAI != null && enemyAI.fire))) {
-					canFire = false;
-
-					//default weapon
-					if (weapons.Count == 0) {
-						fireRate = defaultFireRate;
-						laserObject = (GameObject)Instantiate (defaultLaser, laserInstatiationPoint.transform.position, transform.rotation);
-						weaponIconImage.sprite = defaultWeaponIcon;
-						laserObject.GetComponent<WeaponFire> ().AttachPlayer (this.gameObject);
-						StartCoroutine ("RegulateWeaponFire");
 					} else {
-
-						//power up weapon
-						currentWeapon = weapons [weapons.Count - 1];
-						weaponIconImage.sprite = currentWeapon.GetComponent<SpriteRenderer> ().sprite;
-						fireRate = currentWeapon.fireRate;
-						if (currentWeapon.isDual) {
-							laserObject = (GameObject)Instantiate (currentWeapon.laserType, dualLaserInstatiationPoint1.transform.position, transform.rotation);
-							if (laserObject.GetComponent<WeaponFire> () == null) {
-								laserObject.GetComponentInChildren<WeaponFire> ().AttachPlayer (this.gameObject);
-							} else {
-								laserObject.GetComponent<WeaponFire> ().AttachPlayer (this.gameObject);
-							}
-							laserObject = (GameObject)Instantiate (currentWeapon.laserType, dualLaserInstatiationPoint2.transform.position, transform.rotation);
-							if (laserObject.GetComponent<WeaponFire> () == null) {
-								laserObject.GetComponentInChildren<WeaponFire> ().AttachPlayer (this.gameObject);
-							} else {
-								laserObject.GetComponent<WeaponFire> ().AttachPlayer (this.gameObject);
-							}
+						laserObject = (GameObject)Instantiate (currentWeapon.laserType, laserInstatiationPoint.transform.position, transform.rotation);
+						if (laserObject.GetComponent<WeaponFire> () == null) {
+							laserObject.GetComponentInChildren<WeaponFire> ().AttachPlayer (this.gameObject);
 						} else {
-							laserObject = (GameObject)Instantiate (currentWeapon.laserType, laserInstatiationPoint.transform.position, transform.rotation);
-							if (laserObject.GetComponent<WeaponFire> () == null) {
-								laserObject.GetComponentInChildren<WeaponFire> ().AttachPlayer (this.gameObject);
-							} else {
-								laserObject.GetComponent<WeaponFire> ().AttachPlayer (this.gameObject);
-							}
+							laserObject.GetComponent<WeaponFire> ().AttachPlayer (this.gameObject);
 						}
-						StartCoroutine ("RegulateWeaponFire");
-						if (!currentWeapon.isTimer) {
-							currentWeapon.timer--;
-						}
-						if (currentWeapon.timer <= 0.0f) {
-							weapons.Remove (currentWeapon);		//destroy weapon if it runs out of ammo
-						}
+					}
+					StartCoroutine ("RegulateWeaponFire");
+					if (!currentWeapon.isTimer) {
+						currentWeapon.timer--;
+					}
+					if (currentWeapon.timer <= 0.0f) {
+						weapons.Remove (currentWeapon);		//destroy weapon if it runs out of ammo
 					}
 				}
 			}
+		}
+
+		//Pause Menu
+		if (gc != null && Input.GetButton ("Pause") && gc.paused == false) {
+			gc.Pause ();
 		}
 
 		//Maintain MaxValues
@@ -433,7 +284,9 @@ public class Player : MonoBehaviour {
 		canBoost = false;
 		transform.localScale = new Vector3(originalScale, transform.localScale.y * boostScaleChange, 1);
 		shield = 0;
-		shieldSlider.value = shield;
+		if (gc != null && gc.paused == false) {
+			shieldSlider.value = shield;
+		}
 		speed *= boostMultiplier;
 		yield return new WaitForSeconds (boostTime);
 		transform.localScale = new Vector3 (originalScale, originalScale, 1);
@@ -603,11 +456,17 @@ public class Player : MonoBehaviour {
 		if (shield >= maxShield) {
 			shield = maxShield;
 		} else {
-			chargingIconAnimator.SetBool ("Charging", true);
+			if (gc != null && gc.paused == false) {
+				chargingIconAnimator.SetBool ("Charging", true);
+			}
 		}
-		shieldSlider.value = shield;
+		if (gc != null && gc.paused == false) {
+			shieldSlider.value = shield;
+		}
 		yield return new WaitForSeconds (rechargeRate);
-		chargingIconAnimator.SetBool ("Charging", false);
+		if (gc != null && gc.paused == false) {
+			chargingIconAnimator.SetBool ("Charging", false);
+		}
 		canRecharge = true;
 	}
 

@@ -49,7 +49,8 @@ public class Player : MonoBehaviour {
 	public float boostTime = 1.0f;						//The length the boost is in effect
 	public int minShieldForBoost = 10;					//How much shield the player must have to boost
 	public float originalScale;							//The original y scale proportion of the ship
-	public float boostScaleChange = 1.5f;				//How much longer the ship looks while boosting (same animation for multiple scaled ships)
+	private bool playerInputBoost = false;				//Used for A.I. boost input
+	public float boostScaleChange = 1.1f;				//How much longer the ship looks while boosting (same animation for multiple scaled ships)
 
 	//Drifting
 	public float thrust = 1.0f;							//The trigger movement input
@@ -169,9 +170,8 @@ public class Player : MonoBehaviour {
 				}
 
 				//Boosting
-				if (canBoost && thrust <= 0 && shield > minShieldForBoost && Input.GetAxis ("Boost" + playerNum.ToString ()) > 0.3f) {
-					canBoost = false;
-					bool playerInputBoost = false;
+				if (canBoost && thrust <= 0 && shield > minShieldForBoost) {
+					playerInputBoost = false;
 					if (enemyAI != null)
 					{
 						playerInputBoost = enemyAI.boost;
@@ -180,7 +180,8 @@ public class Player : MonoBehaviour {
 					{
 						playerInputBoost = true;
 					}
-					if (canBoost && thrust <= 0 && shield > 10 && playerInputBoost) {
+					if (playerInputBoost) {
+						canBoost = false;
 						StartCoroutine("Boost");
 					}
 				}
@@ -322,8 +323,8 @@ public class Player : MonoBehaviour {
 				}
 
 				//Boosting
-				if (canBoost && thrust <= 0 && shield > minShieldForBoost && Input.GetAxis ("Boost" + playerNum.ToString ()) > 0.3f) {
-					bool playerInputBoost = false;
+				if (canBoost && thrust <= 0 && shield > minShieldForBoost) {
+					playerInputBoost = false;
 					if (enemyAI != null)
 					{
 						playerInputBoost = enemyAI.boost;
@@ -333,7 +334,7 @@ public class Player : MonoBehaviour {
 						playerInputBoost = true;
 					}
 				
-					if (canBoost && thrust <= 0 && shield > minShieldForBoost && playerInputBoost) {
+					if (playerInputBoost) {
 						canBoost = false;
 						StartCoroutine("Boost");
 					}

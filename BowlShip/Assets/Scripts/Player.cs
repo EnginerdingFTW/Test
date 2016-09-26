@@ -170,8 +170,21 @@ public class Player : MonoBehaviour {
 				}
 
 				//Boosting
+<<<<<<< HEAD
 				if (canBoost && thrust <= 0 && shield > minShieldForBoost && Input.GetAxis ("Boost" + playerNum.ToString ()) > 0.3f) {
 					canBoost = false;
+=======
+				bool playerInputBoost = false;
+				if (enemyAI != null)
+				{
+					playerInputBoost = enemyAI.boost;
+				}
+				else if (Input.GetAxis ("Boost" + playerNum.ToString ()) > 0.3f)
+				{
+					playerInputBoost = true;
+				}
+				if (canBoost && shield > 10 && playerInputBoost) {
+>>>>>>> origin/master
 					StartCoroutine("Boost");
 				}
 
@@ -312,7 +325,21 @@ public class Player : MonoBehaviour {
 				}
 
 				//Boosting
+<<<<<<< HEAD
 				if (canBoost && thrust <= 0 && shield > minShieldForBoost && Input.GetAxis ("Boost" + playerNum.ToString ()) > 0.3f) {
+=======
+				bool playerInputBoost = false;
+				if (enemyAI != null)
+				{
+					playerInputBoost = enemyAI.boost;
+				}
+				else if (Input.GetAxis ("Boost" + playerNum.ToString ()) > 0.3f)
+				{
+					playerInputBoost = true;
+				}
+				
+				if (canBoost && shield > 10 && playerInputBoost) {
+>>>>>>> origin/master
 					canBoost = false;
 					StartCoroutine("Boost");
 				}

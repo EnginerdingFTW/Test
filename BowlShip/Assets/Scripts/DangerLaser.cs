@@ -23,6 +23,15 @@ public class DangerLaser : WeaponFire {
 	}
 
 	/// <summary>
+	/// Checks to see if the player is still there, if not don't fire the laser.
+	/// </summary>
+	void Update () {
+		if (playerScript.defeated == true) {
+			Destroy (this.gameObject);
+		}
+	}
+
+	/// <summary>
 	/// Takes into accound the angle the ship is facing before giving back a point sufficiently in front of the ship.
 	/// </summary>
 	/// <returns>The to point in front.</returns>

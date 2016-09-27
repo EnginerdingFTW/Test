@@ -14,7 +14,7 @@ public class SceneController : MonoBehaviour {
 	public int[] playerNumArray;								//An array of PlayerNums that correspond to the playerShips array
 
 	public int gameMode = 0;									//A int corresponding to which gamemode is chosen
-	public int score;											//A variable used to transfer a generic maxScore value to a specific gameMode
+	public int score = 1;											//A variable used to transfer a generic maxScore value to a specific gameMode
 
 	/// <summary>
 	/// Upon loading the application. This Scene Controller is never destroyed. This way the number of players, options settings, etc are consistent throughout multiple scenes.

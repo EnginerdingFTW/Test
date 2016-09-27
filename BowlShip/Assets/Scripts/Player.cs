@@ -471,6 +471,14 @@ public class Player : MonoBehaviour {
 	}
 
 	/// <summary>
+	/// Resets the ships ability to boost and to recharge.
+	/// </summary>
+	void OnDisable () {
+		canRecharge = true;
+		canBoost = true;
+	}
+
+	/// <summary>
 	/// Assigns the HUD. This function is utilized by the GameController to assign each player their HUD before the game starts.
 	/// </summary>
 	/// <param name="healthS">Health s.</param>

@@ -1,38 +1,70 @@
 ﻿using UnityEngine;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
 public class EnemyAI : MonoBehaviour {
 	
+	//simple struct for sorting the different objetives
+	private struct WeightedObjective
+	{
+		public float weight;
+		public GameObject obj;
+
+		public WeightedObjective(float wt, GameObject objective)
+		{
+			this.weight = wt;
+			this.obj = objective;
+		}
+
+		public static bool Compare(WeightedObjective a, WeightedObjective b)
+		{
+			if (a.weight < b.weight)
+			{
+				return false;
+			}
+			return true;
+		}
+	}
+
 	#region Constants for StateMachine and Difficulty
-	private const int COLLECT = 0;
+	private const int COLLECT = 0;			//States
 	private const int OFFENSIVE = 1;
 	private const int DEFENSIVE = 2; 
 	private const int CELEBRATE = 3;
-	private const int NOOBS = 0;
+	private const int NOOBS = 0;			//Difficulties
 	private const int STANDARD = 1;
 	private const int ELIT3PR0HAX0RS = 2;
 	#endregion
 	
-	private GameController gamecontroller;
-	private int stateMachine = 1;
-	private float reactionTime = 0.2f;
-	private bool aiPathSetRecent = false;
-	private List<GameObject> pathFindingWaypoints = null;
-	private float speed = 1.0f;
+	private Player player;
+	private GameController gamecontroller;					//gamecontroller pointer to get lists of gameobjects for various purposes
+	private int stateMachine = OFFENSIVE;					//current state of the state maching
+	private float reactionTime = 0.2f;						//reaction time of the AI
+	private bool aiPathSetRecent = false;					//current state of PathSet, makes calculations less frequent
+	private List<GameObject> pathFindingWaypoints = null;	//list of gameobjects that make the shortest path to an objective
+	private float speed = 1.0f;								//speed of AI, probably unecessary because it should be taken care of in Player
 
-	[HideInInspector] public float horizontal;
-	[HideInInspector] public float vertical;
+	//AI relevent, weights and settings
+	private List<WeightedObjective> objList = null;			//list of sorted objectives based on weights
+	private float playerWeight = 1;							//the weight of players based on difficulty for use in sorting
+	private float itemWeight = 1;							//the weight of items based on difficulty for use in sorting
+	private float areaWeight = 1;							//the weight of areas of maps based on difficulty for use in sorting
+	public int difficulty = STANDARD;						//difficulty of the AI
+
+	#region Virtual Controls to the Player
+	[HideInInspector] public float horizontal;		//these controls act as if the AI is using a controller and is pressing buttons
+	[HideInInspector] public float vertical;		//these are sent to the player script where it takes care of the rest.
 	[HideInInspector] public int drift;
 	[HideInInspector] public bool fire;
 	[HideInInspector] public bool boost;
-	public int difficulty = 2;
-
+	#endregion
 		
 
 	void Start()
 	{
 		gamecontroller = GameObject.Find("GameController").GetComponent<GameController>();
+		player = this.gameObject.GetComponent<Player>();
 		StartCoroutine("MoveTowardsObjectThread");
 		this.stateMachine = OFFENSIVE;
 	}
@@ -58,72 +90,239 @@ public class EnemyAI : MonoBehaviour {
 				StateCelebrate();
 				break;
 		}
+		SetNextState();
 	}
 	
+	#region StateMachine Logic
+	/// <summary>
+	/// Sets the values of the weights for objectives based on the difficulty when in COLLECT
+	/// </summary>
 	void StateCollect()
 	{
 		switch (difficulty)
 		{
 			case NOOBS:
+				playerWeight = 1.0f; 
+				itemWeight = 2.0f;
+				areaWeight = 0.1f;
 				break;
 	
 			case STANDARD:
+				playerWeight = 2.0f; 
+				itemWeight = 5.0f;
+				areaWeight = 1.0f;
 				break;
 	
 			case ELIT3PR0HAX0RS:
+				playerWeight = 0.1f; 
+				itemWeight = 4.0f;
+				areaWeight = 2.0f;
 				break;
 		}
 	}
 
+	/// <summary>
+	/// Sets the values of the weights for objectives based on the difficulty when in OFFENSIVE
+	/// </summary>
 	void StateOffensive()
 	{
-		ShootTowardsObject(GameObject.Find("TayShip(Clone)"));
 		switch (difficulty)
 		{
 			case NOOBS:
+				playerWeight = 5.0f; 
+				itemWeight = 1.0f;
+				areaWeight = 0.1f;
 				break;
 	
 			case STANDARD:
+				playerWeight = 1.0f; 
+				itemWeight = 2.0f;
+				areaWeight = 0.1f;
 				break;
 	
 			case ELIT3PR0HAX0RS:
+				playerWeight = 5.0f; 
+				itemWeight = 4.0f;
+				areaWeight = 1.0f;
 				break;
 		}
 	}
 
+	/// <summary>
+	/// Sets the values of the weights for objectives based on the difficulty when in DEFENSIVE
+	/// </summary>
 	void StateDefensive()
 	{
 		switch (difficulty)
 		{
 			case NOOBS:
+				playerWeight = 1.0f; 
+				itemWeight = 5.0f;
+				areaWeight = 1.0f;
 				break;
 	
 			case STANDARD:
+				playerWeight = 0.5f; 
+				itemWeight = 5.0f;
+				areaWeight = 2.0f;
 				break;
 	
 			case ELIT3PR0HAX0RS:
+				playerWeight = 2.0f; 
+				itemWeight = 7.0f;
+				areaWeight = 4.0f;
 				break;
 		}
 	}
 
+	/// <summary>
+	/// There's a party goin' on right here! A celebration to last throughout the years.
+	/// </summary>
 	void StateCelebrate()
 	{
 
 	}
 
-	void MoveTowardsObject(GameObject obj)
+	/// <summary>
+	/// Logic to determine the next state that the state machine goes to based on difficulty
+	/// </summary>
+	void SetNextState()
+	{
+		switch (difficulty)
+		{
+			case NOOBS:
+				if (gamecontroller.CollectableList.Count == 0 && player.weapons.Count == 0)
+				{
+					stateMachine = DEFENSIVE;
+				}
+				else if (gamecontroller.CollectableList.Count > 0 && player.weapons.Count == 0)
+				{
+					stateMachine = COLLECT;
+				}
+				else if (player.weapons.Count > 0)
+				{
+					stateMachine = OFFENSIVE;
+				}
+				break;
+	
+			case STANDARD:
+				if (gamecontroller.CollectableList.Count == 0 && player.weapons.Count == 0)
+				{
+					stateMachine = DEFENSIVE;
+				}
+				else if (gamecontroller.CollectableList.Count > 0 && player.weapons.Count < 3)
+				{
+					stateMachine = COLLECT;
+				}
+				else if (player.weapons.Count >= 3)
+				{
+					stateMachine = OFFENSIVE;
+				}
+				break;
+	
+			case ELIT3PR0HAX0RS:
+				if ((gamecontroller.CollectableList.Count == 0 && player.weapons.Count == 0))
+				{
+					stateMachine = DEFENSIVE;
+				}
+				else if (gamecontroller.CollectableList.Count > 0 && (player.currentWeapon == null || player.currentWeapon.laserType.name != "LaserUpgraded"))
+				{
+					stateMachine = COLLECT;
+				}
+				else if (player.currentWeapon != null && player.currentWeapon.laserType.name == "LaserUpgraded")
+				{
+					stateMachine = OFFENSIVE;
+				}
+				break;
+		}
+		if (gamecontroller.numPlayers == 1)	
+		{
+			stateMachine = CELEBRATE;
+		}
+	}
+	#endregion
+
+	#region Functions for Updating Weights
+	/// <summary>
+	/// Goes through the list of objects and modifies there weight based on the distance and difficulty, 
+	/// then sorts the list based on the changes.
+	/// </summary>
+	void ReOrderObjectives()
+	{
+		foreach (WeightedObjective wObj in objList)
+		{	
+			ModifyWeight(wObj);
+		}
+		objList = objList.OrderByDescending(p => p.weight).ToList();	//telling list to sort by weights
+	}
+
+	/// <summary>
+	/// takes the objective and sets it's weight based on the distance it is from the AI and on how important it is based on difficulty
+	/// </summary>
+	/// <param name="objective">the Objective</param>
+	void ModifyWeight(WeightedObjective objective)
+	{
+		switch(objective.obj.tag)
+		{
+			case "Player":
+				objective.weight = CalculateWeight(playerWeight, objective.obj);
+				break;
+
+			case "Asteroid":
+				objective.weight = CalculateWeight(itemWeight, objective.obj);
+				break;
+
+			case "Collectable":
+				objective.weight = CalculateWeight(itemWeight, objective.obj);
+				break;
+
+			case "ItemSpawner":
+				objective.weight = CalculateWeight(areaWeight, objective.obj);
+				break;
+		}
+	}
+
+	/// <summary>
+	/// Helper function because the distance to the objective can't be 0.
+	/// </summary>
+	/// <returns>The weight.</returns>
+	/// <param name="objWeight">Object weight.</param>
+	/// <param name="objective">Objective.</param>
+	float CalculateWeight(float objWeight, GameObject objective)
+	{
+		if (Vector3.Distance(this.gameObject.transform.position, objective.transform.position) < 0.01)
+		{
+			return 100.0f;
+		}
+		return objWeight / Vector3.Distance(this.gameObject.transform.position, objective.transform.position);
+	}
+	#endregion
+
+	#region AI Movement
+	/// <summary>
+	/// Takes a destination and calculate all waypoints that must be taken to get there for the shortest path possible.
+	/// The waypoints are pointed to by pathFindingWayPoints so the the list is viewable in other places at the same time.
+	/// </summary>
+	/// <param name="dest"> the destination object </param>
+	void MoveTowardsObject(GameObject dest)
 	{	
 		if (aiPathSetRecent == false)
 		{
 			aiPathSetRecent = true;
 			List<string> tagExc = new List<string> {"Boundary", "WeaponFire"};
-			pathFindingWaypoints = PathFinding.ReturnAStarPath(this.gameObject, obj, tagExc);	//path is the List of Waypoints to get to the goal.
+			pathFindingWaypoints = PathFinding.ReturnAStarPath(this.gameObject, dest, tagExc);	//path is the List of Waypoints to get to the goal.
 		}
 	}
 
+	/// <summary>
+	/// This function is a thread the watches the pathFindingWaypoints list. It sets the AI velocity to move the shortest path to the
+	/// objective (the final node of the list). When a node has been reached it is removed from the list and the next node is moved towards.
+	/// reactionTime is there to delay how often this expression is re-evaluated, not only to limit calculations but also to simulate normal
+	/// delay a human would have in noticing there is a new objective.
+	/// </summary>
+	/// <returns>The towards object thread.</returns>
 	IEnumerator MoveTowardsObjectThread()
-	{	
-		
+	{		
 		Vector2 posThere = new Vector2(0, 0);
 		Vector2 posHere = new Vector2(0, 0);
 		while (true)
@@ -150,9 +349,13 @@ public class EnemyAI : MonoBehaviour {
 			aiPathSetRecent = false;
 		}
 	}
+	#endregion
 
-	
-
+	#region AI Fire
+	/// <summary>
+	/// Shoots a weaponfire towards it's objective (obj) when the target is visible or is shootable by the current weaponfire
+	/// </summary>
+	/// <param name="obj">the object to be shot.</param>
 	void ShootTowardsObject(GameObject obj)
 	{	
 		if (obj == null)
@@ -169,33 +372,7 @@ public class EnemyAI : MonoBehaviour {
 			this.fire = true;
 		}
 	}
-
-	GameObject FindClosestObject(GameObject[] list)
-	{
-		float distance = 1000000;
-		GameObject temp = null;
-		foreach (GameObject obj in list)
-		{
-			if (Vector3.Distance(this.transform.position, obj.transform.position) < distance)
-			{
-				temp = obj;
-			}
-		}
-		return temp;
-	}
-
-	bool DetectRaycastWithinRange(Vector2 point, Vector2 direction, out RaycastHit2D hit, float limit)
-	{
-		hit = Physics2D.Raycast(point, direction);
-		if (hit != null)
-		{
-			if (hit.distance > limit)
-			{
-				return false;
-			}
-		}
-		return true;
-	}
+	#endregion
 
 	
 }

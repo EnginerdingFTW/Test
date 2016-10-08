@@ -17,6 +17,11 @@ public class Collectable : MonoBehaviour {
 		gamecontroller.CollectableList.Add(this.gameObject);
 	}
 
+	void OnDestroy()
+	{
+		gamecontroller.RemoveCollectableFromList(this.gameObject);
+	}
+
 	
 
 /// <summary>

@@ -17,6 +17,7 @@ public static class PathFinding {
 	{		
 		if (RaycastAllWithExeptions(start, goal, tagExc))
 		{		
+			//Debug.Log("Raycast hit something");
 			GameObject[] nodelist = GameObject.FindGameObjectsWithTag("Waypoint");
 			List<GameObject> waypoints = new List<GameObject>();
 			for (int i = 0; i < nodelist.Length; i++)
@@ -27,7 +28,7 @@ public static class PathFinding {
 		}
 		else 
 		{
-			Debug.Log("next");
+			//Debug.Log("nothing hit");
 			if (goal == null)
 			{
 				return null;

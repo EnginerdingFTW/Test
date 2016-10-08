@@ -15,6 +15,7 @@ public class PowerUpSpawn : MonoBehaviour {
 	void Start () {
 		circleFill = circleImage.GetComponent<Image> ();
 		StartCoroutine ("SpawnPowerUp");
+		GameObject.Find("GameController").GetComponent<GameController>().SpawnerList.Add(this.gameObject);
 	}
 
 	/// <summary>
@@ -31,4 +32,10 @@ public class PowerUpSpawn : MonoBehaviour {
 		Instantiate (powerUps [powerUpToSpawn], new Vector3(transform.position.x, transform.position.y, -1.0f), Quaternion.identity);
 		StartCoroutine ("SpawnPowerUp");
 	}
+
+	void OnDestroy()
+	{
+		GameObject.Find("GameController").GetComponent<GameController>().SpawnerList.Remove(this.gameObject);
+	}
+
 }

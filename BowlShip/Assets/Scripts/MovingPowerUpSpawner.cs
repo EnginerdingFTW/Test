@@ -35,6 +35,7 @@ public class MovingPowerUpSpawner : MonoBehaviour {
 		rb = GetComponent<Rigidbody2D> ();
 		StartCoroutine ("SpawnPowerUp");
 		StartCoroutine ("MoveAlongPath");
+		GameObject.Find("GameController").GetComponent<GameController>().SpawnerList.Add(this.gameObject);
 	}
 
 	// Every frame check to see if the powerupSpawner is on the next target
@@ -102,5 +103,10 @@ public class MovingPowerUpSpawner : MonoBehaviour {
 		}
 		yield return new WaitForSeconds (updateTime);
 		StartCoroutine ("MoveAlongPath");
+	}
+
+	void OnDestroy()
+	{
+		GameObject.Find("GameController").GetComponent<GameController>().SpawnerList.Remove(this.gameObject);
 	}
 }

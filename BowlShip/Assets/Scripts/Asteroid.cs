@@ -30,6 +30,8 @@ public class Asteroid : MonoBehaviour {
 			Destroy(this.gameObject, tinyAsteroidDestroyTime);
 		}
 		pe = GetComponent<PointEffector2D> ();
+
+		GameObject.Find("GameController").GetComponent<GameController>().SpawnerList.Add(this.gameObject);
 	}
 	
 	// Keep the asteroid rotating
@@ -104,6 +106,11 @@ public class Asteroid : MonoBehaviour {
 				Destroy(this.gameObject);
 			}
 		}
+	}
+
+	void OnDestroy()
+	{
+		GameObject.Find("GameController").GetComponent<GameController>().SpawnerList.Remove(this.gameObject);
 	}
 
 	IEnumerator RegulateForce () {

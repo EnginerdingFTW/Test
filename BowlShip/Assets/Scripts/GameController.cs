@@ -6,7 +6,8 @@ using System.Collections.Generic;
 
 public class GameController : MonoBehaviour {
 
-	public List<GameObject> CollectableList;							//List of all the Collectables tht have spawned
+	public List<GameObject>	SpawnerList = new List<GameObject>();		//List of all the current spawners on the map
+	public List<GameObject> CollectableList = new List<GameObject>();	//List of all the Collectables tht have spawned
 	public GameObject sceneCamera;										//The camera of the scene, used to set the final audio
 	public GameObject trophy;											//The trophy to spawn for the winner to play with
 	public GameObject[] powerups;										//the total list of spawnable powerups

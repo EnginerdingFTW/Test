@@ -562,6 +562,7 @@ public class EnemyAI : MonoBehaviour {
 			aiPathSetRecent = true;
 			List<string> tagExc = new List<string> {"Boundary", "WeaponFire", "Player"};
 			pathFindingWaypoints = PathFinding.ReturnAStarPath(this.gameObject, dest, tagExc);	//path is the List of Waypoints to get to the goal.
+			Debug.Log("start = " + this.gameObject.name + "    dest = " + dest.name);
 			string temp = "printing PathFindingWaypoitns after Calc: PathFindingWaypoints.count = " + pathFindingWaypoints.Count + "\nlist: ";
 			foreach (GameObject o in pathFindingWaypoints)
 			{

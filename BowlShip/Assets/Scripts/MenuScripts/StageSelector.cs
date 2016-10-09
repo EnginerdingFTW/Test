@@ -82,7 +82,7 @@ public class StageSelector : MonoBehaviour {
 				mh.PlayRotation ();
 				break;
 			case 3:
-				mh.PlayWalls ();
+				mh.PlayWarp ();
 				break;
 			}
 		}

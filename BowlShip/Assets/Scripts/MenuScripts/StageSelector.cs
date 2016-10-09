@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class StageSelector : MonoBehaviour {
 
 	public int initialTimeToStart = 100;				//How long it takes for a stage to be selected (num / 10 = seconds)
-	public GameObject timer;							//A timer circle to show progress of gamestarting
-	public MenuHandler mh;								//The script that will load the stage
+	public Image timer;									//A timer circle to show progress of gamestarting
 	public int stage;									//0 for asteroids, 1 for walls, 2 for rotation, 3 for warpholes
 
+	private MenuHandler mh;								//The script that will load the stage
 	private SpriteRenderer spr;							//The stage sprite to slowly fade in
 	private Color color;								//The color of the stage sprite
 	public int numPlayers;								//The number of players hovering over the stage sprite
@@ -91,6 +92,7 @@ public class StageSelector : MonoBehaviour {
 
 		color.a = 0.5f + (((float)(initialTimeToStart - timeTillPlay) / (float)initialTimeToStart) / 2);		//slowly fade in the stage sprite as it gets closer to selection
 		spr.color = color;
+		timer.fillAmount = ((float)(initialTimeToStart - timeTillPlay) / (float)initialTimeToStart);			//add a circular timer to show even more obvious stage selection
 
 		yield return new WaitForSeconds (0.1f);
 		ready = true;

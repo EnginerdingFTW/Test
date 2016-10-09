@@ -46,13 +46,15 @@ public class EnemyAI : MonoBehaviour {
 	private float speed = 1.0f;								//speed of AI, probably unecessary because it should be taken care of in Player
 
 	//AI relevent, weights and settings
-	public List<GameObject> watchList = null;				//list of gameobjects to watch as objects
+	private List<GameObject> watchList = null;				//list of gameobjects to watch as objects
 	private bool watchListChanged = false;					//tells the ObjectiveList watcher that a new object is in the list or removed
-	public List<WeightedObjective> objList = null;			//list of sorted objectives based on weights
+	private List<WeightedObjective> objList = null;			//list of sorted objectives based on weights
 	private bool stateChange = false;						//signal that notifies if there was a change in the state machine
 	private float playerWeight = 1;							//the weight of players based on difficulty for use in sorting
 	private float itemWeight = 1;							//the weight of items based on difficulty for use in sorting
 	private float areaWeight = 1;							//the weight of areas of maps based on difficulty for use in sorting
+	private float currentObjWeight = 1.0f;					//weight of the objective currently being moved to
+	private GameObject currentObj = null;					//current Gameobject main objective
 	public int difficulty =	ELIT3PR0HAX0RS;					//difficulty of the AI
 
 	#region Virtual Controls to the Player
@@ -136,7 +138,10 @@ public class EnemyAI : MonoBehaviour {
 					}
 					foreach (GameObject o in gamecontroller.CollectableList)
 					{
-						temp.Add(o);
+						if (GameObject.Find("InnerBoundary").GetComponent<BoxCollider2D>().bounds.Contains(o.transform.position))
+						{
+							temp.Add(o);
+						}
 					}
 					foreach (GameObject o in gamecontroller.players)
 					{
@@ -523,33 +528,45 @@ public class EnemyAI : MonoBehaviour {
 	{
 		if (objList.Count != 0)
 		{
+			DetermineObjectToMoveTowards();
+			ShootTowardsObject(currentObj);
 			switch (difficulty)
 			{
 				case NOOBS:
-					MoveTowardsObject(objList[0].obj);
-					if (objList[0].obj != null && objList[0].obj.tag == "Player")
-					{
-						ShootTowardsObject(objList[0].obj);
-					}
+					MoveTowardsObject(currentObj);
 					break;
 		
 				case STANDARD:
-					MoveTowardsObject(objList[0].obj);
-					if (objList[0].obj != null && objList[0].obj.tag == "Player")
-					{
-						ShootTowardsObject(objList[0].obj);
-					}
+					MoveTowardsObject(currentObj);
 					break;
 		
 				case ELIT3PR0HAX0RS:
-					MoveTowardsObject(objList[0].obj);
-					if (objList[0].obj != null && objList[0].obj.tag == "Player")
-					{
-						ShootTowardsObject(objList[0].obj);
-					}
+					MoveTowardsObject(currentObj);
 					break;
 			}
 		}
+	}
+
+	void DetermineObjectToMoveTowards()
+	{
+		for (int k = 0; k < objList.Count; k++)
+		{
+			if (GameObject.Find("InnerBoundary").GetComponent<BoxCollider2D>().bounds.Contains(objList[k].obj.transform.position))
+			{
+				currentObj = objList[k].obj;
+			}
+		}
+	}
+	GameObject FindClosestPlayerObj()
+	{
+		for (int k = 0; k < objList.Count; k++)
+		{
+			if (objList[k].obj.tag == "Player")
+			{
+				return objList[k].obj;
+			}
+		}
+		return null;
 	}
 	#endregion
 
@@ -610,10 +627,25 @@ public class EnemyAI : MonoBehaviour {
 					{
 						posThere = new Vector2(pathFindingWaypoints[0].transform.position.x, pathFindingWaypoints[0].transform.position.y);
 						//Debug.Log("posThere = " + posThere.ToString());
-						this.horizontal = (posThere.x - posHere.x) * speed;  
-						this.vertical = (posThere.y - posHere.y) * speed;
+
+						this.drift = 0;
+						if (pathFindingWaypoints[0].tag != "Player" && this.difficulty == ELIT3PR0HAX0RS)
+						{
+							GameObject tempplay = FindClosestPlayerObj();
+							StartCoroutine(HoverShoot(pathFindingWaypoints[0], tempplay));
+						}
+						else
+						{
+							this.horizontal = (posThere.x - posHere.x) * speed;  
+							this.vertical = (posThere.y - posHere.y) * speed;
+						}
+						this.boost = false;
+						if (this.difficulty != NOOBS && (pathFindingWaypoints[0].name == "Nuke_Powerup" || pathFindingWaypoints[0].name == "Rapid Fire Powerup"))
+						{
+							this.boost = true;
+						}
 					}
-					yield return new WaitForSeconds(reactionTime);
+					yield return new WaitForSeconds(reactionTime * 2);
 					aiPathSetRecent = false;
 				}
 				if (pathFindingWaypoints.Count == 0)
@@ -640,11 +672,29 @@ public class EnemyAI : MonoBehaviour {
 		}
 
 		this.fire = false;
-		List<string> tagExc = new List<string> {"Boundary", "WeaponFire"};
-		if (!PathFinding.RaycastAllWithExceptions(this.gameObject, obj, tagExc))	
+		Weapon wep = this.gameObject.GetComponent<Player>().currentWeapon;
+		if (wep == null || wep.laserType.name == "Mine" || wep.laserType.name == "EMP")
 		{
 			this.fire = true;
 		}
+		else if (currentObj != null && currentObj.tag == "Player")
+		{
+			List<string> tagExc = new List<string> {"Boundary", "WeaponFire"};
+			if (!PathFinding.RaycastAllWithExceptions(this.gameObject, obj, tagExc))	
+			{
+				this.fire = true;
+			}
+		}
+	}
+
+	IEnumerator HoverShoot(GameObject dest, GameObject toShoot)
+	{
+		this.horizontal = (dest.transform.position.x - this.gameObject.transform.position.x) * speed;  
+		this.vertical = (dest.transform.position.y - this.gameObject.transform.position.y) * speed;
+		yield return new WaitForSeconds(0.2f);
+		this.drift = 1;
+		this.horizontal = (toShoot.transform.position.x - this.gameObject.transform.position.x) * speed;  
+		this.vertical = (toShoot.transform.position.y - this.gameObject.transform.position.y) * speed;
 	}
 	#endregion
 

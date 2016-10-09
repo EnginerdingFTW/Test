@@ -53,7 +53,7 @@ public class EMP : WeaponFire {
 	/// </summary>
 	/// <returns>The charge.</returns>
 	IEnumerator SelfCharge () {
-		while (this.gameObject != null) {
+		while (this.gameObject != null && thisPlayer.gameObject.activeSelf == true) {
 			thisPlayer.StartCoroutine ("ShieldRecharge", thisPlayer.shieldChargeRate);
 			yield return new WaitForSeconds (thisPlayer.shieldChargeRate + 0.1f);
 			if (stop) {

@@ -33,7 +33,7 @@ public class PathFinding {
 			//Debug.Log("nothing hit");
 			if (goal == null)
 			{
-				return null;
+				return new List<GameObject>();
 			}
 			else
 			{

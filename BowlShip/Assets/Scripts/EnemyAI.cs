@@ -75,15 +75,15 @@ public class EnemyAI : MonoBehaviour {
 		switch (difficulty)
 		{
 			case NOOBS:
-				reactionTime = 0.1f;
+				reactionTime = 0.7f;
 				break;
 	
 			case STANDARD:
-				reactionTime = 0.05f;
+				reactionTime = 0.3f;
 				break;
 	
 			case ELIT3PR0HAX0RS:
-				reactionTime = 0.01f;
+				reactionTime = 0.1f;
 				break;
 		}
 	}
@@ -129,7 +129,10 @@ public class EnemyAI : MonoBehaviour {
 				{
 					foreach (GameObject o in gamecontroller.SpawnerList)
 					{
-						temp.Add(o);
+						if (GameObject.Find("InnerBoundary").GetComponent<BoxCollider2D>().bounds.Contains(o.transform.position))
+						{
+							temp.Add(o);
+						}
 					}
 					foreach (GameObject o in gamecontroller.CollectableList)
 					{
@@ -228,8 +231,8 @@ public class EnemyAI : MonoBehaviour {
 		switch (difficulty)
 		{
 			case NOOBS:
-				playerWeight = 1.0f; 
-				itemWeight = 2.0f;
+				playerWeight = 0.5f; 
+				itemWeight = 4.0f;
 				areaWeight = 0.1f;
 				break;
 	
@@ -241,8 +244,8 @@ public class EnemyAI : MonoBehaviour {
 	
 			case ELIT3PR0HAX0RS:
 				playerWeight = 0.1f; 
-				itemWeight = 4.0f;
-				areaWeight = 2.0f;
+				itemWeight = 5.0f;
+				areaWeight = 3.0f;
 				break;
 		}
 	}
@@ -256,20 +259,20 @@ public class EnemyAI : MonoBehaviour {
 		switch (difficulty)
 		{
 			case NOOBS:
-				playerWeight = 5.0f; 
-				itemWeight = 1.0f;
+				playerWeight = 4.0f; 
+				itemWeight = 2.0f;
 				areaWeight = 0.1f;
 				break;
 	
 			case STANDARD:
-				playerWeight = 1.0f; 
+				playerWeight = 2.0f; 
 				itemWeight = 2.0f;
 				areaWeight = 0.1f;
 				break;
 	
 			case ELIT3PR0HAX0RS:
 				playerWeight = 10.0f; 
-				itemWeight = 5.0f;
+				itemWeight = 3.0f;
 				areaWeight = 1.0f;
 				break;
 		}
@@ -296,7 +299,7 @@ public class EnemyAI : MonoBehaviour {
 				break;
 	
 			case ELIT3PR0HAX0RS:
-				playerWeight = 2.0f; 
+				playerWeight = 1.0f; 
 				itemWeight = 7.0f;
 				areaWeight = 4.0f;
 				break;
@@ -410,9 +413,11 @@ public class EnemyAI : MonoBehaviour {
 				newWeight = CalculateWeight(playerWeight, objective.obj);
 				break;
 
+/*
 			case "Asteroid":
 				newWeight = CalculateWeight(itemWeight, objective.obj);
 				break;
+*/
 
 			case "Collectable":
 				newWeight = CalculateWeight(itemWeight, objective.obj);

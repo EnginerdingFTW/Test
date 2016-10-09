@@ -11,9 +11,7 @@ public class ButtonTrigger : MonoBehaviour {
 	public GameObject[] otherbuttons;	//the other buttons to uncheck upon new selection
 	public GameObject[] switchMenus;	//allow the player to transition to a new menu
 	public Text text;					//what does the score value mean?
-	private Cursor cursor;				//the cursor script to check for selection
 	private SceneController sc;			//the scenecontroller to update the gamemode
-	private bool marked;				//is the cursor over the object
 
 
 	//Initializes everything
@@ -26,11 +24,8 @@ public class ButtonTrigger : MonoBehaviour {
 	/// </summary>
 	/// <param name="other">Other.</param>
 	void OnTriggerEnter2D (Collider2D other) {
-		if (isNumerator) {
-			if (other.gameObject.tag == "Cursor") {
-				marked = true;
-			}
-			if (other.gameObject.tag == "WeaponFire" && marked) {
+		if (other.gameObject.tag == "WeaponFire") {
+			if (isNumerator) {
 				if (isIncrementor) {
 					sc.score++;
 				} else {
@@ -39,50 +34,18 @@ public class ButtonTrigger : MonoBehaviour {
 					}
 				}
 				text.text = sc.score.ToString ();
-			}
-		}
-	}
-
-	/// <summary>
-	/// Check to see if the cursor has left.
-	/// </summary>
-	/// <param name="other">Other.</param>
-	void OnTriggerExit2D (Collider2D other) {
-		if (isNumerator) {
-			if (other.gameObject.tag == "Cursor") {
-				marked = false;
-			}
-		}
-	}
-
-	/// <summary>
-	/// If selected by the cursor, either changes the gamemode or changes the score of the scene controller. Allows menu change.
-	/// </summary>
-	/// <param name="other">Other.</param>
-	void OnTriggerStay2D (Collider2D other) {
-		if (other.gameObject.tag == "Cursor") {
-			cursor = other.gameObject.GetComponent<Cursor> ();
-			if (cursor.selected) {
-				cursor.selected = false;
-				cursor.transform.position = this.transform.position;
-				if (!isNumerator) {
-					cursor.chosen = true;
-					cursor.rb.constraints = RigidbodyConstraints2D.FreezeAll;
-					checkmark.SetActive (true);
-					for (int i = 0; i < otherbuttons.Length; i++) {
-						otherbuttons [i].GetComponent<ButtonTrigger> ().UnCheck ();
-					}
-					for (int i = 0; i < switchMenus.Length; i++) {
-						switchMenus [i].SetActive (true);
-					}
-					sc.gameMode = gamemode;
-					if (text != null) {
-						ChangeText ();
-					}
-				} else {
-					cursor.rb.velocity = new Vector3 (0, 0, 0);
+			} else {
+				sc.gameMode = gamemode;
+				checkmark.SetActive (true);
+				ChangeText ();
+				for (int i = 0; i < otherbuttons.Length; i++) {
+					otherbuttons [i].GetComponent<ButtonTrigger> ().UnCheck ();
+				}
+				for (int i = 0; i < switchMenus.Length; i++) {
+					switchMenus [i].SetActive (true);
 				}
 			}
+			Destroy (other.gameObject);
 		}
 	}
 

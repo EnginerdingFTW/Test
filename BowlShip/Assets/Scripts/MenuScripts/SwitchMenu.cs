@@ -17,7 +17,7 @@ public class SwitchMenu : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (howManyPlayers >= sc.numPlayers) {
+		if (howManyPlayers >= (sc.numPlayers - sc.numAI)) {
 			if (characterSelection != null) {
 				characterSelection.GetComponent<BetterCharacterSelection> ().Reset ();
 			}

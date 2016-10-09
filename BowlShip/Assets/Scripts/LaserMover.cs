@@ -27,9 +27,5 @@ public class LaserMover : WeaponFire {
 				Destroy (this.gameObject);
 			}
 		}
-		if (hasShot && other.tag == "Cursor" && !epic) {
-			other.gameObject.GetComponent<Cursor> ().Select ();		//select used in menu
-			Destroy (this.gameObject);
-		}
 	}
 }

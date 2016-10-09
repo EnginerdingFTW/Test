@@ -28,14 +28,14 @@ public class Cursor : MonoBehaviour {
 	/// Select whatever the cursor is hovering over.
 	/// </summary>
 	public void Select () {
-		if (!chosen && !selecting) {
 			anim.SetTrigger ("Select");
 			audio.Play ();
 			StartCoroutine ("Selecting");
-		} else {
-			chosen = false;
-			rb.constraints = RigidbodyConstraints2D.None;
-			rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+	}
+
+	void OnTriggerEnter2D(Collider2D coll) {
+		if (coll.gameObject.tag == "WeaponFire") {
+			Select ();
 		}
 	}
 

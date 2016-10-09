@@ -14,9 +14,16 @@ public class MenuHandler : MonoBehaviour {
 	public Slider gameModeSlider;			//used in options to set game mode
 	public Text currentGameMode;			//used in options to show current game mode
 
+	//for player instantiation
+	public Slider health;
+	public Slider shield;
+	public GameObject chargin;
+	public GameObject weapon;
+	public GameObject circle;
+
 	private SceneController sc;				//used to set scene controller values in menu
 
-	void Start () {
+	void Awake () {
 		sc = GameObject.FindGameObjectWithTag ("SceneController").GetComponent<SceneController> ();
 	}
 
@@ -63,6 +70,18 @@ public class MenuHandler : MonoBehaviour {
 
 	public void ToggleShieldRecharge () {
 		Player.toggleShieldRecharge();
+	}
+
+	public void InstantiatePlayers() {
+		for (int i = 0; i < sc.numPlayers; i++) {
+			GameObject temp = (GameObject) Instantiate (sc.playerShips[i], sc.transform);
+			temp.GetComponent<Player> ().playerNum = sc.playerNumArray [i];
+			temp.GetComponent<Player>().AssignHUD (health, shield, chargin, weapon, circle);
+			if (sc.playerShips[i].GetComponent<EnemyAI>() != null) {
+				temp.tag = "Nuke";
+				Destroy (temp.GetComponent<EnemyAI>());
+			}
+		}
 	}
 
 	public void SetGameMode () {

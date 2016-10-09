@@ -689,6 +689,25 @@ public class GameController : MonoBehaviour {
 	public void MainMenu () {
 		sceneController.numPlayers = 0;
 		UnPause ();
+		sceneController.menuLevel = 1;
+		SceneManager.LoadScene ("Menu");
+	}
+
+	/// <summary>
+	/// Used by the Game Over Screen to start boot up the main menu on gamemode selection screen.
+	/// </summary>
+	public void MenuGamemode() {
+		UnPause ();
+		sceneController.menuLevel = 2;
+		SceneManager.LoadScene ("Menu");
+	}
+
+	/// <summary>
+	/// Used by the Game Over Screen to start boot up the main menu on stage selection screen.
+	/// </summary>
+	public void MenuStage() {
+		UnPause ();
+		sceneController.menuLevel = 3;
 		SceneManager.LoadScene ("Menu");
 	}
 

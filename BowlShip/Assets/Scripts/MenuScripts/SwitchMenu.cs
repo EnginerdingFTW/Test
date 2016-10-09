@@ -19,7 +19,19 @@ public class SwitchMenu : MonoBehaviour {
 	void Update () {
 		if (howManyPlayers >= (sc.numPlayers - sc.numAI)) {
 			if (characterSelection != null) {
-				characterSelection.GetComponent<BetterCharacterSelection> ().Reset ();
+				if (sc.menuLevel < 2) {
+					sc.menuLevel = 0;
+					characterSelection.GetComponent<BetterCharacterSelection> ().Reset ();
+				} else {
+					GameObject[] players = GameObject.FindGameObjectsWithTag ("Player");
+					for (int i = 0; i < players.Length; i++) {
+						Destroy(players[i]);
+					}
+					players = GameObject.FindGameObjectsWithTag ("Nuke");
+					for (int i = 0; i < players.Length; i++) {
+						Destroy(players[i]);
+					}
+				}
 			}
 			nextMenu.SetActive (true);
 			currentMenu.SetActive (false);

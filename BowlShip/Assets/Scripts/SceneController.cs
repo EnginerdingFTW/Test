@@ -13,16 +13,53 @@ public class SceneController : MonoBehaviour {
 	public float SFXLevel = 1.0f;								//The volume level of the Sound fx (1 - 1)
 	public GameObject[] playerShips;							//An array of the ships that the players have selected to use
 	public int[] playerNumArray;								//An array of PlayerNums that correspond to the playerShips array
+	public int menuLevel = 0;									//which area of the menu to load to when booting up the menu 1 = main, 2 = gamemode, 3 = stage
 
 	public int gameMode = 0;									//A int corresponding to which gamemode is chosen
-	public int score = 1;											//A variable used to transfer a generic maxScore value to a specific gameMode
+	public int score = 1;										//A variable used to transfer a generic maxScore value to a specific gameMode
+
+	public GameObject main;										//the main menu
+	public GameObject gamemodeSelect;							//the gamemode selection menu
+	public GameObject stageSelect;								//the stage selection menu
+	public GameObject menuHandler;								//the menu handler to instantiate players again
 
 	/// <summary>
 	/// Upon loading the application. This Scene Controller is never destroyed. This way the number of players, options settings, etc are consistent throughout multiple scenes.
 	/// </summary>
 	void Awake () {
 		DontDestroyOnLoad (this);
+		GameObject[] others = GameObject.FindGameObjectsWithTag ("SceneController");
+		if (others.Length > 1 && menuLevel == 0) {
+			Destroy (this.gameObject);
+		}
 //		playerNumArray = new int[8];
+	}
+
+	/// <summary>
+	/// Sets the correct menu upon reloading.
+	/// </summary>
+	public void SetMenu() {
+		switch (menuLevel) {
+		case 1:
+			main.SetActive (true);
+			gamemodeSelect.SetActive (false);
+			stageSelect.SetActive (false);
+			break;
+		case 2:
+			main.SetActive (false);
+			gamemodeSelect.SetActive (true);
+			stageSelect.SetActive (false);
+			menuHandler.GetComponent<MenuHandler> ().InstantiatePlayers ();
+			break;
+		case 3:
+			main.SetActive (false);
+			gamemodeSelect.SetActive (false);
+			stageSelect.SetActive (true);
+			menuHandler.GetComponent<MenuHandler> ().InstantiatePlayers ();
+			break;
+		default:
+			break;
+		}
 	}
 
 	/// <summary>

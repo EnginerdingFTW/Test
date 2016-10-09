@@ -239,7 +239,7 @@ public class PathFinding {
 			{
 				temp = hit;
 				hitObj = true;
-				//Debug.Log("raycast from: start = " + start.name + " to " + goal.name + " .... hit: " + hit.transform.name);
+//				Debug.Log("raycast from: start = " + start.name + " to " + goal.name + " .... hit: " + hit.transform.name);
 			}
 		}
 		if (hitObj == true && temp != null && temp.distance < Mathf.Abs(Vector2.Distance(left, right)))

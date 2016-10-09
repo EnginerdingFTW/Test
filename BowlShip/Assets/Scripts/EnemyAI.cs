@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class EnemyAI : MonoBehaviour {
 	
 	//simple struct for sorting the different objetives
-	private struct WeightedObjective
+	public class WeightedObjective
 	{
 		public float weight;
 		public GameObject obj;
@@ -48,12 +48,12 @@ public class EnemyAI : MonoBehaviour {
 	//AI relevent, weights and settings
 	public List<GameObject> watchList = null;				//list of gameobjects to watch as objects
 	private bool watchListChanged = false;					//tells the ObjectiveList watcher that a new object is in the list or removed
-	private List<WeightedObjective> objList = null;			//list of sorted objectives based on weights
+	public List<WeightedObjective> objList = null;			//list of sorted objectives based on weights
 	private bool stateChange = false;						//signal that notifies if there was a change in the state machine
 	private float playerWeight = 1;							//the weight of players based on difficulty for use in sorting
 	private float itemWeight = 1;							//the weight of items based on difficulty for use in sorting
 	private float areaWeight = 1;							//the weight of areas of maps based on difficulty for use in sorting
-	public int difficulty = STANDARD;						//difficulty of the AI
+	public int difficulty =	ELIT3PR0HAX0RS;					//difficulty of the AI
 
 	#region Virtual Controls to the Player
 	[HideInInspector] public float horizontal;		//these controls act as if the AI is using a controller and is pressing buttons
@@ -68,22 +68,22 @@ public class EnemyAI : MonoBehaviour {
 	{
 		gamecontroller = GameObject.Find("GameController").GetComponent<GameController>();
 		player = this.gameObject.GetComponent<Player>();
-		this.stateMachine = OFFENSIVE;
+		this.stateMachine = DEFENSIVE;
 		watchList = new List<GameObject>();
 		objList = new List<WeightedObjective>();
 		OnEnable();
 		switch (difficulty)
 		{
 			case NOOBS:
-				reactionTime = 1.0f;
+				reactionTime = 0.1f;
 				break;
 	
 			case STANDARD:
-				reactionTime = 0.6f;
+				reactionTime = 0.05f;
 				break;
 	
 			case ELIT3PR0HAX0RS:
-				reactionTime = 0.2f;
+				reactionTime = 0.01f;
 				break;
 		}
 	}
@@ -142,12 +142,15 @@ public class EnemyAI : MonoBehaviour {
 							temp.Add(o);
 						}
 					}
-					if (temp.Count != watchList.Count)
-					{
+					//if (temp.Count != watchList.Count)
+					//{
 						watchList = temp;
-						watchListChanged = true;
-						Debug.Log("The watch list was changed");
-					}	
+						//Debug.Log("The watch list was changed");
+					//}	
+				}
+				else
+				{
+					Debug.Log("gamecontroller is null.");
 				}
 			}
 			catch 
@@ -163,34 +166,53 @@ public class EnemyAI : MonoBehaviour {
 	/// </summary>
 	IEnumerator WatchObjectiveSorterThread()
 	{
+		if (gameObject.name == "MartinShipAI(Clone)")
+			Debug.Log("watchListCount = " + watchList.Count);
+		if (watchList.Count != 0)
+		{
+			if (gameObject.name == "MartinShipAI(Clone)")
+				Debug.Log("first if");
+			List<WeightedObjective> temp = new List<WeightedObjective>();
+			foreach (GameObject o in watchList)
+			{
+				temp.Add(new WeightedObjective(1.0f, o));	
+			}
+			objList = temp;
+			ReOrderObjectives();
+		}
+		else if (stateChange == true && objList.Count != 0)
+		{
+			if (gameObject.name == "MartinShipAI(Clone)")
+				Debug.Log("else if");
+			ReOrderObjectives();
+		}
+		else 
+		{
+			//Debug.Log("watchListChanged = " + watchListChanged.ToString() + " watchList.Count = " + watchList.Count);
+			if (gameObject.name == "MartinShipAI(Clone)")
+				Debug.Log("else statement");
+			Debug.Log("watchList.Count = " + watchList.Count);
+		}
+		if (gameObject.name == "MartinShipAI(Clone)")
+				Debug.Log("Done with ifs");
+		stateChange = false;
+		watchListChanged = true;
+
+		if (gameObject.name == "MartinShipAI(Clone)")
+			Debug.Log("done waiting");
+		yield break;
+	}
+
+	IEnumerator ThreadWatcher()
+	{
 		while (true)
 		{
-			try 
-			{
-				if (watchListChanged == true && watchList.Count != 0)
-				{
-					List<WeightedObjective> temp = new List<WeightedObjective>();
-					foreach (GameObject o in watchList)
-					{
-						temp.Add(new WeightedObjective(1.0f, o));	
-					}
-					objList = temp;
-					ReOrderObjectives();
-				}
-				else if (stateChange == true && objList.Count != 0)
-				{
-					ReOrderObjectives();
-				}
-				watchListChanged = false;
-				stateChange = false;
-			}
-			catch
-			{
-				Debug.Log("Error in WatchObjectiveSorterThread");
-			}
-			yield return new WaitForSeconds(reactionTime);
+			Debug.Log("going");
+			StartCoroutine(WatchObjectiveSorterThread());
+			yield return new WaitForSeconds(0.3f);
 		}
 	}
+
 
 	/// <summary>
 	/// Function to restart threads whenever the player/AI is re-enabled
@@ -199,7 +221,7 @@ public class EnemyAI : MonoBehaviour {
 	{
 		StartCoroutine("MoveTowardsObjectThread");
 		StartCoroutine("WatchGameObjectsAddRemoveThread");
-		StartCoroutine("WatchObjectiveSorterThread");
+		StartCoroutine("ThreadWatcher");
 	}
 	#endregion
 	
@@ -209,6 +231,7 @@ public class EnemyAI : MonoBehaviour {
 	/// </summary>
 	void StateCollect()
 	{
+		//Debug.Log("Collecting");
 		switch (difficulty)
 		{
 			case NOOBS:
@@ -236,6 +259,7 @@ public class EnemyAI : MonoBehaviour {
 	/// </summary>
 	void StateOffensive()
 	{
+		//Debug.Log("Attacking");
 		switch (difficulty)
 		{
 			case NOOBS:
@@ -251,8 +275,8 @@ public class EnemyAI : MonoBehaviour {
 				break;
 	
 			case ELIT3PR0HAX0RS:
-				playerWeight = 5.0f; 
-				itemWeight = 4.0f;
+				playerWeight = 10.0f; 
+				itemWeight = 5.0f;
 				areaWeight = 1.0f;
 				break;
 		}
@@ -263,6 +287,7 @@ public class EnemyAI : MonoBehaviour {
 	/// </summary>
 	void StateDefensive()
 	{
+		//Debug.Log("Defending");
 		switch (difficulty)
 		{
 			case NOOBS:
@@ -364,38 +389,46 @@ public class EnemyAI : MonoBehaviour {
 	/// </summary>
 	void ReOrderObjectives()
 	{
-		foreach (WeightedObjective wObj in objList)
+		for (int k = 0; k < objList.Count; k++)
 		{	
-			ModifyWeight(wObj);
+			objList[k].weight = ModifyWeight(objList[k]);
 		}
 		objList = objList.OrderByDescending(p => p.weight).ToList();	//telling list to sort by weights
-		Debug.Log("reordinger objectives, objList.Count = " + objList.Count);
+		//Debug.Log("reordinger objectives, objList.Count = " + objList.Count);
+		string temp = this.gameObject.name + ": list = ";
+		foreach (WeightedObjective t in objList)
+		{
+			temp += t.obj.name + ", " + t.weight + ", ";
+		}
+		
 	}
 
 	/// <summary>
 	/// takes the objective and sets it's weight based on the distance it is from the AI and on how important it is based on difficulty
 	/// </summary>
 	/// <param name="objective">the Objective</param>
-	void ModifyWeight(WeightedObjective objective)
+	float ModifyWeight(WeightedObjective objective)
 	{
+		float newWeight = 1.0f;
 		switch(objective.obj.tag)
 		{
 			case "Player":
-				objective.weight = CalculateWeight(playerWeight, objective.obj);
+				newWeight = CalculateWeight(playerWeight, objective.obj);
 				break;
 
 			case "Asteroid":
-				objective.weight = CalculateWeight(itemWeight, objective.obj);
+				newWeight = CalculateWeight(itemWeight, objective.obj);
 				break;
 
 			case "Collectable":
-				objective.weight = CalculateWeight(itemWeight, objective.obj);
+				newWeight = CalculateWeight(itemWeight, objective.obj);
 				break;
 
 			case "ItemSpawner":
-				objective.weight = CalculateWeight(areaWeight, objective.obj);
+				newWeight = CalculateWeight(areaWeight, objective.obj);
 				break;
 		}
+		return newWeight;
 	}
 
 	/// <summary>
@@ -495,7 +528,7 @@ public class EnemyAI : MonoBehaviour {
 			{
 				case NOOBS:
 					MoveTowardsObject(objList[0].obj);
-					if (objList[0].obj.tag == "Player")
+					if (objList[0].obj != null && objList[0].obj.tag == "Player")
 					{
 						ShootTowardsObject(objList[0].obj);
 					}
@@ -503,7 +536,7 @@ public class EnemyAI : MonoBehaviour {
 		
 				case STANDARD:
 					MoveTowardsObject(objList[0].obj);
-					if (objList[0].obj.tag == "Player")
+					if (objList[0].obj != null && objList[0].obj.tag == "Player")
 					{
 						ShootTowardsObject(objList[0].obj);
 					}
@@ -511,7 +544,7 @@ public class EnemyAI : MonoBehaviour {
 		
 				case ELIT3PR0HAX0RS:
 					MoveTowardsObject(objList[0].obj);
-					if (objList[0].obj.tag == "Player")
+					if (objList[0].obj != null && objList[0].obj.tag == "Player")
 					{
 						ShootTowardsObject(objList[0].obj);
 					}
@@ -531,15 +564,16 @@ public class EnemyAI : MonoBehaviour {
 	{	
 		if (aiPathSetRecent == false)
 		{
+			//Debug.Log("new path set");
 			aiPathSetRecent = true;
-			List<string> tagExc = new List<string> {"Boundary", "WeaponFire"};
+			List<string> tagExc = new List<string> {"Boundary", "WeaponFire", "Player"};
 			pathFindingWaypoints = PathFinding.ReturnAStarPath(this.gameObject, dest, tagExc);	//path is the List of Waypoints to get to the goal.
-			//Debug.Log("printing PathFindingWaypoitns after Calc:");
-			//Debug.Log("PathFindingWaypoints.count = " + pathFindingWaypoints.Count);
-			//foreach (GameObject o in pathFindingWaypoints)
-			//{
-			//	Debug.Log("o = " + o.name);
-			//}
+			/*Debug.Log("printing PathFindingWaypoitns after Calc:");
+			Debug.Log("PathFindingWaypoints.count = " + pathFindingWaypoints.Count);
+			foreach (GameObject o in pathFindingWaypoints)
+			{
+				Debug.Log("o = " + o.name);
+			}*/
 		}
 	}
 
@@ -560,37 +594,29 @@ public class EnemyAI : MonoBehaviour {
 			yield return new WaitForSeconds(reactionTime);
 			if (pathFindingWaypoints != null)
 			{
-				Debug.Log("pathFindingWaypoints.Count = " + pathFindingWaypoints.Count);
+				//Debug.Log("pathFindingWaypoints.Count = " + pathFindingWaypoints.Count);
 				while (pathFindingWaypoints.Count > 0)
 				{	
-					try
+					if (pathFindingWaypoints[0] != null)
 					{
 						posThere = new Vector2(pathFindingWaypoints[0].transform.position.x, pathFindingWaypoints[0].transform.position.y);
 						posHere = new Vector2(this.gameObject.transform.position.x, this.gameObject.transform.position.y);
 						if (Vector2.Distance(posHere, posThere) < 0.5f)
 						{
 							pathFindingWaypoints.Remove(pathFindingWaypoints[0]);
-						}
-						if (pathFindingWaypoints.Count > 0)
-						{
-							posThere = new Vector2(pathFindingWaypoints[0].transform.position.x, pathFindingWaypoints[0].transform.position.y);
-							//Debug.Log("posThere = " + posThere.ToString());
-							this.horizontal = (posThere.x - posHere.x) * speed;  
-							this.vertical = (posThere.y - posHere.y) * speed;
-						}
+						}	
 					}
-					catch	
+					if (pathFindingWaypoints.Count > 0 && pathFindingWaypoints[0] != null)
 					{
-						Debug.Log("Error in MoveTowardsObjectThread when moving towards: ");
-						if (pathFindingWaypoints.Count == 0)
-						{
-							Debug.Log("Pathfinding.count = 0");
-						}
+						posThere = new Vector2(pathFindingWaypoints[0].transform.position.x, pathFindingWaypoints[0].transform.position.y);
+						//Debug.Log("posThere = " + posThere.ToString());
+						this.horizontal = (posThere.x - posHere.x) * speed;  
+						this.vertical = (posThere.y - posHere.y) * speed;
 					}
 					yield return new WaitForSeconds(reactionTime);
+					aiPathSetRecent = false;
 				}
 			}
-			aiPathSetRecent = false;
 		}
 	}
 	#endregion
@@ -610,7 +636,7 @@ public class EnemyAI : MonoBehaviour {
 
 		this.fire = false;
 		List<string> tagExc = new List<string> {"Boundary", "WeaponFire"};
-		if (!PathFinding.RaycastAllWithExeptions(this.gameObject, obj, tagExc))	
+		if (!PathFinding.RaycastAllWithExceptions(this.gameObject, obj, tagExc))	
 		{
 			this.fire = true;
 		}

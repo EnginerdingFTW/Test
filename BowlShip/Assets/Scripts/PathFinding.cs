@@ -2,9 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public static class PathFinding {
+public class PathFinding {
 	
-	
+	static float colliderRadius = 0;	
+
 	/// <summary>
 	/// first checks to see if the AI can move straight to the goal
 	/// Returns the optimal path for an AI to navigate to it's goal form it's start. 
@@ -15,7 +16,7 @@ public static class PathFinding {
 	/// <param name="goal">Goal.</param>
 	public static List<GameObject> ReturnAStarPath(GameObject start, GameObject goal, List<string> tagExc)
 	{		
-		if (RaycastAllWithExeptions(start, goal, tagExc))
+		if (RaycastAllWithExceptions(start, goal, tagExc))
 		{		
 			//Debug.Log("Raycast hit something");
 			GameObject[] nodelist = GameObject.FindGameObjectsWithTag("Waypoint");
@@ -24,6 +25,7 @@ public static class PathFinding {
 			{
 				waypoints.Add(nodelist[i]);
 			}
+			colliderRadius = start.GetComponent<CircleCollider2D>().radius;
 			return AStarPathFinding(start, waypoints, goal, tagExc);	
 		}
 		else 
@@ -78,7 +80,6 @@ public static class PathFinding {
 		waypoints.Add(goal);
 		while (openSet.Count > 0)
 		{
-			GameObject tempGame = null;
 			if (FindLowestHeuristicCost(openSet, goal) != null)
 			{
 				current.Add(FindLowestHeuristicCost(openSet, goal));
@@ -128,7 +129,7 @@ public static class PathFinding {
 		List<GameObject> neighboors = new List<GameObject>();
 		foreach (GameObject node in nodeList)
 		{
-			if (!RaycastAllWithExeptions(start, node, tagExc))
+			if (!RaycastAllWithExceptions(start, node, tagExc))
 			{
 				neighboors.Add(node);		//node is a neighboor because we can move start to the node
 			}
@@ -185,7 +186,6 @@ public static class PathFinding {
 		List<GameObject> path = new List<GameObject>();
 		path.Add(goal);
 		GameObject temp = goal;
-		int counting = 0;
 		while (temp != start)
 		{
 			temp = cameFrom[temp];
@@ -202,7 +202,7 @@ public static class PathFinding {
 /// <param name="start">Start. - point beginning the raycast </param>
 /// <param name="goal">Goal. - point ending the raycast</param>
 /// <param name="tags">Tags - list of tags that are the exception list</param>
-	public static bool RaycastAllWithExeptions(GameObject start, GameObject goal, List<string> tags)
+	public static bool RaycastAllWithExceptions(GameObject start, GameObject goal, List<string> tags)
 	{
 		if (goal == null)
 		{
@@ -212,6 +212,7 @@ public static class PathFinding {
 		Vector2 left = new Vector2(start.transform.position.x, start.transform.position.y);
 		Vector2 right = new Vector2(goal.transform.position.x, goal.transform.position.y);
 		Vector2 dir = (right - left).normalized;
+
 		RaycastHit2D[] tempArr = Physics2D.RaycastAll(left, dir, Mathf.Abs(Vector2.Distance(left, right)));
 		RaycastHit2D temp = tempArr[0];
 		bool hitObj = false;
@@ -247,4 +248,79 @@ public static class PathFinding {
 		} 
 		return false;
 	}
+
+	#region might be able to remove all this
+	private static Vector2[] GetWorstCaseColliderEdges(GameObject start, Vector2 dir)
+	{
+		Vector2[] worstPoints = new Vector2[2];
+		Vector3 temp = new Vector3(dir.x, dir.y, 0);
+		Vector3 cross = Vector3.Cross(temp, new Vector3(0, 0, 1));
+		worstPoints[0] = new Vector2(cross.x, cross.y) * colliderRadius + new Vector2(start.transform.position.x, start.transform.position.y);
+		worstPoints[1] = new Vector2(cross.x, cross.y) * -colliderRadius + new Vector2(start.transform.position.x, start.transform.position.y);
+		return worstPoints;
+	}
+
+	/// <summary>
+/// Sends a Raycast all from the start gameobject to the end Gameobject. Returns True if it hit anything not in the exception list.
+/// </summary>
+/// <returns><c>true</c>, otherwise, <c>false</c> an object not on the exception list is hit</returns>
+/// <param name="start">Start. - point beginning the raycast </param>
+/// <param name="goal">Goal. - point ending the raycast</param>
+/// <param name="tags">Tags - list of tags that are the exception list</param>
+	public static bool RaycastAllWithExceptionsFromCollider(GameObject start, GameObject goal, List<string> tags)
+	{
+		if (goal == null)
+		{
+			return false;
+		}
+
+		Vector2 left = new Vector2(start.transform.position.x, start.transform.position.y);
+		Vector2 right = new Vector2(goal.transform.position.x, goal.transform.position.y);
+		Vector2 dir = (right - left).normalized;
+
+		Vector2[] startPoints = GetWorstCaseColliderEdges(start, dir);
+		Vector2[] endPoints = GetWorstCaseColliderEdges(goal, dir);
+		startPoints = new Vector2[]{startPoints[0], left, startPoints[1]};
+		endPoints = new Vector2[]{endPoints[0], right, endPoints[1]};
+
+		for (int k = 0; k < startPoints.Length; k++)
+		{
+			RaycastHit2D[] tempArr = Physics2D.RaycastAll(startPoints[k], dir, Mathf.Abs(Vector2.Distance(left, right)));
+			RaycastHit2D temp = tempArr[0];
+	
+			bool hitObj = false;
+			foreach (RaycastHit2D hit in tempArr)
+			{
+				bool hitAnExeption = false;
+				foreach (string tag in tags)
+				{
+					if (hit.transform.tag == tag)
+					{
+						hitAnExeption = true;
+					}
+				}
+				if (hit.transform == goal.transform)
+				{
+					hitAnExeption = true;
+				}
+				if (hit.transform == start.transform)
+				{
+					hitAnExeption = true;
+				}
+				//can't hit the start, tags are exceptions, and if you can hit the goal, ignore that collision
+				if (hitAnExeption == false)
+				{
+					temp = hit;
+					hitObj = true;
+					Debug.Log("raycast from: start = " + start.name + " to " + goal.name + " .... hit: " + hit.transform.name);
+				}
+			}
+			if (hitObj == true && temp != null && temp.distance < Mathf.Abs(Vector2.Distance(left, right)))
+			{
+				return true;
+			} 
+		}
+		return false;
+	}
+	#endregion
 }

@@ -19,7 +19,10 @@ public class Collectable : MonoBehaviour {
 
 	void OnDestroy()
 	{
-		gamecontroller.RemoveCollectableFromList(this.gameObject);
+		if (gamecontroller.CollectableList.Contains(this.gameObject))
+		{
+			gamecontroller.RemoveCollectableFromList(this.gameObject);
+		}
 	}
 
 	
@@ -35,6 +38,7 @@ public class Collectable : MonoBehaviour {
 		{
 			if (time >= despawnTime)
 			{
+				gamecontroller.RemoveCollectableFromList(this.gameObject);
 				Destroy(this.gameObject);
 			}
 			yield return new WaitForSeconds(0.5f);

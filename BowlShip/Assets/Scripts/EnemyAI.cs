@@ -150,7 +150,7 @@ public class EnemyAI : MonoBehaviour {
 				}
 				else
 				{
-//					Debug.Log("gamecontroller is null.");
+					Debug.Log("gamecontroller is null.");
 				}
 			}
 			catch 
@@ -393,7 +393,7 @@ public class EnemyAI : MonoBehaviour {
 		{
 			temp += t.obj.name + ", " + t.weight + ", ";
 		}
-//		Debug.Log(temp);
+		Debug.Log(temp);
 		
 	}
 
@@ -584,7 +584,7 @@ public class EnemyAI : MonoBehaviour {
 		Vector2 posHere = new Vector2(0, 0);
 		while (true)
 		{
-			//Debug.Log("still moving1");
+			Debug.Log("still moving1");
 			yield return new WaitForSeconds(reactionTime);
 			if (pathFindingWaypoints != null)
 			{
@@ -612,7 +612,7 @@ public class EnemyAI : MonoBehaviour {
 				if (pathFindingWaypoints.Count == 0)
 				{
 					aiPathSetRecent = false;
-//					Debug.Log("pathfindingwaypoints.count = 0");
+					Debug.Log("pathfindingwaypoints.count = 0");
 				}
 			}
 		}

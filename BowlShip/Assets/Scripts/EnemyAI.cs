@@ -137,7 +137,7 @@ public class EnemyAI : MonoBehaviour {
 					}
 					foreach (GameObject o in gamecontroller.players)
 					{
-						if (player.isActiveAndEnabled == true && o.gameObject != this.gameObject)
+						if (o.activeSelf == true && o.gameObject != this.gameObject)
 						{
 							temp.Add(o);
 						}
@@ -145,12 +145,12 @@ public class EnemyAI : MonoBehaviour {
 					//if (temp.Count != watchList.Count)
 					//{
 						watchList = temp;
-						//Debug.Log("The watch list was changed");
+						//Debug.Log(watchList.Count);
 					//}	
 				}
 				else
 				{
-					Debug.Log("gamecontroller is null.");
+//					Debug.Log("gamecontroller is null.");
 				}
 			}
 			catch 
@@ -166,40 +166,34 @@ public class EnemyAI : MonoBehaviour {
 	/// </summary>
 	IEnumerator WatchObjectiveSorterThread()
 	{
-		if (gameObject.name == "MartinShipAI(Clone)")
-			Debug.Log("watchListCount = " + watchList.Count);
 		if (watchList.Count != 0)
 		{
-			if (gameObject.name == "MartinShipAI(Clone)")
-				Debug.Log("first if");
 			List<WeightedObjective> temp = new List<WeightedObjective>();
 			foreach (GameObject o in watchList)
 			{
-				temp.Add(new WeightedObjective(1.0f, o));	
+				if (o != null || o.activeSelf == false)
+				{
+					temp.Add(new WeightedObjective(1.0f, o));
+				}	
 			}
 			objList = temp;
 			ReOrderObjectives();
+//			Debug.Log("watching objective sorter thread 1");
 		}
 		else if (stateChange == true && objList.Count != 0)
 		{
-			if (gameObject.name == "MartinShipAI(Clone)")
-				Debug.Log("else if");
+//			Debug.Log("watching objective sorter thread 2");
 			ReOrderObjectives();
-		}
-		else 
+		} 
+		else
 		{
-			//Debug.Log("watchListChanged = " + watchListChanged.ToString() + " watchList.Count = " + watchList.Count);
-			if (gameObject.name == "MartinShipAI(Clone)")
-				Debug.Log("else statement");
-			Debug.Log("watchList.Count = " + watchList.Count);
+//			Debug.Log("NEITHER ARE HAPPENING");
 		}
-		if (gameObject.name == "MartinShipAI(Clone)")
-				Debug.Log("Done with ifs");
+//		Debug.Log("watching objective sorter thread 3");
+
 		stateChange = false;
 		watchListChanged = true;
 
-		if (gameObject.name == "MartinShipAI(Clone)")
-			Debug.Log("done waiting");
 		yield break;
 	}
 
@@ -207,9 +201,8 @@ public class EnemyAI : MonoBehaviour {
 	{
 		while (true)
 		{
-			Debug.Log("going");
 			StartCoroutine(WatchObjectiveSorterThread());
-			yield return new WaitForSeconds(0.3f);
+			yield return new WaitForSeconds(reactionTime);
 		}
 	}
 
@@ -400,6 +393,7 @@ public class EnemyAI : MonoBehaviour {
 		{
 			temp += t.obj.name + ", " + t.weight + ", ";
 		}
+//		Debug.Log(temp);
 		
 	}
 
@@ -564,7 +558,7 @@ public class EnemyAI : MonoBehaviour {
 	{	
 		if (aiPathSetRecent == false)
 		{
-			//Debug.Log("new path set");
+//			Debug.Log("new path set");
 			aiPathSetRecent = true;
 			List<string> tagExc = new List<string> {"Boundary", "WeaponFire", "Player"};
 			pathFindingWaypoints = PathFinding.ReturnAStarPath(this.gameObject, dest, tagExc);	//path is the List of Waypoints to get to the goal.
@@ -594,7 +588,6 @@ public class EnemyAI : MonoBehaviour {
 			yield return new WaitForSeconds(reactionTime);
 			if (pathFindingWaypoints != null)
 			{
-				//Debug.Log("pathFindingWaypoints.Count = " + pathFindingWaypoints.Count);
 				while (pathFindingWaypoints.Count > 0)
 				{	
 					if (pathFindingWaypoints[0] != null)
@@ -615,6 +608,11 @@ public class EnemyAI : MonoBehaviour {
 					}
 					yield return new WaitForSeconds(reactionTime);
 					aiPathSetRecent = false;
+				}
+				if (pathFindingWaypoints.Count == 0)
+				{
+					aiPathSetRecent = false;
+//					Debug.Log("pathfindingwaypoints.count = 0");
 				}
 			}
 		}

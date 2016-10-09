@@ -16,15 +16,18 @@ public class BetterCharacterSelection : MonoBehaviour {
 	private int[] playerChoice;								//A numerical representation of which ship the player has selected
 	private GameObject[] players;							//The current ship that the player has active
 	private Player[] playerScript;							//The script attached to each player
-	public bool[] shipsTaken;								//An array to show which ships have been selected already
+	private bool[] shipsTaken;								//An array to show which ships have been selected already
 	private int numPlayers = 0;								//How many players are going to be in the game
+	private int numAI = 0;									//How many CPUs are going to be in the game
 	private int playersSelected = 0;						//the total number of players that have selected their ship
+	private int[] aiDifficulty;								//The difficulty of each AI ship
+	private bool[] isAI;									//which players are AI
 
 	//Generic public variables
-	public GameObject characterSelection;					//the current menu
-	public GameObject mainMenu;								//the previous menu
-	public GameObject stageSelection;						//the next menu (Stage Selection)
+	public GameObject nextMenu;								//The prefab to allow ships to fly into the next menu
+	public GameObject prevMenu;								//The prefab to allow ships to fly back to the main menu
 	public GameObject[] spaceShips;							//A list of all PlayerSpaceships
+	public GameObject[] spaceShipsAI;						//A list of all PlayerAISpaceships
 	public GameObject[] returnTriggers;						//A list of all the locations that a player can return
 	public Quaternion defaultRotation;						//The default rotation that all ships are turned when instantiated
 	public Button defaultSelection;							//Upon entering stage selection, select a default button
@@ -33,14 +36,17 @@ public class BetterCharacterSelection : MonoBehaviour {
 
 	//UI elements
 	public GameObject[] spawnPoints;						//a list of gameObjects with positions to spawn players at
+	public GameObject[] spawnPointsAI;						//a list of gameObjects with positions to spawn playerAI at
 	public Slider[] healthSliders;							//a list of all shieldSliders
 	public Slider[] shieldSliders;							//a list of all healthSliders
 	public GameObject[] charginStuff;						//A list of all charging icons
 	public GameObject[] playerCircle;						//a list of all playercircles
 	public GameObject[] weaponIcons;						//a list of all weapon icons
-	public Image[] textBackgrounds;							//a list of all textBackgrounds to set false when playerEntered
+	public GameObject[] textBackgrounds;					//a list of all textBackgrounds to set false when playerEntered
 	public GameObject[] arrows;								//a list of all the arrows to set true when playerEntered
 	public GameObject[] brackets;							//a list of all the brackets to set false when playerSelected
+	public GameObject[] aiSelection;						//a list of all selection "menus" for each possible AI player
+	public GameObject[] destroyAI;							//a list of all selection cursors for the destroy AI option
 
 	private Animator[] arrowAnims;							//a list of each of the arrows animators
 
@@ -54,6 +60,8 @@ public class BetterCharacterSelection : MonoBehaviour {
 		playerSelected = new bool[TOTALPLAYERS];
 		playerWaiting = new bool[TOTALPLAYERS];
 		playerChoice = new int[TOTALPLAYERS];
+		isAI = new bool[TOTALPLAYERS];
+		aiDifficulty = new int[TOTALPLAYERS];
 		shipsTaken = new bool[TOTALPLAYERS];
 		arrowAnims = new Animator[TOTALPLAYERS];
 		for (int i = 0; i < TOTALPLAYERS; i++) {
@@ -61,12 +69,16 @@ public class BetterCharacterSelection : MonoBehaviour {
 			playerSelected [i] = false;
 			playerWaiting [i] = false;
 			playerChoice [i] = 0;
+			aiDifficulty [i] = 0;
 			shipsTaken [i] = false;
+			isAI [i] = false;
 			healthSliders [i].gameObject.SetActive(false);
 			shieldSliders [i].gameObject.SetActive (false);
 			charginStuff [i].SetActive (false);
 			playerCircle [i].SetActive (false);
 			weaponIcons [i].SetActive (false);
+			aiSelection [i].SetActive (false);
+			destroyAI [i].SetActive (false);
 			textBackgrounds [i].gameObject.SetActive (true);
 			arrows [i].gameObject.SetActive (false);
 			brackets [i].gameObject.SetActive (true);
@@ -74,6 +86,7 @@ public class BetterCharacterSelection : MonoBehaviour {
 			arrowAnims [i] = arrows [i].GetComponent<Animator> ();
 		}
 		numPlayers = 0;
+		numAI = 0;
 		playersSelected = 0;
 	}
 
@@ -91,7 +104,7 @@ public class BetterCharacterSelection : MonoBehaviour {
 	/// </summary>
 	void CheckForPlayerEntering () {
 		for (int i = 0; i < TOTALPLAYERS; i++) {
-			if (!playerEntered[i] && (Input.GetAxis(string.Concat(Player.fireButton, (i + 1).ToString())) > selectionTolerance)) {
+			if (!playerEntered[i] && !isAI[i] && (Input.GetAxis(string.Concat(Player.fireButton, (i + 1).ToString())) > selectionTolerance)) {
 				if (!Player.fireButton.Equals ("Fire")) {
 					if (i == 1 || i == 3 || i == 5 || i == 7) {
 						continue;
@@ -161,15 +174,17 @@ public class BetterCharacterSelection : MonoBehaviour {
 	/// <param name="player">Player.</param>
 	void SwitchShip (int player) {
 		Destroy (players[player]);
-		players [player] = (GameObject) Instantiate (spaceShips [playerChoice[player]], spawnPoints [player].transform.position, defaultRotation);
+		if (isAI [player]) {
+			players [player] = (GameObject)Instantiate (spaceShips [playerChoice [player]], spawnPointsAI [player].transform.position, defaultRotation);
+		} else {
+			players [player] = (GameObject)Instantiate (spaceShips [playerChoice [player]], spawnPoints [player].transform.position, defaultRotation);
+		}
 		if (shipsTaken[playerChoice[player]]) {
 			SpriteRenderer spr = players [player].GetComponent<SpriteRenderer> ();
 			Color tmp = spr.color;
 			tmp.a = 0.4f;
 			spr.color = tmp;
-		} //else {
-			//players [player].GetComponent<SpriteRenderer> ().color.a = 255;			//don't think I need this
-		//}
+		}
 		playerScript [player] = players [player].GetComponent<Player> ();
 		playerScript [player].poweredOn = false;
 		playerScript [player].AssignHUD (healthSliders [player], shieldSliders [player], charginStuff [player], weaponIcons [player], playerCircle [player]);
@@ -219,25 +234,113 @@ public class BetterCharacterSelection : MonoBehaviour {
 					playersSelected++;
 				}
 			}
-			if (playersSelected == numPlayers) {
+			if (playersSelected == numPlayers - numAI) {
 				playersSelected = 0;
 				sceneController.numPlayers = numPlayers;
+				sceneController.numAI = numAI;
 				for (int i = 0; i < TOTALPLAYERS; i++) {
 					if (playerSelected [i]) {
 						sceneController.playerShips [playersSelected] = spaceShips[playerChoice[i]];
 						sceneController.playerNumArray [playersSelected] = i + 1;
 						playersSelected++;
 					}
+					if (isAI[i]) {
+						spaceShipsAI [playerChoice [i]].GetComponent<EnemyAI> ().difficulty = aiDifficulty [i];
+						sceneController.playerShips [playersSelected] = spaceShipsAI [playerChoice [i]];
+						sceneController.playerNumArray [playersSelected] = i + 1;
+						playersSelected++;
+					}
 				}
-				if (playersSelected == sceneController.numPlayers) {
-					stageSelection.SetActive (true);
-					defaultSelection.Select();
-					characterSelection.SetActive (false);
+				if (playersSelected == (sceneController.numPlayers)) {
+					nextMenu.SetActive (true);
+					prevMenu.SetActive (true);
+					for (int i = 0; i < TOTALPLAYERS; i++) {
+						brackets [i].SetActive (false);
+						textBackgrounds [i].SetActive (false);
+						destroyAI [i].SetActive (false);
+						returnTriggers [i].SetActive (false);
+					}
 				} else {
 					Debug.Log ("ERROR: The number of players assigned to scene controller does not match the number of players that have selected");
 					Reset ();
 				}
 			}
+		}
+	}
+
+	/// <summary>
+	/// Call this when the Add CPU cursor is shot.
+	/// </summary>
+	/// <param name="player">Player.</param>
+	public void AddAI (int player) {
+		Debug.Log ("Adding AI for Player " + player);
+		textBackgrounds [player].SetActive (false);
+		aiSelection [player].SetActive (true);
+		isAI [player] = true;
+		players[player] = (GameObject) Instantiate (spaceShips [0], spawnPointsAI [player].transform.position, defaultRotation);
+		if (shipsTaken[playerChoice[player]]) {
+			SpriteRenderer spr = players [player].GetComponent<SpriteRenderer> ();
+			Color tmp = spr.color;
+			tmp.a = 0.4f;
+			spr.color = tmp;
+		}
+		playerScript [player] = players [player].GetComponent<Player> ();
+		playerScript [player].poweredOn = false;
+		playerScript [player].AssignHUD (healthSliders [player], shieldSliders [player], charginStuff [player], weaponIcons [player], playerCircle [player]);
+		numPlayers++;
+	}
+
+	/// <summary>
+	/// Removes the AI player and allows player selection
+	/// </summary>
+	/// <param name="player">Player.</param>
+	public void RemoveAI (int player) {
+		Destroy (players[player]);
+		destroyAI [player].SetActive (false);
+		textBackgrounds [player].SetActive (true);
+		brackets [player].SetActive (true);
+		shipsTaken [playerChoice [player]] = false;
+		isAI [player] = false;
+		numAI--;
+		numPlayers--;
+	}
+
+	/// <summary>
+	/// Call this when the AI character and difficulty is confirmed.
+	/// </summary>
+	/// <param name="player">Player.</param>
+	/// <param name="difficulty">Difficulty.</param>
+	public void SetAI (int player, int difficulty) {
+		if (!shipsTaken[playerChoice[player]]) {
+			aiSelection [player].SetActive (false);
+			shipsTaken [playerChoice [player]] = true;
+			brackets [player].SetActive (false);
+			destroyAI [player].SetActive (true);
+			aiDifficulty [player] = difficulty;
+//			Destroy (players[player]);
+//			players[player] = (GameObject) Instantiate (spaceShipsAI [playerChoice[player]], spawnPointsAI [player].transform.position, defaultRotation);
+			numAI++;
+		}
+	}
+
+	/// <summary>
+	/// Call this when the AI character is switching ships
+	/// </summary>
+	/// <param name="player">Player.</param>
+	/// <param name="direction">Direction.</param>
+	public void SwitchAI (int player, int direction) {
+		if (direction == 0) {
+			playerChoice [player]--;
+			if (playerChoice [player] < 0) {
+				playerChoice [player] = spaceShips.Length - 1;
+			}
+			SwitchShip (player);
+		} else {
+			playerChoice [player]++;
+			if (playerChoice [player] >= spaceShips.Length) {
+				playerChoice [player] = 0;
+			}
+			SwitchShip (player);
 		}
 	}
 
@@ -253,6 +356,11 @@ public class BetterCharacterSelection : MonoBehaviour {
 		returnTriggers [player].gameObject.SetActive (false);
 		arrows [player].gameObject.SetActive (true);
 		brackets [player].gameObject.SetActive (true);
+		healthSliders [player].gameObject.SetActive (false);
+		shieldSliders [player].gameObject.SetActive (false);
+		charginStuff [player].SetActive (false);
+		weaponIcons [player].SetActive (false);
+		playerCircle [player].SetActive (false);
 		StartCoroutine ("PlayerWait", player);
 		players[player] = (GameObject) Instantiate (spaceShips [0], spawnPoints [player].transform.position, defaultRotation);
 		playerScript [player] = players [player].GetComponent<Player> ();

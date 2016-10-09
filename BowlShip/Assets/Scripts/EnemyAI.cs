@@ -393,7 +393,7 @@ public class EnemyAI : MonoBehaviour {
 		{
 			temp += t.obj.name + ", " + t.weight + ", ";
 		}
-		Debug.Log(temp);
+		//Debug.Log(temp);
 		
 	}
 
@@ -562,12 +562,12 @@ public class EnemyAI : MonoBehaviour {
 			aiPathSetRecent = true;
 			List<string> tagExc = new List<string> {"Boundary", "WeaponFire", "Player"};
 			pathFindingWaypoints = PathFinding.ReturnAStarPath(this.gameObject, dest, tagExc);	//path is the List of Waypoints to get to the goal.
-			/*Debug.Log("printing PathFindingWaypoitns after Calc:");
-			Debug.Log("PathFindingWaypoints.count = " + pathFindingWaypoints.Count);
+			string temp = "printing PathFindingWaypoitns after Calc: PathFindingWaypoints.count = " + pathFindingWaypoints.Count + "\nlist: ";
 			foreach (GameObject o in pathFindingWaypoints)
 			{
-				Debug.Log("o = " + o.name);
-			}*/
+				temp += o.name + ", ";
+			}
+			Debug.Log(temp);
 		}
 	}
 
@@ -584,7 +584,7 @@ public class EnemyAI : MonoBehaviour {
 		Vector2 posHere = new Vector2(0, 0);
 		while (true)
 		{
-			Debug.Log("still moving1");
+//			Debug.Log("still moving1");
 			yield return new WaitForSeconds(reactionTime);
 			if (pathFindingWaypoints != null)
 			{

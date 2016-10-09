@@ -246,6 +246,7 @@ public class BetterCharacterSelection : MonoBehaviour {
 					}
 					if (isAI[i]) {
 						spaceShipsAI [playerChoice [i]].GetComponent<EnemyAI> ().difficulty = aiDifficulty [i];
+						players[i].tag = "Nuke";	//Don't let AI trigger move on to next stage moments
 						sceneController.playerShips [playersSelected] = spaceShipsAI [playerChoice [i]];
 						sceneController.playerNumArray [playersSelected] = i + 1;
 						playersSelected++;
@@ -375,6 +376,10 @@ public class BetterCharacterSelection : MonoBehaviour {
 	/// </summary>
 	public void Reset () {
 		GameObject[] destroyable = GameObject.FindGameObjectsWithTag ("Player");
+		for (int i = 0; i < destroyable.Length; i++) {
+			Destroy (destroyable [i]);
+		}
+		destroyable = GameObject.FindGameObjectsWithTag ("Nuke");
 		for (int i = 0; i < destroyable.Length; i++) {
 			Destroy (destroyable [i]);
 		}

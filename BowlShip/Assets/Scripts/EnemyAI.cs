@@ -50,11 +50,12 @@ public class EnemyAI : MonoBehaviour {
 	private bool watchListChanged = false;					//tells the ObjectiveList watcher that a new object is in the list or removed
 	private List<WeightedObjective> objList = null;			//list of sorted objectives based on weights
 	private bool stateChange = false;						//signal that notifies if there was a change in the state machine
+	private bool celebratestate = false;
 	private float playerWeight = 1;							//the weight of players based on difficulty for use in sorting
 	private float itemWeight = 1;							//the weight of items based on difficulty for use in sorting
 	private float areaWeight = 1;							//the weight of areas of maps based on difficulty for use in sorting
 	private float currentObjWeight = 1.0f;					//weight of the objective currently being moved to
-	private GameObject currentObj = null;					//current Gameobject main objective
+	private GameObject currentObj = null;					//current Gameobject main objectiv
 	public int difficulty =	ELIT3PR0HAX0RS;					//difficulty of the AI
 
 	#region Virtual Controls to the Player
@@ -316,8 +317,12 @@ public class EnemyAI : MonoBehaviour {
 	/// </summary>
 	void StateCelebrate()
 	{
-		StopAllCoroutines();
-		StartCoroutine(Celebrating());
+		if (!celebratestate)
+		{
+			StopAllCoroutines();
+			StartCoroutine(Celebrating());
+		}
+		celebratestate = true;
 	}
 
 	/// <summary>
@@ -580,20 +585,18 @@ public class EnemyAI : MonoBehaviour {
 	{
 		while (true)
 		{
-			Debug.Log("CELEBRATING");
-			fire = true;
 			drift = 1;
-			this.horizontal = 0.5f;
-			this.vertical = 0.5f;
+			this.horizontal = 2.0f;
+			this.vertical = 2.0f;
 			yield return new WaitForSeconds(0.2f);
-			this.horizontal = -0.5f;
-			this.vertical = 0.5f;
+			this.horizontal = -2.0f;
+			this.vertical = 2.0f;
 			yield return new WaitForSeconds(0.2f);
-			this.horizontal = -0.5f;
-			this.vertical = -0.5f;
+			this.horizontal = -2.0f;
+			this.vertical = -2.0f;
 			yield return new WaitForSeconds(0.2f);
-			this.horizontal = 0.5f;
-			this.vertical = -0.5f;
+			this.horizontal = 2.0f;
+			this.vertical = -2.0f;
 			yield return new WaitForSeconds(0.2f);
 		}
 	}

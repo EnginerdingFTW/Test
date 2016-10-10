@@ -13,6 +13,7 @@ public class LaserMover : WeaponFire {
 	/// </summary>
 	void Start () {
 		GetComponent<Rigidbody2D> ().velocity = transform.up * -laserSpeed;
+		
 	}
 		
 	/// <summary>
@@ -22,6 +23,8 @@ public class LaserMover : WeaponFire {
 	void OnTriggerEnter2D(Collider2D other)	
 	{
 		if (hasShot && other.tag == "Player" && other.gameObject != shootingPlayer) {
+			other.gameObject.GetComponent<Player>().CreateExplosionAnimation(this.transform.position, ((float) damage) / 10);
+
 			other.gameObject.GetComponent<Player> ().Hurt (damage, shootingPlayer.GetComponent<Player>().playerNum);	//apply damage
 			if (!epic) {
 				Destroy (this.gameObject);

@@ -22,6 +22,10 @@ public class LightningWall : MonoBehaviour {
 		anim.SetTrigger ("Hit");
 		if (coll.gameObject.tag.Equals ("Player")) {
 			coll.gameObject.GetComponent<Player> ().Hurt (damage);
+			foreach (ContactPoint2D loc in coll.contacts)
+			{
+				coll.gameObject.GetComponent<Player>().CreateExplosionAnimation(new Vector3(loc.point.x, loc.point.y, 0), damage / 2);
+			}
 		} else {
 			Destroy (coll.gameObject);
 		}

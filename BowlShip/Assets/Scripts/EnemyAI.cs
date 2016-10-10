@@ -236,21 +236,21 @@ public class EnemyAI : MonoBehaviour {
 		switch (difficulty)
 		{
 			case NOOBS:
-				playerWeight = 0.5f; 
+				playerWeight = 1.0f; 
 				itemWeight = 4.0f;
 				areaWeight = 0.1f;
 				break;
 	
 			case STANDARD:
 				playerWeight = 2.0f; 
-				itemWeight = 5.0f;
+				itemWeight = 10.0f;
 				areaWeight = 1.0f;
 				break;
 	
 			case ELIT3PR0HAX0RS:
 				playerWeight = 0.1f; 
-				itemWeight = 5.0f;
-				areaWeight = 3.0f;
+				itemWeight = 15.0f;
+				areaWeight = 5.0f;
 				break;
 		}
 	}
@@ -264,20 +264,20 @@ public class EnemyAI : MonoBehaviour {
 		switch (difficulty)
 		{
 			case NOOBS:
-				playerWeight = 4.0f; 
-				itemWeight = 2.0f;
+				playerWeight = 10.0f; 
+				itemWeight = 1.0f;
 				areaWeight = 0.1f;
 				break;
 	
 			case STANDARD:
-				playerWeight = 2.0f; 
-				itemWeight = 2.0f;
+				playerWeight = 10.0f; 
+				itemWeight = 7.0f;
 				areaWeight = 0.1f;
 				break;
 	
 			case ELIT3PR0HAX0RS:
-				playerWeight = 10.0f; 
-				itemWeight = 3.0f;
+				playerWeight = 15.0f; 
+				itemWeight = 1.0f;
 				areaWeight = 1.0f;
 				break;
 		}
@@ -292,20 +292,20 @@ public class EnemyAI : MonoBehaviour {
 		switch (difficulty)
 		{
 			case NOOBS:
-				playerWeight = 1.0f; 
-				itemWeight = 5.0f;
+				playerWeight = 2.0f; 
+				itemWeight = 4.0f;
 				areaWeight = 1.0f;
 				break;
 	
 			case STANDARD:
 				playerWeight = 0.5f; 
-				itemWeight = 5.0f;
+				itemWeight = 12.0f;
 				areaWeight = 2.0f;
 				break;
 	
 			case ELIT3PR0HAX0RS:
-				playerWeight = 1.0f; 
-				itemWeight = 7.0f;
+				playerWeight = 0.5f; 
+				itemWeight = 15.0f;
 				areaWeight = 4.0f;
 				break;
 		}
@@ -316,7 +316,8 @@ public class EnemyAI : MonoBehaviour {
 	/// </summary>
 	void StateCelebrate()
 	{
-		
+		StopAllCoroutines();
+		StartCoroutine(Celebrating());
 	}
 
 	/// <summary>
@@ -395,13 +396,14 @@ public class EnemyAI : MonoBehaviour {
 			objList[k].weight = ModifyWeight(objList[k]);
 		}
 		objList = objList.OrderByDescending(p => p.weight).ToList();	//telling list to sort by weights
+//		DetermineObjectToMoveTowards();
 		//Debug.Log("reordinger objectives, objList.Count = " + objList.Count);
 		string temp = this.gameObject.name + ": list = ";
 		foreach (WeightedObjective t in objList)
 		{
 			temp += t.obj.name + ", " + t.weight + ", ";
 		}
-		//Debug.Log(temp);
+//		Debug.Log(temp);
 		
 	}
 
@@ -529,7 +531,8 @@ public class EnemyAI : MonoBehaviour {
 		if (objList.Count != 0)
 		{
 			DetermineObjectToMoveTowards();
-			ShootTowardsObject(currentObj);
+//			ShootTowardsObject(currentObj);
+			StartCoroutine("ShootingThread");
 			switch (difficulty)
 			{
 				case NOOBS:
@@ -554,6 +557,8 @@ public class EnemyAI : MonoBehaviour {
 			if (GameObject.Find("InnerBoundary").GetComponent<BoxCollider2D>().bounds.Contains(objList[k].obj.transform.position))
 			{
 				currentObj = objList[k].obj;
+//				Debug.Log("Current Obj = " + currentObj.name);
+				break;
 			}
 		}
 	}
@@ -571,6 +576,28 @@ public class EnemyAI : MonoBehaviour {
 	#endregion
 
 	#region AI Movement
+	IEnumerator Celebrating()
+	{
+		while (true)
+		{
+			Debug.Log("CELEBRATING");
+			fire = true;
+			drift = 1;
+			this.horizontal = 0.5f;
+			this.vertical = 0.5f;
+			yield return new WaitForSeconds(0.2f);
+			this.horizontal = -0.5f;
+			this.vertical = 0.5f;
+			yield return new WaitForSeconds(0.2f);
+			this.horizontal = -0.5f;
+			this.vertical = -0.5f;
+			yield return new WaitForSeconds(0.2f);
+			this.horizontal = 0.5f;
+			this.vertical = -0.5f;
+			yield return new WaitForSeconds(0.2f);
+		}
+	}
+		
 	/// <summary>
 	/// Takes a destination and calculate all waypoints that must be taken to get there for the shortest path possible.
 	/// The waypoints are pointed to by pathFindingWayPoints so the the list is viewable in other places at the same time.
@@ -628,6 +655,7 @@ public class EnemyAI : MonoBehaviour {
 						posThere = new Vector2(pathFindingWaypoints[0].transform.position.x, pathFindingWaypoints[0].transform.position.y);
 						//Debug.Log("posThere = " + posThere.ToString());
 
+
 						this.drift = 0;
 						if (pathFindingWaypoints[0].tag != "Player" && this.difficulty == ELIT3PR0HAX0RS)
 						{
@@ -672,19 +700,34 @@ public class EnemyAI : MonoBehaviour {
 		}
 
 		this.fire = false;
-		Weapon wep = this.gameObject.GetComponent<Player>().currentWeapon;
-		if (wep == null || wep.laserType.name == "Mine" || wep.laserType.name == "EMP")
+		for (float k = -0.1f; k <= 0.1f; k = k + 0.1f)
 		{
-			this.fire = true;
-		}
-		else if (currentObj != null && currentObj.tag == "Player")
-		{
-			List<string> tagExc = new List<string> {"Boundary", "WeaponFire"};
-			if (!PathFinding.RaycastAllWithExceptions(this.gameObject, obj, tagExc))	
+			RaycastHit2D[] hitarr = Physics2D.RaycastAll(new Vector2(this.transform.position.x, this.transform.position.y), -transform.up + new Vector3(k, k, 0));
+			foreach (RaycastHit2D hit in hitarr)
 			{
-				this.fire = true;
+//				Debug.Log(this.gameObject.name + ": " + hit.collider.gameObject.name);
+				if (hit.collider.tag == "Wall")
+				{
+					break;
+				}
+				if (hit != null && hit.collider.tag == "Player" && hit.collider.gameObject != this.gameObject)
+				{
+//					Debug.Log("hitt");
+					this.fire = true;
+					break;
+				}
+			}
+			if (fire == true)
+			{
+				break;
 			}
 		}
+	}
+
+	IEnumerator ShootingThread()
+	{
+		yield return new WaitForSeconds(Random.Range(reactionTime, reactionTime + 0.2f));
+		ShootTowardsObject(currentObj);
 	}
 
 	IEnumerator HoverShoot(GameObject dest, GameObject toShoot)

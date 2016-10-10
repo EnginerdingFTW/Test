@@ -35,7 +35,10 @@ public class PowerUpSpawn : MonoBehaviour {
 
 	void OnDestroy()
 	{
-		GameObject.Find("GameController").GetComponent<GameController>().SpawnerList.Remove(this.gameObject);
+		if (GameObject.Find("GameController").GetComponent<GameController>() != null)
+		{
+			GameObject.Find("GameController").GetComponent<GameController>().SpawnerList.Remove(this.gameObject);
+		}
 	}
 
 }

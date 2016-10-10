@@ -75,6 +75,7 @@ public class HeatSeeker : WeaponFire {
 	{
 		if (hasShot && other.gameObject != shootingPlayer && other.tag == "Player")
 		{
+			other.gameObject.GetComponent<Player>().CreateExplosionAnimation(this.transform.position, ((float) damage) / 10);
 			other.gameObject.GetComponent<Player>().Hurt(damage, shootingPlayer.GetComponent<Player>().playerNum);	//apply damage
 			Destroy(this.gameObject);
 		}

@@ -85,7 +85,7 @@ public class Player : MonoBehaviour {
 	[HideInInspector] public Image weaponIconImage;		//the image of the weaponIcon gameObject
 
 	private GameController gc;							//The Match's logic center
-	[HideInInspector] public Weapon currentWeapon;		//The current Weapon the wielder has
+	public Weapon currentWeapon;		//The current Weapon the wielder has
 	private GameObject laserObject;						//The shot object that the Player shoots out, used to make sure Player can't shoot themselves
 	private float horiz;								//The horizontal movement input
 	private float vert;									//The vertical movement input
@@ -109,7 +109,7 @@ public class Player : MonoBehaviour {
 		if (GameObject.FindGameObjectWithTag ("GameController") != null) {
 			gc = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ();
 		}
-		
+
 		//checking for AI
 		enemyAI = this.gameObject.GetComponent<EnemyAI>();
 	}
@@ -406,6 +406,10 @@ public class Player : MonoBehaviour {
 	void OnCollisionEnter2D (Collision2D coll) {
 		if (coll.gameObject.CompareTag ("Player")) { //Change damage based on speed?
 			Hurt (playerCollisionDamage, coll.gameObject.GetComponent<Player>().playerNum);
+			foreach (ContactPoint2D loc in coll.contacts)
+			{
+				CreateExplosionAnimation(new Vector3(loc.point.x, loc.point.y, 0), 1.0f);
+			}
 		}
 		//provide force between player and object
 		cc.enabled = true;
@@ -502,5 +506,14 @@ public class Player : MonoBehaviour {
 	/// </summary>
 	public static void toggleShieldRecharge () {
 		useShieldRecharge = !useShieldRecharge;
+	}
+
+	public void CreateExplosionAnimation(Vector3 point, float damageRatio)
+	{
+		Vector3 tempPos = new Vector3(point.x, point.y, 0);
+		Vector3 tempRot = new Vector3(0, 0, Random.Range(0, 360));
+		GameObject temp = Instantiate(explosion, tempPos, Quaternion.EulerAngles(tempRot)) as GameObject;
+		temp.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f) * damageRatio;
+		temp.GetComponent<AudioSource>().volume = 0.1f;
 	}
 }

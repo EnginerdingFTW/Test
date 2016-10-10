@@ -10,6 +10,8 @@ public class MenuHandler : MonoBehaviour {
 
 	public Slider scoreToWin;				//used in options to set max score
 	public Text scoreToWinText;				//used in options to show max score
+	public GameObject fadeIn;				//fadein/out between scenes
+	private Animator fadeAnim;				//animator to call fadeout
 
 	public Slider gameModeSlider;			//used in options to set game mode
 	public Text currentGameMode;			//used in options to show current game mode
@@ -25,6 +27,7 @@ public class MenuHandler : MonoBehaviour {
 
 	void Awake () {
 		sc = GameObject.FindGameObjectWithTag ("SceneController").GetComponent<SceneController> ();
+		fadeAnim = fadeIn.GetComponent<Animator> ();
 	}
 
 	public void PeoplePerController (bool two) {
@@ -36,31 +39,42 @@ public class MenuHandler : MonoBehaviour {
 	}
 
 	void OnSubmit() {
-		SceneManager.LoadScene ("Parr");
+		fadeAnim.SetTrigger ("FadeOut");
+		StartCoroutine ("Load", "Parr");
 	}
 
 	public void Test () {
-		SceneManager.LoadScene ("Parr");
+		fadeAnim.SetTrigger ("FadeOut");
+		StartCoroutine ("Load", "Parr");
 	}
 
 	public void Play () {
-		SceneManager.LoadScene ("Asteroids");
+		fadeAnim.SetTrigger ("FadeOut");
+		StartCoroutine ("Load", "Asteroids");
 	}
 
 	public void PlayWalls () {
-		SceneManager.LoadScene ("Walls");
+		fadeAnim.SetTrigger ("FadeOut");
+		StartCoroutine ("Load", "Walls");
 	}
 
 	public void PlayRotation () {
-		SceneManager.LoadScene ("Rotation");
+		fadeAnim.SetTrigger ("FadeOut");
+		StartCoroutine ("Load", "Rotation");
 	}
 
 	public void PlayWarp () {
-		SceneManager.LoadScene ("WarpHoles");
+		fadeAnim.SetTrigger ("FadeOut");
+		StartCoroutine ("Load", "WarpHoles");
 	}
 
 	public void Quit () {
 		Application.Quit();
+	}
+
+	IEnumerator Load (string level) {
+		yield return new WaitForSeconds (0.3f);
+		SceneManager.LoadScene (level);
 	}
 
 	public void SetScoreToWin () {

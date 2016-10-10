@@ -23,6 +23,7 @@ public class SwitchMenu : MonoBehaviour {
 					sc.menuLevel = 0;
 					characterSelection.GetComponent<BetterCharacterSelection> ().Reset ();
 				} else {
+					sc.menuLevel = 0;
 					GameObject[] players = GameObject.FindGameObjectsWithTag ("Player");
 					for (int i = 0; i < players.Length; i++) {
 						Destroy(players[i]);

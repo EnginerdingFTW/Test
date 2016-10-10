@@ -38,6 +38,7 @@ public class GameController : MonoBehaviour {
 	private AudioSource audioSource;									//The audioSource used to play our soundclips
 
 	//UI Elements
+	public GameObject fadeIn;											//The gameObject that allows smooth transition between scenes
 	public GameObject[] circleImage;									//The spawn gameObject attached to be radially filled
 	public GameObject pauseScreen;										//The menu to pull up for pause screens
 	public Button pauseDefault;											//The default button to select when showing the pause menu
@@ -67,6 +68,7 @@ public class GameController : MonoBehaviour {
 	public Text timeLeft;												//Used in a timebased game to show the remaining time in a round
 	private Rigidbody2D roundStarterRB;									//The rigidbody for the roundStarter Icon
 	private Text[] scoreBoxTexts;										//A list of all the text fields for the scoreboxs
+	private Animator fadeAnim;											//The animator to trigger the fade between scenes
 
 	public int defaultPlayerHealth = 100;								//The default health and
 	public int defaultPlayerShields = 100;								//shields to reset a player with
@@ -88,6 +90,7 @@ public class GameController : MonoBehaviour {
 	{
 		sceneController = GameObject.Find("SceneController").GetComponent<SceneController>();
 		gameMode = sceneController.gameMode;
+		fadeAnim = fadeIn.GetComponent<Animator> ();
 		audioSource = GetComponent<AudioSource> ();
 		numPlayers = sceneController.numPlayers;
 		if (numPlayers > 4) {
@@ -246,6 +249,7 @@ public class GameController : MonoBehaviour {
 						victoryIcon.SetActive (true);
 						GameObject playerIcon = (GameObject)Instantiate (players [i], victoryPosition, Quaternion.identity);
 						playerIcon.GetComponent<Player> ().canFire = false;
+						playerIcon.GetComponent<Player> ().victor = true;
 						players [i].SetActive (false);
 						StartCoroutine ("ShowVictoryScreens", playerIcon);
 					}
@@ -680,7 +684,8 @@ public class GameController : MonoBehaviour {
 	/// </summary>
 	public void Rematch () {
 		UnPause ();
-		SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
+		fadeAnim.SetTrigger ("FadeOut");
+		StartCoroutine ("LoadMenu", SceneManager.GetActiveScene ().name);
 	}
 
 	/// <summary>
@@ -689,8 +694,9 @@ public class GameController : MonoBehaviour {
 	public void MainMenu () {
 		sceneController.numPlayers = 0;
 		UnPause ();
+		fadeAnim.SetTrigger ("FadeOut");
 		sceneController.menuLevel = 1;
-		SceneManager.LoadScene ("Menu");
+		StartCoroutine ("LoadMenu", "Menu");
 	}
 
 	/// <summary>
@@ -698,8 +704,9 @@ public class GameController : MonoBehaviour {
 	/// </summary>
 	public void MenuGamemode() {
 		UnPause ();
+		fadeAnim.SetTrigger ("FadeOut");
 		sceneController.menuLevel = 2;
-		SceneManager.LoadScene ("Menu");
+		StartCoroutine ("LoadMenu", "Menu");
 	}
 
 	/// <summary>
@@ -707,8 +714,18 @@ public class GameController : MonoBehaviour {
 	/// </summary>
 	public void MenuStage() {
 		UnPause ();
+		fadeAnim.SetTrigger ("FadeOut");
 		sceneController.menuLevel = 3;
-		SceneManager.LoadScene ("Menu");
+		StartCoroutine ("LoadMenu", "Menu");
+	}
+
+	/// <summary>
+	/// Load the menu with a fadeout. Kayle OP.
+	/// </summary>
+	/// <param name="level">Level.</param>
+	IEnumerator LoadMenu (string level) {
+		yield return new WaitForSeconds (0.3f);
+		SceneManager.LoadScene (level);
 	}
 
 	/// <summary>

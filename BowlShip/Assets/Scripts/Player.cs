@@ -5,13 +5,14 @@ using System.Collections.Generic;
 
 public class Player : MonoBehaviour {
 
+	//Generic
 	public int playerNum;								//The player controlling this player
 	public int health = 100;							//How much health the ship has left (permanent damage)
 	public int shield = 20;								//How much shields the ship has (possible to recharge with powerups)
 	public int startingHealth = 100;					//The typical max health, unless given a powerup
 	public int maxShield = 20;							//The maximum amount of shields a ship can have
 	public float speed = 4.0f;							//How fast the ship can accelerate
-//	public float maxVelocity = 10.0f;					//The topSpeed of the ship, shouldn't need to use this
+	public bool victor = false;							//If the ship is a victor, can't pick up items or take damage
 	public float rotationSpeed = 5.0f;					//How fast the ship can rotate
 	public float minInput = 0.2f;						//How far the joystick must be moved before the ship reacts
 
@@ -118,6 +119,11 @@ public class Player : MonoBehaviour {
 	/// Sets the Movement of the Player, allows it to fire, drift, and boost.
 	/// </summary>
 	void Update () {
+
+		if (victor) {
+			gameObject.layer = 8;	
+		}
+
 		if (poweredOn) {
 			//Linear Movement
 			if (enemyAI != null)
@@ -454,6 +460,11 @@ public class Player : MonoBehaviour {
 		poweredOn = true;
 	}
 
+	/// <summary>
+	/// Shields the recharge.
+	/// </summary>
+	/// <returns>The recharge.</returns>
+	/// <param name="rechargeRate">Recharge rate.</param>
 	public IEnumerator ShieldRecharge (float rechargeRate) {
 		canRecharge = false;
 		shield += shieldCharge * (int)(rb.velocity.magnitude / speedShieldChargeAdjustment);
@@ -508,6 +519,11 @@ public class Player : MonoBehaviour {
 		useShieldRecharge = !useShieldRecharge;
 	}
 
+	/// <summary>
+	/// Creates the explosion animation.
+	/// </summary>
+	/// <param name="point">Point.</param>
+	/// <param name="damageRatio">Damage ratio.</param>
 	public void CreateExplosionAnimation(Vector3 point, float damageRatio)
 	{
 		Vector3 tempPos = new Vector3(point.x, point.y, 0);

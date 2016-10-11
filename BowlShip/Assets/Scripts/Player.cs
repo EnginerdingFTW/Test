@@ -95,6 +95,10 @@ public class Player : MonoBehaviour {
 	private Rigidbody2D rb;								//The ship's Rigidbody component
 	private PointEffector2D pe;							//Used to know the ship and other objects back upon collision
 	private CircleCollider2D cc;						//This ship's Larger circleCollider trigger for use with pe
+	private string thrustButton = "Thrust";				//The string to get input for "drift"
+	private string boostButton = "Boost";				//The string to get input for boosting
+	private string horizAxis = "Horizontal";			//The string to get input for horizontal movement
+	private string vertAxis = "Vertical";				//The string to get input for vertical movement
 
 	//AI
 	public EnemyAI enemyAI;								//Used for computer players
@@ -134,8 +138,8 @@ public class Player : MonoBehaviour {
 			}
 			else
 			{
-				horiz = Input.GetAxis ("Horizontal" + playerNum.ToString ()) * speed;
-				vert = Input.GetAxis ("Vertical" + playerNum.ToString ()) * speed;
+				horiz = Input.GetAxis (horizAxis + playerNum.ToString ()) * speed;
+				vert = Input.GetAxis (vertAxis + playerNum.ToString ()) * speed;
 			}
 
 			//Angular Movement
@@ -151,7 +155,7 @@ public class Player : MonoBehaviour {
 			} 
 			else 
 			{
-				thrust = Input.GetAxis ("Thrust" + playerNum.ToString ());			
+				thrust = Input.GetAxis (thrustButton + playerNum.ToString ());			
 			}
 	
 			if (thrust <= 0) 
@@ -181,7 +185,7 @@ public class Player : MonoBehaviour {
 				{
 					playerInputBoost = enemyAI.boost;
 				}
-				else if (Input.GetAxis ("Boost" + playerNum.ToString ()) > 0.3f)
+				else if (Input.GetAxis (boostButton + playerNum.ToString ()) > 0.3f)
 				{
 					playerInputBoost = true;
 				}

@@ -116,6 +116,7 @@ public class Player : MonoBehaviour {
 		animator = GetComponent<Animator> ();
 		audioSource = GetComponent<AudioSource> ();
 		sc = GameObject.FindGameObjectWithTag ("SceneController").GetComponent<SceneController> ();
+		ChangeVol ();
 
 		//Check for one or two controller input
 		if (fireButton == "FireAlt") {

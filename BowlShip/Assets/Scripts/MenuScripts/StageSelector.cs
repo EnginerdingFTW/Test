@@ -71,6 +71,7 @@ public class StageSelector : MonoBehaviour {
 			StartCoroutine ("Countdown");
 		}
 		if (timeTillPlay <= 0) {
+			mh.canGoBack = false;
 			GameObject[] players = GameObject.FindGameObjectsWithTag ("Player");
 			for (int i = 0; i < players.Length; i++) {
 				Destroy(players[i]);

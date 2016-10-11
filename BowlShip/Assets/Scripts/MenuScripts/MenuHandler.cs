@@ -14,6 +14,15 @@ public class MenuHandler : MonoBehaviour {
 	public GameObject fadeIn;				//fadein/out between scenes
 	private Animator fadeAnim;				//animator to call fadeout
 	private AudioSource titleMusic;			//the titleMusic in the menu
+	public GameObject mainMenu;				//the Main menu
+	public GameObject optionsMenu;			//the options menu
+	public GameObject controlsMenu;			//the controls menu
+	public Button optionsDefault;			//let resume be the default option
+	public Button mainDefault;				//let play be the default option
+	public GameObject characterMenu;		//the character menu
+	public GameObject gameModeMenu;			//the gamemode menu
+	public GameObject stageMenu;			//the stage menu
+	public bool canGoBack = true;			//don't load a new stage without characters!
 
 	public Slider music;					//used in options to set music
 
@@ -32,6 +41,23 @@ public class MenuHandler : MonoBehaviour {
 		fadeAnim = fadeIn.GetComponent<Animator> ();
 	}
 
+	void Update () {
+		if (!mainMenu.activeSelf && !optionsMenu.activeSelf && !controlsMenu.activeSelf) {
+			if (Input.GetAxis("Pause") > 0.3f) {
+				optionsMenu.SetActive (true);
+				optionsDefault.Select ();
+			}
+		}
+	}
+
+	public void OptionsBack () {
+		optionsMenu.SetActive (false);
+		if (!characterMenu.activeSelf && !gameModeMenu.activeSelf && !stageMenu.activeSelf && canGoBack) {
+			mainMenu.SetActive (true);
+			mainDefault.Select ();
+		}
+	}
+
 	public void ChangeSFX() {
 		sc.SFXLevel = (int) sfx.value;
 		SFXText.text = sc.SFXLevel.ToString ();
@@ -48,6 +74,53 @@ public class MenuHandler : MonoBehaviour {
 			Player.fireButton = "Fire";
 		} else {
 			Player.fireButton = "FireAlt";
+		}
+	}
+
+	/// <summary>
+	/// Get to the main menu from wherever you are
+	/// </summary>
+	public void MainMenu() {
+		if (canGoBack) {
+			if (optionsMenu.activeSelf) {
+				optionsMenu.SetActive (false);
+			}
+			if (controlsMenu.activeSelf) {
+				controlsMenu.SetActive (false);
+			}
+			if (characterMenu.activeSelf) {
+				CheckForReset ();
+				characterMenu.SetActive (false);
+			}
+			if (gameModeMenu.activeSelf) {
+				CheckForReset ();
+				gameModeMenu.SetActive (false);
+			}
+			if (stageMenu.activeSelf) {
+				CheckForReset ();
+				stageMenu.SetActive (false);
+			}
+			mainMenu.SetActive (true);
+			sc.menuLevel = 0;
+			mainDefault.Select ();
+		}
+	}
+
+	/// <summary>
+	/// Only get rid of players if possible, otherwise get rid of players that just came back from a game
+	/// </summary>
+	void CheckForReset() {
+		if (sc.menuLevel < 2) {
+			characterMenu.GetComponent<BetterCharacterSelection> ().Reset ();
+		} else {
+			GameObject[] destructable = GameObject.FindGameObjectsWithTag ("Player");
+			for (int i = 0; i < destructable.Length; i++) {
+				Destroy (destructable [i]);
+			}
+			destructable = GameObject.FindGameObjectsWithTag ("Nuke");
+			for (int i = 0; i < destructable.Length; i++) {
+				Destroy (destructable [i]);
+			}
 		}
 	}
 

@@ -17,7 +17,7 @@ public class Weapon : Collectable {
 /// <param name="other">Other collider</param>
 	void OnTriggerEnter2D(Collider2D other)		
 	{
-		if (other.tag == "Player")
+		if (other.tag == "Player" && !other.gameObject.GetComponent<Player>().victor)
 		{
 			AudioSource.PlayClipAtPoint (sound, new Vector3(0,0,0));
 			this.pickedUp = true;

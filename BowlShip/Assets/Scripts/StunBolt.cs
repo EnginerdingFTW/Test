@@ -18,7 +18,7 @@ public class StunBolt : WeaponFire {
 
 	void OnTriggerEnter2D(Collider2D other)	
 	{
-		if (hasShot && other.tag == "Player" && other.gameObject != shootingPlayer)
+		if (hasShot && other.tag == "Player" && other.gameObject != shootingPlayer && !other.gameObject.GetComponent<Player>().victor)
 		{
 					//Debug.Log("in");
 			other.gameObject.GetComponent<Player>().Hurt(damage, shootingPlayer.GetComponent<Player>().playerNum);

@@ -22,7 +22,7 @@ public class LaserMover : WeaponFire {
 	/// <param name="other">Other.</param>
 	void OnTriggerEnter2D(Collider2D other)	
 	{
-		if (hasShot && other.tag == "Player" && other.gameObject != shootingPlayer) {
+		if (hasShot && other.tag == "Player" && other.gameObject != shootingPlayer && !other.gameObject.GetComponent<Player>().victor) {
 			other.gameObject.GetComponent<Player>().CreateExplosionAnimation(this.transform.position, ((float) damage) / 10);
 
 			other.gameObject.GetComponent<Player> ().Hurt (damage, shootingPlayer.GetComponent<Player>().playerNum);	//apply damage

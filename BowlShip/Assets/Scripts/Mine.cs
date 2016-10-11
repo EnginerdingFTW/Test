@@ -31,7 +31,7 @@ public class Mine : WeaponFire {
 		//if the collided object it a Player, explode.
 	void OnTriggerEnter2D(Collider2D other)	
 	{
-		if (hasShot && other.gameObject != shootingPlayer && other.tag == "Player")
+		if (hasShot && other.gameObject != shootingPlayer && other.tag == "Player" && !other.gameObject.GetComponent<Player>().victor)
 		{
 			blastRadius.GetComponent<ExplosionHelper> ().shootingPlayer = this.shootingPlayer;
 			Kaboom();

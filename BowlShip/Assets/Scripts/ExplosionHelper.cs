@@ -19,7 +19,7 @@ public class ExplosionHelper : MonoBehaviour {
 	// Update is called once per frame
 	void OnTriggerStay2D(Collider2D other)
 	{
-		if (exploded && other.tag == "Player")
+		if (exploded && other.tag == "Player" && !other.gameObject.GetComponent<Player>().victor)
 		{
 			other.GetComponent<Player>().Hurt(damage, shootingPlayer.GetComponent<Player>().playerNum);
 		}

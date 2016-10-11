@@ -73,7 +73,7 @@ public class HeatSeeker : WeaponFire {
 	/// <param name="other">Other.</param>
 	void OnTriggerEnter2D(Collider2D other)	
 	{
-		if (hasShot && other.gameObject != shootingPlayer && other.tag == "Player")
+		if (hasShot && other.gameObject != shootingPlayer && other.tag == "Player" && !other.gameObject.GetComponent<Player>().victor)
 		{
 			other.gameObject.GetComponent<Player>().CreateExplosionAnimation(this.transform.position, ((float) damage) / 10);
 			other.gameObject.GetComponent<Player>().Hurt(damage, shootingPlayer.GetComponent<Player>().playerNum);	//apply damage

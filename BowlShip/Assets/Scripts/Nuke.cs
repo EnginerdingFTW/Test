@@ -18,7 +18,7 @@ public class Nuke : WeaponFire {
 		//if the nuke collided with anything, explode, do damage (exploded to true), and destroy yourself
 	void OnTriggerEnter2D(Collider2D other)	
 	{
-		if (hasShot && other.gameObject != shootingPlayer && (other.tag == "Player" || other.tag == "Asteroid" || other.tag == "Nuke"))
+		if (hasShot && other.gameObject != shootingPlayer && ((other.tag == "Player" && !other.gameObject.GetComponent<Player>().victor) || other.tag == "Asteroid" || other.tag == "Nuke"))
 		{
 			Kaboom();
 			temp.GetComponent<ExplosionHelper> ().Explode ();

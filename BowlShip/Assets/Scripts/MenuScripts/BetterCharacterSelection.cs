@@ -140,6 +140,7 @@ public class BetterCharacterSelection : MonoBehaviour {
 			if (!shipsTaken [i]) {
 				players [player] = (GameObject)Instantiate (spaceShips [i], spawnPoints [player].transform.position, defaultRotation);
 				playerChoice [player] = i;
+				break;
 			}
 		}
 	}
@@ -152,6 +153,7 @@ public class BetterCharacterSelection : MonoBehaviour {
 			if (!shipsTaken [i]) {
 				players [player] = (GameObject)Instantiate (spaceShips [i], spawnPointsAI [player].transform.position, defaultRotation);
 				playerChoice [player] = i;
+				break;
 			}
 		}
 	}

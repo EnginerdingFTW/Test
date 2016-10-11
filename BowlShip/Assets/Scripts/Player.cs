@@ -37,6 +37,7 @@ public class Player : MonoBehaviour {
 	public float forceTime = 0.5f;						//How fast the player and collider is forced back after hitting an object
 	public float invTime = 0.5f;						//Shouldn't need this, invincibility after being hit
 	public bool defeated = false;						//Was the ship destroyed?
+	[HideInInspector] public bool notSuddenDeath = false;//Used by game controller to stop respawn in timed match in case of tie
 	public List<Weapon> weapons;						//A list of collected weapons
 	public GameObject defaultLaser;						//The default laser weapon for the ship
 	public GameObject laserInstatiationPoint;			//Where the laser is fired from, in comparison to the player origin

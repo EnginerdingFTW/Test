@@ -433,6 +433,7 @@ public class GameController : MonoBehaviour {
 			} else {
 				players [i].SetActive (false);
 				players [i].GetComponent<Player> ().defeated = true;
+				players [i].GetComponent<Player> ().notSuddenDeath = true;
 			}
 		}
 		if (winners == 1) {
@@ -594,7 +595,7 @@ public class GameController : MonoBehaviour {
 			yield return new WaitForSeconds (0.1f);
 			circleFill[player].fillAmount += (0.1f / timeForRespawn);
 		}
-		if (!gameOver) {
+		if (!gameOver && !players[player].GetComponent<Player>().notSuddenDeath) {
 			RespawnPlayer (player);
 			players [player].SetActive (true);
 			ActivatePlayerHUD (player);

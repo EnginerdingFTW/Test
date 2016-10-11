@@ -36,8 +36,13 @@ public class GameController : MonoBehaviour {
 	public AudioClip victoryJingle;										//The sound clip to be played when a player has won
 	public AudioClip victoryOver;										//The sound clip to be played when the game is over
 	private AudioSource audioSource;									//The audioSource used to play our soundclips
+	private AudioSource camAudio;										//The audioSource of the sceneCamera
 
 	//UI Elements
+	public Slider sfx;													//The Options menu sfx slider
+	public Slider music;												//The Options menu music slider
+	public Text sfxText;												//the text component of the sfx volume
+	public Text musicText;												//The text component of the music volume
 	public GameObject fadeIn;											//The gameObject that allows smooth transition between scenes
 	public GameObject[] circleImage;									//The spawn gameObject attached to be radially filled
 	public GameObject pauseScreen;										//The menu to pull up for pause screens
@@ -93,7 +98,8 @@ public class GameController : MonoBehaviour {
 		fadeAnim = fadeIn.GetComponent<Animator> ();
 		audioSource = GetComponent<AudioSource> ();
 		numPlayers = sceneController.numPlayers;
-		sceneCamera.GetComponent<AudioSource> ().volume = ((float) GameObject.FindGameObjectWithTag ("SceneController").GetComponent<SceneController> ().musicLevel / 100f);
+		camAudio = sceneCamera.GetComponent<AudioSource> ();
+		camAudio.volume = ((float) GameObject.FindGameObjectWithTag ("SceneController").GetComponent<SceneController> ().musicLevel / 100f);
 		if (numPlayers > 4) {
 			asteroidSpawnRate = asteroidSpawnRateFaster;			//bigger games on Asteroids spawn even more asteroids.
 		}
@@ -770,6 +776,24 @@ public class GameController : MonoBehaviour {
 		{
 			this.CollectableList.RemoveAt(list_index);
 		}
-		
+	}
+
+	/// <summary>
+	/// Changes the SFX volume.
+	/// </summary>
+	public void ChangeSFX() {
+		sceneController.SFXLevel = (int) sfx.value;
+		sfxText.text = sceneController.SFXLevel.ToString ();
+		for (int i = 0; i < sceneController.numPlayers; i++)
+			players [i].GetComponent<Player> ().ChangeVol ();
+	}
+
+	/// <summary>
+	/// Changes the music volume.
+	/// </summary>
+	public void ChangeMusic() {
+		sceneController.musicLevel = (int) music.value;
+		musicText.text = sceneController.musicLevel.ToString ();
+		camAudio.volume = ((float)sceneController.musicLevel / 100f);
 	}
 }

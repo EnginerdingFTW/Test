@@ -66,7 +66,9 @@ public class Player : MonoBehaviour {
 	//Audio
 	public AudioClip damaged;							//The sound clip to be played when the ship takes damage
 	private AudioSource audioSource;					//The audioSource used to play our soundclips
-	public float volume = 0.5f;							//How loud all SFX from this script is
+	private float volume = 0.2f;						//How loud all SFX from this script actually is
+	public float initialVolume = 0.5f;					//How loud all SFX from this script is initially
+	private SceneController sc;							//Used to determine what volume to set sfx
 
 	//Animations
 	private Animator animator;							//The animator attached to the player
@@ -87,7 +89,6 @@ public class Player : MonoBehaviour {
 	private Animator chargingIconAnimator;				//the animator attached to the chargingIcon;
 	[HideInInspector] public Image weaponIconImage;		//the image of the weaponIcon gameObject
 
-	private SceneController sc;							//Used to set sfx levels
 	private GameController gc;							//The Match's logic center
 	public Weapon currentWeapon;						//The current Weapon the wielder has
 	private GameObject laserObject;						//The shot object that the Player shoots out, used to make sure Player can't shoot themselves
@@ -114,7 +115,7 @@ public class Player : MonoBehaviour {
 		cc = GetComponent<CircleCollider2D> ();
 		animator = GetComponent<Animator> ();
 		audioSource = GetComponent<AudioSource> ();
-		volume = volume * ((float)GameObject.FindGameObjectWithTag ("SceneController").GetComponent<SceneController> ().SFXLevel / 100f);
+		sc = GameObject.FindGameObjectWithTag ("SceneController").GetComponent<SceneController> ();
 
 		//Check for one or two controller input
 		if (fireButton == "FireAlt") {
@@ -547,5 +548,12 @@ public class Player : MonoBehaviour {
 		Vector3 tempRot = new Vector3(0, 0, Random.Range(0, 360));
 		GameObject temp = Instantiate(explosion2, tempPos, Quaternion.EulerAngles(tempRot)) as GameObject;
 		temp.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f) * damageRatio;
+	}
+
+	/// <summary>
+	/// Changes the volume of hurt sfx, called by game controller.
+	/// </summary>
+	public void ChangeVol() {
+		volume = initialVolume * ((float) sc.SFXLevel / 100f);
 	}
 }

@@ -125,11 +125,35 @@ public class BetterCharacterSelection : MonoBehaviour {
 		textBackgrounds [player].gameObject.SetActive (false);
 		arrows [player].gameObject.SetActive (true);
 		StartCoroutine ("PlayerWait", player);
-		players[player] = (GameObject) Instantiate (spaceShips [0], spawnPoints [player].transform.position, defaultRotation);
+		CheckIfPlayerShipIsTaken (player);
 		playerScript [player] = players [player].GetComponent<Player> ();
 		playerScript [player].poweredOn = false;
 		playerScript [player].AssignHUD (healthSliders [player], shieldSliders [player], charginStuff [player], weaponIcons [player], playerCircle [player]);
 		numPlayers++;
+	}
+
+	/// <summary>
+	/// Checks if player ship is taken, if so instantiate the next ship not taken (Make this a for loop)
+	/// </summary>
+	void CheckIfPlayerShipIsTaken (int player) {
+		for (int i = 0; i < shipsTaken.Length; i++) {
+			if (!shipsTaken [i]) {
+				players [player] = (GameObject)Instantiate (spaceShips [i], spawnPoints [player].transform.position, defaultRotation);
+				playerChoice [player] = i;
+			}
+		}
+	}
+
+	/// <summary>
+	/// Checks if player ship is taken, if so instantiate the next ship not taken
+	/// </summary>
+	void CheckIfPlayerShipIsTakenAI (int player) {
+		for (int i = 0; i < shipsTaken.Length; i++) {
+			if (!shipsTaken [i]) {
+				players [player] = (GameObject)Instantiate (spaceShips [i], spawnPointsAI [player].transform.position, defaultRotation);
+				playerChoice [player] = i;
+			}
+		}
 	}
 
 	/// <summary>
@@ -278,7 +302,7 @@ public class BetterCharacterSelection : MonoBehaviour {
 		textBackgrounds [player].SetActive (false);
 		aiSelection [player].SetActive (true);
 		isAI [player] = true;
-		players[player] = (GameObject) Instantiate (spaceShips [0], spawnPointsAI [player].transform.position, defaultRotation);
+		CheckIfPlayerShipIsTakenAI (player);
 		if (shipsTaken[playerChoice[player]]) {
 			SpriteRenderer spr = players [player].GetComponent<SpriteRenderer> ();
 			Color tmp = spr.color;

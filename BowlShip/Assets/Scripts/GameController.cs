@@ -292,6 +292,7 @@ public class GameController : MonoBehaviour {
 					victoryIcon.SetActive (true);
 					GameObject playerIcon = (GameObject) Instantiate (players [i], victoryPosition, Quaternion.identity);
 					playerIcon.GetComponent<Player> ().canFire = false;
+					playerIcon.GetComponent<Player> ().victor = true;
 					StartCoroutine ("ShowVictoryScreens", playerIcon);
 
 					for (int j = 0; j < players.Length; j++) {							//disable all players
@@ -375,6 +376,7 @@ public class GameController : MonoBehaviour {
 						victoryIcon.SetActive (true);
 						GameObject playerIcon = (GameObject)Instantiate (players [i], victoryPosition, Quaternion.identity);
 						playerIcon.GetComponent<Player> ().canFire = false;
+						playerIcon.GetComponent<Player> ().victor = true;
 						players [i].SetActive (false);
 						StartCoroutine ("ShowVictoryScreens", playerIcon);
 						Debug.Log ("The winner of the GAME is: Player " + (i + 1).ToString () + " Score: " + scores [i].ToString ());
@@ -451,6 +453,7 @@ public class GameController : MonoBehaviour {
 			victoryIcon.SetActive (true);
 			GameObject playerIcon = (GameObject)Instantiate (players [i], victoryPosition, Quaternion.identity);
 			playerIcon.GetComponent<Player> ().canFire = false;
+			playerIcon.GetComponent<Player> ().victor = true;
 			StartCoroutine ("ShowVictoryScreens", playerIcon);
 
 			GameObject[] asteroids = GameObject.FindGameObjectsWithTag ("Asteroid");

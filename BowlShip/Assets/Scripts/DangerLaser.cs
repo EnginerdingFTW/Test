@@ -18,7 +18,7 @@ public class DangerLaser : WeaponFire {
 		playerScript = shootingPlayer.GetComponent<Player> ();
 		playerScript.poweredOn = false;
 		//playerScript.Stunned (timeStunned);
-		GetComponent<AudioSource> ().PlayOneShot (epicLaserSoundfx);
+		GetComponent<AudioSource> ().PlayOneShot (epicLaserSoundfx, (float) GameObject.FindGameObjectWithTag("SceneController").GetComponent<SceneController>().SFXLevel / 100f);
 		StartCoroutine ("FireAtWill");
 	}
 

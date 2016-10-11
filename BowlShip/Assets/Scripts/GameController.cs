@@ -93,6 +93,7 @@ public class GameController : MonoBehaviour {
 		fadeAnim = fadeIn.GetComponent<Animator> ();
 		audioSource = GetComponent<AudioSource> ();
 		numPlayers = sceneController.numPlayers;
+		sceneCamera.GetComponent<AudioSource> ().volume = ((float) GameObject.FindGameObjectWithTag ("SceneController").GetComponent<SceneController> ().musicLevel / 100f);
 		if (numPlayers > 4) {
 			asteroidSpawnRate = asteroidSpawnRateFaster;			//bigger games on Asteroids spawn even more asteroids.
 		}
@@ -117,7 +118,7 @@ public class GameController : MonoBehaviour {
 			scoreBoxTexts [i] = scoreBoxs [i].GetComponentInChildren<Text> ();
 		}
 		if (gameMode == 2) {
-			timeOfTimedMatch = maxScore * 60 + 5;
+			timeOfTimedMatch = maxScore * 60 + 4;
 			timeLeft.gameObject.SetActive (true);
 			StartCoroutine ("TimeBasedGame", timeOfTimedMatch);
 		}
@@ -212,6 +213,7 @@ public class GameController : MonoBehaviour {
 
 			//Debug.Log ("Player " + playerNum.ToString () + " Died");
 			playerThatWasDefeated = FindPlayerJustDefeated (playerNum);
+			audioSource.volume = (float)sceneController.SFXLevel / 100f;
 			audioSource.PlayOneShot (destroyed);
 			DeactivatePlayerHUD (playerThatWasDefeated);
 
@@ -245,6 +247,7 @@ public class GameController : MonoBehaviour {
 
 						//Victory Screen
 						sceneCamera.GetComponent<AudioSource> ().volume = 0;
+						audioSource.volume = (float)sceneController.musicLevel / 100f;
 						audioSource.PlayOneShot (victoryJingle);
 						victoryIcon.SetActive (true);
 						GameObject playerIcon = (GameObject)Instantiate (players [i], victoryPosition, Quaternion.identity);
@@ -271,6 +274,7 @@ public class GameController : MonoBehaviour {
 		//Score Attack Logic
 		if (gameMode == 1) {
 			playerThatWasDefeated = FindPlayerJustDefeated (playerNum);
+			audioSource.volume = (float)sceneController.SFXLevel / 100f;
 			audioSource.PlayOneShot (destroyed);
 			Debug.Log ("Player " + (playerThatWasDefeated + 1).ToString () + " Defeated!");
 			DeactivatePlayerHUD (playerThatWasDefeated);
@@ -288,6 +292,7 @@ public class GameController : MonoBehaviour {
 					asteroidTime = false;
 
 					sceneCamera.GetComponent<AudioSource> ().volume = 0;
+					audioSource.volume = (float)sceneController.SFXLevel / 100f;
 					audioSource.PlayOneShot (victoryJingle);
 					victoryIcon.SetActive (true);
 					GameObject playerIcon = (GameObject) Instantiate (players [i], victoryPosition, Quaternion.identity);
@@ -324,6 +329,7 @@ public class GameController : MonoBehaviour {
 		//Time Attack Logic
 		if (gameMode == 2) {
 			playerThatWasDefeated = FindPlayerJustDefeated (playerNum);
+			audioSource.volume = (float)sceneController.SFXLevel / 100f;
 			audioSource.PlayOneShot (destroyed);
 			Debug.Log ("Player " + (playerThatWasDefeated + 1).ToString () + " Defeated!");
 			DeactivatePlayerHUD (playerThatWasDefeated);
@@ -337,6 +343,7 @@ public class GameController : MonoBehaviour {
 		//Stock Match Logic
 		if (gameMode == 3) {
 			playerThatWasDefeated = FindPlayerJustDefeated (playerNum);
+			audioSource.volume = (float)sceneController.SFXLevel / 100f;
 			audioSource.PlayOneShot (destroyed);
 			Debug.Log ("Player " + (playerThatWasDefeated + 1).ToString () + " Defeated!");
 			DeactivatePlayerHUD (playerThatWasDefeated);
@@ -372,6 +379,7 @@ public class GameController : MonoBehaviour {
 
 						//Victory Screen
 						sceneCamera.GetComponent<AudioSource> ().volume = 0;
+						audioSource.volume = (float)sceneController.SFXLevel / 100f;
 						audioSource.PlayOneShot (victoryJingle);
 						victoryIcon.SetActive (true);
 						GameObject playerIcon = (GameObject)Instantiate (players [i], victoryPosition, Quaternion.identity);
@@ -430,6 +438,14 @@ public class GameController : MonoBehaviour {
 		for (int i = 0; i < numPlayers; i++) {
 			if (scores [i] == highestScore) {
 				winners++;
+				if (!players[i].activeSelf) {
+					RespawnPlayer (i);
+					players [i].SetActive (true);
+					ActivatePlayerHUD (i);
+					circleImage [i].SetActive (false);
+					players [i].GetComponent<Player> ().poweredOn = true;
+					players [i].GetComponent<Player> ().notSuddenDeath = true;
+				}
 			} else {
 				players [i].SetActive (false);
 				players [i].GetComponent<Player> ().defeated = true;
@@ -450,6 +466,7 @@ public class GameController : MonoBehaviour {
 			asteroidTime = false;
 
 			sceneCamera.GetComponent<AudioSource> ().volume = 0;
+			audioSource.volume = (float)sceneController.SFXLevel / 100f;
 			audioSource.PlayOneShot (victoryJingle);
 			victoryIcon.SetActive (true);
 			GameObject playerIcon = (GameObject)Instantiate (players [i], victoryPosition, Quaternion.identity);
@@ -544,7 +561,7 @@ public class GameController : MonoBehaviour {
 	IEnumerator ShowVictoryScreens (GameObject winner) {
 		yield return new WaitForSeconds (victoryWaitTime);
 		roundOver = false;
-		sceneCamera.GetComponent<AudioSource>().volume = sceneController.musicLevel;
+		sceneCamera.GetComponent<AudioSource> ().volume = ((float) GameObject.FindGameObjectWithTag ("SceneController").GetComponent<SceneController> ().musicLevel / 100f);
 		if (!gameOver) {
 			Destroy (winner, 3.0f);
 			StartCoroutine ("BeginNextRound");				//if no one has won the game, begin the next round

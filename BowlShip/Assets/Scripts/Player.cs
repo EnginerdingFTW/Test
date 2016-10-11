@@ -44,6 +44,7 @@ public class Player : MonoBehaviour {
 	public GameObject dualLaserInstatiationPoint1;		//Where the left laser is fired from
 	public GameObject dualLaserInstatiationPoint2;		//Where the right laser is fired from
 	public GameObject explosion;						//Explosion to instantiate when player dies
+	public GameObject explosion2;						//Explosion to instantiate when player is hurt
 
 	//Boosting
 	public bool canBoost = true;						//The player can use up it's shield to boost if it has more than half its shield left
@@ -86,8 +87,9 @@ public class Player : MonoBehaviour {
 	private Animator chargingIconAnimator;				//the animator attached to the chargingIcon;
 	[HideInInspector] public Image weaponIconImage;		//the image of the weaponIcon gameObject
 
+	private SceneController sc;							//Used to set sfx levels
 	private GameController gc;							//The Match's logic center
-	public Weapon currentWeapon;		//The current Weapon the wielder has
+	public Weapon currentWeapon;						//The current Weapon the wielder has
 	private GameObject laserObject;						//The shot object that the Player shoots out, used to make sure Player can't shoot themselves
 	private float horiz;								//The horizontal movement input
 	private float vert;									//The vertical movement input
@@ -112,6 +114,7 @@ public class Player : MonoBehaviour {
 		cc = GetComponent<CircleCollider2D> ();
 		animator = GetComponent<Animator> ();
 		audioSource = GetComponent<AudioSource> ();
+		volume = volume * ((float)GameObject.FindGameObjectWithTag ("SceneController").GetComponent<SceneController> ().SFXLevel / 100f);
 
 		//Check for one or two controller input
 		if (fireButton == "FireAlt") {
@@ -135,7 +138,7 @@ public class Player : MonoBehaviour {
 	void Update () {
 
 		if (victor) {
-			gameObject.layer = 8;	
+			gameObject.layer = 11;	
 		}
 
 		if (poweredOn) {
@@ -542,8 +545,7 @@ public class Player : MonoBehaviour {
 	{
 		Vector3 tempPos = new Vector3(point.x, point.y, 0);
 		Vector3 tempRot = new Vector3(0, 0, Random.Range(0, 360));
-		GameObject temp = Instantiate(explosion, tempPos, Quaternion.EulerAngles(tempRot)) as GameObject;
+		GameObject temp = Instantiate(explosion2, tempPos, Quaternion.EulerAngles(tempRot)) as GameObject;
 		temp.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f) * damageRatio;
-		temp.GetComponent<AudioSource>().volume = 0.1f;
 	}
 }

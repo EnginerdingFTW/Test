@@ -8,13 +8,16 @@ public class Cursor : MonoBehaviour {
 	private bool selecting = false;					//Only run one IEnumerator at a time
 	private Animator anim;							//The attached animator
 	private AudioSource audio;						//The source that plays the selection sound
+	private SceneController sc;						//SceneController that holds audio component
 	[HideInInspector] public Rigidbody2D rb;		//The attached rigidbody2d
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		anim = GetComponent<Animator> ();
 		audio = GetComponent<AudioSource> ();
 		rb = GetComponent<Rigidbody2D> ();
+		sc = GameObject.FindGameObjectWithTag ("SceneController").GetComponent<SceneController>();
+		audio.volume = ((float)sc.musicLevel / 100f);
 	}
 
 	// In case menu switches in the middle of selection

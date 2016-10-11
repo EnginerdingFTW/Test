@@ -22,7 +22,7 @@ public class Mine : WeaponFire {
 				Vector3 pos = blastRadius.transform.position + i * this.transform.localScale.x * blastRadius.GetComponent<CircleCollider2D>().radius * new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0.0f);
 				GameObject temp = Instantiate(explosion, pos, Quaternion.identity) as GameObject;
 				temp.transform.localScale = temp.transform.localScale / (1 / scale);
-				temp.GetComponent<AudioSource> ().volume = volume;
+				temp.GetComponent<SetLaserVol> ().volFactor = 0.05f;
 			}
 			i += startingPoint;
 		}

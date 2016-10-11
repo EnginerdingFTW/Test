@@ -27,7 +27,7 @@ public class Utility : Collectable {
 			player.man += maneuverabilityChange;
 			this.GetComponent<Collider2D>().enabled = false;
 			this.GetComponent<SpriteRenderer>().enabled = false;
-			AudioSource.PlayClipAtPoint (sound, new Vector3(0,0,0));
+			AudioSource.PlayClipAtPoint (sound, new Vector3(0,0,0), (float) GameObject.FindGameObjectWithTag("SceneController").GetComponent<SceneController>().SFXLevel / 100f);
 			this.gamecontroller.RemoveCollectableFromList(this.gameObject);
 		}
 	}

@@ -19,7 +19,7 @@ public class Weapon : Collectable {
 	{
 		if (other.tag == "Player" && !other.gameObject.GetComponent<Player>().victor)
 		{
-			AudioSource.PlayClipAtPoint (sound, new Vector3(0,0,0));
+			AudioSource.PlayClipAtPoint (sound, new Vector3(0,0,0), (float) GameObject.FindGameObjectWithTag("SceneController").GetComponent<SceneController>().SFXLevel / 100f);
 			this.pickedUp = true;
 			other.GetComponent<Player>().weapons.Add(this);
 			this.GetComponent<Collider2D>().enabled = false;

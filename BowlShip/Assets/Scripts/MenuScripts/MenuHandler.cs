@@ -8,13 +8,14 @@ public class MenuHandler : MonoBehaviour {
 	//This script is almost entirely small public functions used in the Menu 
 	//in order to do specific lines of code at runtime, functions implementations are fairly obvious
 
-	public Slider scoreToWin;				//used in options to set max score
-	public Text scoreToWinText;				//used in options to show max score
+	public Slider sfx;						//used in options to set sfx
+	public Text SFXText;					//used in options to show SFX levels
+	public Text musicText;					//used in options to show Music levels
 	public GameObject fadeIn;				//fadein/out between scenes
 	private Animator fadeAnim;				//animator to call fadeout
+	private AudioSource titleMusic;			//the titleMusic in the menu
 
-	public Slider gameModeSlider;			//used in options to set game mode
-	public Text currentGameMode;			//used in options to show current game mode
+	public Slider music;					//used in options to set music
 
 	//for player instantiation
 	public Slider health;
@@ -27,7 +28,19 @@ public class MenuHandler : MonoBehaviour {
 
 	void Awake () {
 		sc = GameObject.FindGameObjectWithTag ("SceneController").GetComponent<SceneController> ();
+		titleMusic = GetComponent<AudioSource> ();
 		fadeAnim = fadeIn.GetComponent<Animator> ();
+	}
+
+	public void ChangeSFX() {
+		sc.SFXLevel = (int) sfx.value;
+		SFXText.text = sc.SFXLevel.ToString ();
+	}
+
+	public void ChangeMusic() {
+		sc.musicLevel = (int) music.value;
+		musicText.text = sc.musicLevel.ToString ();
+		titleMusic.volume = ((float)sc.musicLevel / 100f);
 	}
 
 	public void PeoplePerController (bool two) {
@@ -77,11 +90,6 @@ public class MenuHandler : MonoBehaviour {
 		SceneManager.LoadScene (level);
 	}
 
-	public void SetScoreToWin () {
-		sc.setScore ((int) scoreToWin.value);
-		scoreToWinText.text = "" + ((int)scoreToWin.value);
-	}
-
 	public void ToggleShieldRecharge () {
 		Player.toggleShieldRecharge();
 	}
@@ -97,25 +105,5 @@ public class MenuHandler : MonoBehaviour {
 			}
 		}
 	}
-
-	public void SetGameMode () {
-		sc.gameMode = (int) gameModeSlider.value;
-		switch ((int) gameModeSlider.value) {
-		case 0:
-			currentGameMode.text = "Last Ship Standing";
-			break;
-		case 1:
-			currentGameMode.text = "Score Attack";
-			break;
-		case 2:
-			currentGameMode.text = "Time Attack";
-			break;
-		case 3:
-			currentGameMode.text = "Stock Match";
-			break;
-		default:
-			currentGameMode.text = "Error";
-			break;
-		}
-	}
+		
 }

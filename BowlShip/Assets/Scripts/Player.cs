@@ -29,7 +29,7 @@ public class Player : MonoBehaviour {
 	public int maxMan = 2;								//The maximum maneuverability value of the ship
 
 	public bool  poweredOn = true;						//can the ship move, rotate and fire?
-	[HideInInspector] public static string fireButton = "Fire";		//The string used to allow the ship to fire, changable to allow one or two player options per controller
+	[HideInInspector] public static string fireButton = "FireAlt";		//The string used to allow the ship to fire, changable to allow one or two player options per controller
 	public bool canFire = true;							//boolean to restrict fireRate of ship
 	public float fireRate = 2;							//How fast the ship can fire (1s / firerate between shots)
 	public float defaultFireRate = 2;					//The basic weapon's fire rate
@@ -112,6 +112,15 @@ public class Player : MonoBehaviour {
 		cc = GetComponent<CircleCollider2D> ();
 		animator = GetComponent<Animator> ();
 		audioSource = GetComponent<AudioSource> ();
+
+		//Check for one or two controller input
+		if (fireButton == "FireAlt") {
+			thrustButton = "ThrustAlt";
+			boostButton = "BoostAlt";
+			horizAxis = "HorizontalAlt";
+			vertAxis = "VerticalAlt";
+		}
+
 		if (GameObject.FindGameObjectWithTag ("GameController") != null) {
 			gc = GameObject.FindGameObjectWithTag ("GameController").GetComponent<GameController> ();
 		}

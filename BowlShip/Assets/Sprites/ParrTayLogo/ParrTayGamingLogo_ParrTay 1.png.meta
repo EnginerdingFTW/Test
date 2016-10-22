@@ -1,0 +1,1781 @@
+fileFormatVersion: 2
+guid: 34f1f2264f7554650bc2a6c27cbe1c52
+timeCreated: 1477112013
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: ParrTayGamingLogo_ParrTay_0
+    21300002: ParrTayGamingLogo_ParrTay_1
+    21300004: ParrTayGamingLogo_ParrTay_2
+    21300006: ParrTayGamingLogo_ParrTay_3
+    21300008: ParrTayGamingLogo_ParrTay_4
+    21300010: ParrTayGamingLogo_ParrTay_5
+    21300012: ParrTayGamingLogo_ParrTay_6
+    21300014: ParrTayGamingLogo_ParrTay_7
+    21300016: ParrTayGamingLogo_ParrTay_8
+    21300018: ParrTayGamingLogo_ParrTay_9
+    21300020: ParrTayGamingLogo_ParrTay_10
+    21300022: ParrTayGamingLogo_ParrTay_11
+    21300024: ParrTayGamingLogo_ParrTay_12
+    21300026: ParrTayGamingLogo_ParrTay_13
+    21300028: ParrTayGamingLogo_ParrTay_14
+    21300030: ParrTayGamingLogo_ParrTay_15
+    21300032: ParrTayGamingLogo_ParrTay_16
+    21300034: ParrTayGamingLogo_ParrTay_17
+    21300036: ParrTayGamingLogo_ParrTay_18
+    21300038: ParrTayGamingLogo_ParrTay_19
+    21300040: ParrTayGamingLogo_ParrTay_20
+    21300042: ParrTayGamingLogo_ParrTay_21
+    21300044: ParrTayGamingLogo_ParrTay_22
+    21300046: ParrTayGamingLogo_ParrTay_23
+    21300048: ParrTayGamingLogo_ParrTay_24
+    21300050: ParrTayGamingLogo_ParrTay_25
+    21300052: ParrTayGamingLogo_ParrTay_26
+    21300054: ParrTayGamingLogo_ParrTay_27
+    21300056: ParrTayGamingLogo_ParrTay_28
+    21300058: ParrTayGamingLogo_ParrTay_29
+    21300060: ParrTayGamingLogo_ParrTay_30
+    21300062: ParrTayGamingLogo_ParrTay_31
+    21300064: ParrTayGamingLogo_ParrTay_32
+    21300066: ParrTayGamingLogo_ParrTay_33
+    21300068: ParrTayGamingLogo_ParrTay_34
+    21300070: ParrTayGamingLogo_ParrTay_35
+    21300072: ParrTayGamingLogo_ParrTay_36
+    21300074: ParrTayGamingLogo_ParrTay_37
+    21300076: ParrTayGamingLogo_ParrTay_38
+    21300078: ParrTayGamingLogo_ParrTay_39
+    21300080: ParrTayGamingLogo_ParrTay_40
+    21300082: ParrTayGamingLogo_ParrTay_41
+    21300084: ParrTayGamingLogo_ParrTay_42
+    21300086: ParrTayGamingLogo_ParrTay_43
+    21300088: ParrTayGamingLogo_ParrTay_44
+    21300090: ParrTayGamingLogo_ParrTay_45
+    21300092: ParrTayGamingLogo_ParrTay_46
+    21300094: ParrTayGamingLogo_ParrTay_47
+    21300096: ParrTayGamingLogo_ParrTay_48
+    21300098: ParrTayGamingLogo_ParrTay_49
+    21300100: ParrTayGamingLogo_ParrTay_50
+    21300102: ParrTayGamingLogo_ParrTay_51
+    21300104: ParrTayGamingLogo_ParrTay_52
+    21300106: ParrTayGamingLogo_ParrTay_53
+    21300108: ParrTayGamingLogo_ParrTay_54
+    21300110: ParrTayGamingLogo_ParrTay_55
+    21300112: ParrTayGamingLogo_ParrTay_56
+    21300114: ParrTayGamingLogo_ParrTay_57
+    21300116: ParrTayGamingLogo_ParrTay_58
+    21300118: ParrTayGamingLogo_ParrTay_59
+    21300120: ParrTayGamingLogo_ParrTay_60
+    21300122: ParrTayGamingLogo_ParrTay_61
+    21300124: ParrTayGamingLogo_ParrTay_62
+    21300126: ParrTayGamingLogo_ParrTay_63
+    21300128: ParrTayGamingLogo_ParrTay_64
+    21300130: ParrTayGamingLogo_ParrTay_65
+    21300132: ParrTayGamingLogo_ParrTay_66
+    21300134: ParrTayGamingLogo_ParrTay_67
+    21300136: ParrTayGamingLogo_ParrTay_68
+    21300138: ParrTayGamingLogo_ParrTay_69
+    21300140: ParrTayGamingLogo_ParrTay_70
+    21300142: ParrTayGamingLogo_ParrTay_71
+    21300144: ParrTayGamingLogo_ParrTay_72
+    21300146: ParrTayGamingLogo_ParrTay_73
+    21300148: ParrTayGamingLogo_ParrTay_74
+    21300150: ParrTayGamingLogo_ParrTay_75
+    21300152: ParrTayGamingLogo_ParrTay_76
+    21300154: ParrTayGamingLogo_ParrTay_77
+    21300156: ParrTayGamingLogo_ParrTay_78
+    21300158: ParrTayGamingLogo_ParrTay_79
+    21300160: ParrTayGamingLogo_ParrTay_80
+    21300162: ParrTayGamingLogo_ParrTay_81
+    21300164: ParrTayGamingLogo_ParrTay_82
+    21300166: ParrTayGamingLogo_ParrTay_83
+    21300168: ParrTayGamingLogo_ParrTay_84
+    21300170: ParrTayGamingLogo_ParrTay_85
+    21300172: ParrTayGamingLogo_ParrTay_86
+    21300174: ParrTayGamingLogo_ParrTay_87
+    21300176: ParrTayGamingLogo_ParrTay_88
+    21300178: ParrTayGamingLogo_ParrTay_89
+    21300180: ParrTayGamingLogo_ParrTay_90
+    21300182: ParrTayGamingLogo_ParrTay_91
+    21300184: ParrTayGamingLogo_ParrTay_92
+    21300186: ParrTayGamingLogo_ParrTay_93
+    21300188: ParrTayGamingLogo_ParrTay_94
+    21300190: ParrTayGamingLogo_ParrTay_95
+    21300192: ParrTayGamingLogo_ParrTay_96
+    21300194: ParrTayGamingLogo_ParrTay_97
+    21300196: ParrTayGamingLogo_ParrTay_98
+    21300198: ParrTayGamingLogo_ParrTay_99
+    21300200: ParrTayGamingLogo_ParrTay_100
+    21300202: ParrTayGamingLogo_ParrTay_101
+    21300204: ParrTayGamingLogo_ParrTay_102
+    21300206: ParrTayGamingLogo_ParrTay_103
+    21300208: ParrTayGamingLogo_ParrTay_104
+    21300210: ParrTayGamingLogo_ParrTay_105
+    21300212: ParrTayGamingLogo_ParrTay_106
+    21300214: ParrTayGamingLogo_ParrTay_107
+    21300216: ParrTayGamingLogo_ParrTay_108
+    21300218: ParrTayGamingLogo_ParrTay_109
+    21300220: ParrTayGamingLogo_ParrTay_110
+    21300222: ParrTayGamingLogo_ParrTay_111
+    21300224: ParrTayGamingLogo_ParrTay_112
+    21300226: ParrTayGamingLogo_ParrTay_113
+    21300228: ParrTayGamingLogo_ParrTay_114
+    21300230: ParrTayGamingLogo_ParrTay_115
+    21300232: ParrTayGamingLogo_ParrTay_116
+    21300234: ParrTayGamingLogo_ParrTay_117
+    21300236: ParrTayGamingLogo_ParrTay_118
+    21300238: ParrTayGamingLogo_ParrTay_119
+    21300240: ParrTayGamingLogo_ParrTay_120
+    21300242: ParrTayGamingLogo_ParrTay_121
+    21300244: ParrTayGamingLogo_ParrTay_122
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_0
+      rect:
+        serializedVersion: 2
+        x: 680
+        y: 1172
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_1
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 1172
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_2
+      rect:
+        serializedVersion: 2
+        x: 710
+        y: 1172
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_3
+      rect:
+        serializedVersion: 2
+        x: 726
+        y: 1172
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_4
+      rect:
+        serializedVersion: 2
+        x: 741
+        y: 1172
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_5
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 1172
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_6
+      rect:
+        serializedVersion: 2
+        x: 1040
+        y: 1172
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_7
+      rect:
+        serializedVersion: 2
+        x: 1054
+        y: 1172
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_8
+      rect:
+        serializedVersion: 2
+        x: 1070
+        y: 1172
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_9
+      rect:
+        serializedVersion: 2
+        x: 1085
+        y: 1172
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_10
+      rect:
+        serializedVersion: 2
+        x: 1100
+        y: 1172
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_11
+      rect:
+        serializedVersion: 2
+        x: 680
+        y: 1157
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_12
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 1157
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_13
+      rect:
+        serializedVersion: 2
+        x: 741
+        y: 1157
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_14
+      rect:
+        serializedVersion: 2
+        x: 756
+        y: 1157
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_15
+      rect:
+        serializedVersion: 2
+        x: 1054
+        y: 1157
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_16
+      rect:
+        serializedVersion: 2
+        x: 1070
+        y: 1157
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_17
+      rect:
+        serializedVersion: 2
+        x: 680
+        y: 1142
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_18
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 1142
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_19
+      rect:
+        serializedVersion: 2
+        x: 741
+        y: 1142
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_20
+      rect:
+        serializedVersion: 2
+        x: 756
+        y: 1142
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_21
+      rect:
+        serializedVersion: 2
+        x: 801
+        y: 1142
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_22
+      rect:
+        serializedVersion: 2
+        x: 816
+        y: 1142
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_23
+      rect:
+        serializedVersion: 2
+        x: 832
+        y: 1142
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_24
+      rect:
+        serializedVersion: 2
+        x: 875
+        y: 1142
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_25
+      rect:
+        serializedVersion: 2
+        x: 890
+        y: 1142
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_26
+      rect:
+        serializedVersion: 2
+        x: 921
+        y: 1142
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_27
+      rect:
+        serializedVersion: 2
+        x: 949
+        y: 1142
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_28
+      rect:
+        serializedVersion: 2
+        x: 964
+        y: 1142
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_29
+      rect:
+        serializedVersion: 2
+        x: 995
+        y: 1142
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_30
+      rect:
+        serializedVersion: 2
+        x: 1054
+        y: 1142
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_31
+      rect:
+        serializedVersion: 2
+        x: 1070
+        y: 1142
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_32
+      rect:
+        serializedVersion: 2
+        x: 1143
+        y: 1142
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_33
+      rect:
+        serializedVersion: 2
+        x: 1158
+        y: 1142
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_34
+      rect:
+        serializedVersion: 2
+        x: 1174
+        y: 1142
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_35
+      rect:
+        serializedVersion: 2
+        x: 1218
+        y: 1142
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_36
+      rect:
+        serializedVersion: 2
+        x: 1234
+        y: 1142
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_37
+      rect:
+        serializedVersion: 2
+        x: 1264
+        y: 1142
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_38
+      rect:
+        serializedVersion: 2
+        x: 1279
+        y: 1142
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_39
+      rect:
+        serializedVersion: 2
+        x: 680
+        y: 1127
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_40
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 1127
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_41
+      rect:
+        serializedVersion: 2
+        x: 710
+        y: 1127
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_42
+      rect:
+        serializedVersion: 2
+        x: 726
+        y: 1127
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_43
+      rect:
+        serializedVersion: 2
+        x: 741
+        y: 1127
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_44
+      rect:
+        serializedVersion: 2
+        x: 832
+        y: 1127
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_45
+      rect:
+        serializedVersion: 2
+        x: 847
+        y: 1127
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_46
+      rect:
+        serializedVersion: 2
+        x: 875
+        y: 1127
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_47
+      rect:
+        serializedVersion: 2
+        x: 890
+        y: 1127
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_48
+      rect:
+        serializedVersion: 2
+        x: 905
+        y: 1127
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_49
+      rect:
+        serializedVersion: 2
+        x: 921
+        y: 1127
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_50
+      rect:
+        serializedVersion: 2
+        x: 949
+        y: 1127
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_51
+      rect:
+        serializedVersion: 2
+        x: 964
+        y: 1127
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_52
+      rect:
+        serializedVersion: 2
+        x: 979
+        y: 1127
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_53
+      rect:
+        serializedVersion: 2
+        x: 995
+        y: 1127
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_54
+      rect:
+        serializedVersion: 2
+        x: 1054
+        y: 1127
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_55
+      rect:
+        serializedVersion: 2
+        x: 1070
+        y: 1127
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_56
+      rect:
+        serializedVersion: 2
+        x: 1174
+        y: 1127
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_57
+      rect:
+        serializedVersion: 2
+        x: 1189
+        y: 1127
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_58
+      rect:
+        serializedVersion: 2
+        x: 1218
+        y: 1127
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_59
+      rect:
+        serializedVersion: 2
+        x: 1234
+        y: 1127
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_60
+      rect:
+        serializedVersion: 2
+        x: 1264
+        y: 1127
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_61
+      rect:
+        serializedVersion: 2
+        x: 1279
+        y: 1127
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_62
+      rect:
+        serializedVersion: 2
+        x: 680
+        y: 1112
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_63
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 1112
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_64
+      rect:
+        serializedVersion: 2
+        x: 801
+        y: 1112
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_65
+      rect:
+        serializedVersion: 2
+        x: 816
+        y: 1112
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_66
+      rect:
+        serializedVersion: 2
+        x: 832
+        y: 1112
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_67
+      rect:
+        serializedVersion: 2
+        x: 847
+        y: 1112
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_68
+      rect:
+        serializedVersion: 2
+        x: 875
+        y: 1112
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_69
+      rect:
+        serializedVersion: 2
+        x: 890
+        y: 1112
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_70
+      rect:
+        serializedVersion: 2
+        x: 949
+        y: 1112
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_71
+      rect:
+        serializedVersion: 2
+        x: 964
+        y: 1112
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_72
+      rect:
+        serializedVersion: 2
+        x: 1054
+        y: 1112
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_73
+      rect:
+        serializedVersion: 2
+        x: 1070
+        y: 1112
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_74
+      rect:
+        serializedVersion: 2
+        x: 1143
+        y: 1112
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_75
+      rect:
+        serializedVersion: 2
+        x: 1158
+        y: 1112
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_76
+      rect:
+        serializedVersion: 2
+        x: 1174
+        y: 1112
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_77
+      rect:
+        serializedVersion: 2
+        x: 1189
+        y: 1112
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_78
+      rect:
+        serializedVersion: 2
+        x: 1218
+        y: 1112
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_79
+      rect:
+        serializedVersion: 2
+        x: 1234
+        y: 1112
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_80
+      rect:
+        serializedVersion: 2
+        x: 1264
+        y: 1112
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_81
+      rect:
+        serializedVersion: 2
+        x: 1279
+        y: 1112
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_82
+      rect:
+        serializedVersion: 2
+        x: 680
+        y: 1096
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_83
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 1096
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_84
+      rect:
+        serializedVersion: 2
+        x: 786
+        y: 1096
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_85
+      rect:
+        serializedVersion: 2
+        x: 801
+        y: 1096
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_86
+      rect:
+        serializedVersion: 2
+        x: 832
+        y: 1096
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_87
+      rect:
+        serializedVersion: 2
+        x: 847
+        y: 1096
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_88
+      rect:
+        serializedVersion: 2
+        x: 875
+        y: 1096
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_89
+      rect:
+        serializedVersion: 2
+        x: 890
+        y: 1096
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_90
+      rect:
+        serializedVersion: 2
+        x: 949
+        y: 1096
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_91
+      rect:
+        serializedVersion: 2
+        x: 964
+        y: 1096
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_92
+      rect:
+        serializedVersion: 2
+        x: 1054
+        y: 1096
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_93
+      rect:
+        serializedVersion: 2
+        x: 1070
+        y: 1096
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_94
+      rect:
+        serializedVersion: 2
+        x: 1128
+        y: 1096
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_95
+      rect:
+        serializedVersion: 2
+        x: 1143
+        y: 1096
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_96
+      rect:
+        serializedVersion: 2
+        x: 1174
+        y: 1096
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_97
+      rect:
+        serializedVersion: 2
+        x: 1189
+        y: 1096
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_98
+      rect:
+        serializedVersion: 2
+        x: 1234
+        y: 1096
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_99
+      rect:
+        serializedVersion: 2
+        x: 1248
+        y: 1096
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_100
+      rect:
+        serializedVersion: 2
+        x: 1264
+        y: 1096
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_101
+      rect:
+        serializedVersion: 2
+        x: 680
+        y: 1081
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_102
+      rect:
+        serializedVersion: 2
+        x: 696
+        y: 1081
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_103
+      rect:
+        serializedVersion: 2
+        x: 801
+        y: 1081
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_104
+      rect:
+        serializedVersion: 2
+        x: 816
+        y: 1081
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_105
+      rect:
+        serializedVersion: 2
+        x: 832
+        y: 1081
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_106
+      rect:
+        serializedVersion: 2
+        x: 847
+        y: 1081
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_107
+      rect:
+        serializedVersion: 2
+        x: 875
+        y: 1081
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_108
+      rect:
+        serializedVersion: 2
+        x: 890
+        y: 1081
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_109
+      rect:
+        serializedVersion: 2
+        x: 949
+        y: 1081
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_110
+      rect:
+        serializedVersion: 2
+        x: 964
+        y: 1081
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_111
+      rect:
+        serializedVersion: 2
+        x: 1054
+        y: 1081
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_112
+      rect:
+        serializedVersion: 2
+        x: 1070
+        y: 1081
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_113
+      rect:
+        serializedVersion: 2
+        x: 1143
+        y: 1081
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_114
+      rect:
+        serializedVersion: 2
+        x: 1158
+        y: 1081
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_115
+      rect:
+        serializedVersion: 2
+        x: 1174
+        y: 1081
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_116
+      rect:
+        serializedVersion: 2
+        x: 1189
+        y: 1081
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_117
+      rect:
+        serializedVersion: 2
+        x: 1248
+        y: 1081
+        width: 14
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_118
+      rect:
+        serializedVersion: 2
+        x: 1264
+        y: 1081
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_119
+      rect:
+        serializedVersion: 2
+        x: 1234
+        y: 1066
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_120
+      rect:
+        serializedVersion: 2
+        x: 1248
+        y: 1066
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_121
+      rect:
+        serializedVersion: 2
+        x: 1218
+        y: 1050
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ParrTayGamingLogo_ParrTay_122
+      rect:
+        serializedVersion: 2
+        x: 1234
+        y: 1050
+        width: 13
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

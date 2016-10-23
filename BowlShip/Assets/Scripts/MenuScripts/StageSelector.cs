@@ -6,7 +6,7 @@ public class StageSelector : MonoBehaviour {
 
 	public int initialTimeToStart = 100;				//How long it takes for a stage to be selected (num / 10 = seconds)
 	public Image timer;									//A timer circle to show progress of gamestarting
-	public int stage;									//0 for asteroids, 1 for walls, 2 for rotation, 3 for warpholes
+	public int stage;									//0 for asteroids, 1 for walls, 2 for rotation, 3 for warpholes, 4 for credits
 	public GameObject prevMenu;							//used to fix glitch where you can only go back once
 
 	private MenuHandler mh;								//The script that will load the stage
@@ -92,6 +92,9 @@ public class StageSelector : MonoBehaviour {
 				break;
 			case 3:
 				mh.PlayWarp ();
+				break;
+			case 4:
+				mh.PlayCredits ();
 				break;
 			}
 		}

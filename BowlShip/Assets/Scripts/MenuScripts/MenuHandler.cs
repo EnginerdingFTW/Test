@@ -154,6 +154,11 @@ public class MenuHandler : MonoBehaviour {
 		StartCoroutine ("Load", "WarpHoles");
 	}
 
+	public void PlayCredits () {
+		fadeAnim.SetTrigger ("FadeOut");
+		StartCoroutine ("Load", "Credits");
+	}
+
 	public void Quit () {
 		Application.Quit();
 	}

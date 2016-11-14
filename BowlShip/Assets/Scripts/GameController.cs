@@ -16,6 +16,7 @@ public class GameController : MonoBehaviour {
 	public GameObject innerBoundary;									//the boundary wrapped around the screen
 	public GameObject bigAsteroid;										//the big Asteroid to be instantiated
 	public GameObject smallAsteroid;									//the small Asteroid to be instantiated
+	public bool tempAICreditsFix = false;								//make sure the AI don't recognize items on credits stage
 	public int gameMode;												//The int number corresponding to each gameMode
 	public float timeOfTimedMatch = 185.0f;								//The time used in a Time Attack match
 	public float timeForRespawn = 3.0f;									//How much time until a player comes back to life
@@ -120,6 +121,11 @@ public class GameController : MonoBehaviour {
 			ActivatePlayerHUD (i);
 			healthSliders [i].value = defaultPlayerHealth;
 			shieldSliders [i].value = defaultPlayerShields;
+			if (tempAICreditsFix) {
+				if (players [i].GetComponent<EnemyAI> () != null) {
+					players [i].GetComponent<EnemyAI> ().isCredits = true;
+				}
+			}
 			players [i].SetActive (false);
 			scoreBoxTexts [i] = scoreBoxs [i].GetComponentInChildren<Text> ();
 		}

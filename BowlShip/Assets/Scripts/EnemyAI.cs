@@ -58,6 +58,9 @@ public class EnemyAI : MonoBehaviour {
 	private GameObject currentObj = null;					//current Gameobject main objectiv
 	public int difficulty =	ELIT3PR0HAX0RS;					//difficulty of the AI
 
+	//Temporary Credits fix (Ignore weapons)
+	public bool isCredits = false;							//will the AI acknowledge weapons
+
 	#region Virtual Controls to the Player
 	[HideInInspector] public float horizontal;		//these controls act as if the AI is using a controller and is pressing buttons
 	[HideInInspector] public float vertical;		//these are sent to the player script where it takes care of the rest.
@@ -96,7 +99,11 @@ public class EnemyAI : MonoBehaviour {
 		switch (stateMachine)
 		{
 			case COLLECT:
-				StateCollect();
+				if (isCredits) {
+					StateOffensive ();
+				} else {
+					StateCollect ();
+				}
 				break;
 	
 			case OFFENSIVE:
@@ -130,18 +137,20 @@ public class EnemyAI : MonoBehaviour {
 				temp.Clear();
 				if (gamecontroller != null)
 				{
-					foreach (GameObject o in gamecontroller.SpawnerList)
-					{
-						if (GameObject.Find("InnerBoundary").GetComponent<BoxCollider2D>().bounds.Contains(o.transform.position))
+					if (!isCredits) {
+						foreach (GameObject o in gamecontroller.SpawnerList)
 						{
-							temp.Add(o);
+							if (GameObject.Find("InnerBoundary").GetComponent<BoxCollider2D>().bounds.Contains(o.transform.position))
+							{
+								temp.Add(o);
+							}
 						}
-					}
-					foreach (GameObject o in gamecontroller.CollectableList)
-					{
-						if (GameObject.Find("InnerBoundary").GetComponent<BoxCollider2D>().bounds.Contains(o.transform.position))
+						foreach (GameObject o in gamecontroller.CollectableList)
 						{
-							temp.Add(o);
+							if (GameObject.Find("InnerBoundary").GetComponent<BoxCollider2D>().bounds.Contains(o.transform.position))
+							{
+								temp.Add(o);
+							}
 						}
 					}
 					foreach (GameObject o in gamecontroller.players)
@@ -612,7 +621,7 @@ public class EnemyAI : MonoBehaviour {
 		{
 //			Debug.Log("new path set");
 			aiPathSetRecent = true;
-			List<string> tagExc = new List<string> {"Boundary", "WeaponFire", "Player"};
+			List<string> tagExc = new List<string> {"Boundary", "WeaponFire", "Player", "Credits"};
 			pathFindingWaypoints = PathFinding.ReturnAStarPath(this.gameObject, dest, tagExc);	//path is the List of Waypoints to get to the goal.
 //			Debug.Log("start = " + this.gameObject.name + "    dest = " + dest.name);
 //			Debug.Log("Tags: start.tag = " + this.gameObject.tag + "   dest = " + dest.tag);

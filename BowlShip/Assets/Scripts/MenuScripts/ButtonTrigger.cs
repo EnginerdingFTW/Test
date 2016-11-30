@@ -17,7 +17,7 @@ public class ButtonTrigger : MonoBehaviour {
 	//Initializes everything
 	void Start () {
 		sc = GameObject.Find("SceneController").GetComponent<SceneController> ();
-		text.text = sc.score.ToString ();
+		text.text = "";
 	}
 
 	/// <summary>

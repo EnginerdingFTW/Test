@@ -13,11 +13,12 @@ public class SceneController : MonoBehaviour {
 	public int SFXLevel = 50;									//The volume level of the Sound fx (0 - 100)
 	public GameObject[] playerShips;							//An array of the ships that the players have selected to use
 	public int[] playerNumArray;								//An array of PlayerNums that correspond to the playerShips array
-	public int menuLevel = 0;									//which area of the menu to load to when booting up the menu 1 = main, 2 = gamemode, 3 = stage
+	public int menuLevel = 0;									//which area of the menu to load to when booting up the menu 0 = help, 1 = main, 2 = gamemode, 3 = stage
 
 	public int gameMode = 0;									//A int corresponding to which gamemode is chosen
 	public int score = 1;										//A variable used to transfer a generic maxScore value to a specific gameMode
 
+	public GameObject help;										//the help menu
 	public GameObject main;										//the main menu
 	public GameObject gamemodeSelect;							//the gamemode selection menu
 	public GameObject stageSelect;								//the stage selection menu
@@ -32,6 +33,7 @@ public class SceneController : MonoBehaviour {
 		if (others.Length > 1 && menuLevel == 0) {
 			Destroy (this.gameObject);
 		}
+		SetMenu ();
 //		playerNumArray = new int[8];
 	}
 
@@ -40,18 +42,27 @@ public class SceneController : MonoBehaviour {
 	/// </summary>
 	public void SetMenu() {
 		switch (menuLevel) {
+		case 0:
+			help.SetActive (true);
+			main.SetActive (false);
+			gamemodeSelect.SetActive (false);
+			stageSelect.SetActive (false);
+			break;
 		case 1:
+			help.SetActive (false);
 			main.SetActive (true);
 			gamemodeSelect.SetActive (false);
 			stageSelect.SetActive (false);
 			break;
 		case 2:
+			help.SetActive (false);
 			main.SetActive (false);
 			gamemodeSelect.SetActive (true);
 			stageSelect.SetActive (false);
 			menuHandler.GetComponent<MenuHandler> ().InstantiatePlayers ();
 			break;
 		case 3:
+			help.SetActive (false);
 			main.SetActive (false);
 			gamemodeSelect.SetActive (false);
 			stageSelect.SetActive (true);

@@ -16,9 +16,12 @@ public class MenuHandler : MonoBehaviour {
 	private AudioSource titleMusic;			//the titleMusic in the menu
 	public GameObject mainMenu;				//the Main menu
 	public GameObject optionsMenu;			//the options menu
+	public GameObject helpMenu;				//the help menu
+	public int fromOptions = 0;				//1 if the help menu was selected from the options menu	
 	public GameObject controlsMenu;			//the controls menu
 	public Button optionsDefault;			//let resume be the default option
 	public Button mainDefault;				//let play be the default option
+	public Button helpDefault;				//let okay be the default option
 	public GameObject characterMenu;		//the character menu
 	public GameObject gameModeMenu;			//the gamemode menu
 	public GameObject stageMenu;			//the stage menu
@@ -39,6 +42,7 @@ public class MenuHandler : MonoBehaviour {
 		sc = GameObject.FindGameObjectWithTag ("SceneController").GetComponent<SceneController> ();
 		titleMusic = GetComponent<AudioSource> ();
 		fadeAnim = fadeIn.GetComponent<Animator> ();
+		fromOptions = 0;
 	}
 
 	void Update () {
@@ -47,6 +51,24 @@ public class MenuHandler : MonoBehaviour {
 				optionsMenu.SetActive (true);
 				optionsDefault.Select ();
 			}
+		}
+	}
+
+	public void ToHelp() {
+		optionsMenu.SetActive (false);
+		fromOptions = 1;
+		helpMenu.SetActive (true);
+		helpDefault.Select ();
+	}
+
+	public void HelpBack () {
+		helpMenu.SetActive (false);
+		if (fromOptions == 1) {
+			optionsMenu.SetActive (true);
+			optionsDefault.Select ();
+		} else {
+			mainMenu.SetActive (true);
+			mainDefault.Select ();
 		}
 	}
 
@@ -101,7 +123,7 @@ public class MenuHandler : MonoBehaviour {
 				stageMenu.SetActive (false);
 			}
 			mainMenu.SetActive (true);
-			sc.menuLevel = 0;
+			sc.menuLevel = 1;
 			mainDefault.Select ();
 		}
 	}

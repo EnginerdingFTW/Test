@@ -43,6 +43,7 @@ public class MenuHandler : MonoBehaviour {
 		titleMusic = GetComponent<AudioSource> ();
 		fadeAnim = fadeIn.GetComponent<Animator> ();
 		fromOptions = 0;
+		helpDefault.Select ();
 	}
 
 	void Update () {

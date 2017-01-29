@@ -10,6 +10,7 @@ public class ButtonMenuEnable : MonoBehaviour {
 	public GameObject gamemode;
 	public GameObject stage;
 	public GameObject menuHandler;
+	public GameObject help;
 
 
 	/// <summary>
@@ -21,6 +22,7 @@ public class ButtonMenuEnable : MonoBehaviour {
 		sc.gamemodeSelect = gamemode;
 		sc.stageSelect = stage;
 		sc.menuHandler = menuHandler;
+		sc.help = help;
 		sc.SetMenu ();
 	}
 

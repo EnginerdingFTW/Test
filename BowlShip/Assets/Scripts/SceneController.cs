@@ -33,7 +33,6 @@ public class SceneController : MonoBehaviour {
 		if (others.Length > 1 && menuLevel == 0) {
 			Destroy (this.gameObject);
 		}
-		SetMenu ();
 //		playerNumArray = new int[8];
 	}
 
@@ -42,12 +41,6 @@ public class SceneController : MonoBehaviour {
 	/// </summary>
 	public void SetMenu() {
 		switch (menuLevel) {
-		case 0:
-			help.SetActive (true);
-			main.SetActive (false);
-			gamemodeSelect.SetActive (false);
-			stageSelect.SetActive (false);
-			break;
 		case 1:
 			help.SetActive (false);
 			main.SetActive (true);

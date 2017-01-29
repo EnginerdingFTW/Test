@@ -63,14 +63,16 @@ public class MenuHandler : MonoBehaviour {
 	}
 
 	public void HelpBack () {
-		helpMenu.SetActive (false);
 		if (fromOptions == 1) {
 			optionsMenu.SetActive (true);
 			optionsDefault.Select ();
-		} else {
+		} 
+
+		if (fromOptions == 0) {
 			mainMenu.SetActive (true);
 			mainDefault.Select ();
 		}
+		helpMenu.SetActive (false);
 	}
 
 	public void OptionsBack () {
